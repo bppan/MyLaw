@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/LawSpider/LawSpider.iml" filepath="$PROJECT_DIR$/LawSpider/LawSpider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyLaw.iml" filepath="$PROJECT_DIR$/MyLaw.iml" />
+    </modules>
+  </component>
+</project>
