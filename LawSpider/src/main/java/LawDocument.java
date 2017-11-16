@@ -8,7 +8,7 @@ import java.util.List;
  * @Date : 2017/11/14 22:07
  * @Description :
  */
-public class LawCollection {
+public class LawDocument {
     private String title;
     private String department;
     private String release_data;
@@ -17,6 +17,42 @@ public class LawCollection {
     private String level;
     private String timeless;
     private List<LawArticle> article;
+    private String rawHtml;
+    private String cleanHtml;
+    private String url;
+    private int tiaoNum;
+
+    public String getCleanHtml() {
+        return cleanHtml;
+    }
+
+    public void setCleanHtml(String cleanHtml) {
+        this.cleanHtml = cleanHtml;
+    }
+
+    public int getTiaoNum() {
+        return tiaoNum;
+    }
+
+    public void setTiaoNum(int tiaoNum) {
+        this.tiaoNum = tiaoNum;
+    }
+
+    public String getRawHtml() {
+        return rawHtml;
+    }
+
+    public void setRawHtml(String rawHtml) {
+        this.rawHtml = rawHtml;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getTitle() {
         return title;
@@ -70,7 +106,7 @@ public class LawCollection {
         return article;
     }
 
-    public void setArticle( List<LawArticle> article) {
+    public void setArticle(List<LawArticle> article) {
         this.article = article;
     }
 
@@ -81,10 +117,10 @@ public class LawCollection {
     public void setRelease_data(String release_data) {
         this.release_data = release_data;
     }
-    public Document getCollection(){
 
+    public Document getDocument() {
         List<Document> interlDocuments = new ArrayList<Document>();
-        for (int i = 0; i < article.size(); i++){
+        for (int i = 0; i < article.size(); i++) {
             Document par = new Document("name", article.get(i).getName()).append("paragraph", article.get(i).getParagraph());
             interlDocuments.add(par);
         }
@@ -95,8 +131,11 @@ public class LawCollection {
                 append("category", this.getCategory()).
                 append("level", this.getLevel()).
                 append("timeless", this.getTimeless()).
-                append("articles", interlDocuments);
-
+                append("articles", interlDocuments).
+                append("url", this.getUrl()).
+                append("rawHtml", this.getRawHtml()).
+                append("content", this.getCleanHtml()).
+                append("article_num", this.getTiaoNum());
         return document;
 
     }

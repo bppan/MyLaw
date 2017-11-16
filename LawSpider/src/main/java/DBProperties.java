@@ -14,6 +14,7 @@ public class DBProperties {
     private static Logger LOGGER = LawLogger.getLawLogger(DBProperties.class);
     private static DBProperties dbProperties = new DBProperties();
     private Properties prop;
+
     private DBProperties() {
         //初始化DBProperties
         this.prop = new Properties();
@@ -33,7 +34,8 @@ public class DBProperties {
     public static DBProperties getDBProperties() {
         return dbProperties;
     }
-    public Properties getProp(){
+
+    public Properties getProp() {
         return this.prop;
     }
 }

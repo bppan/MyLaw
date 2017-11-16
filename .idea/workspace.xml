@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="144484ec-eacf-4846-9224-3f1541ac9bdc" name="Default" comment="" />
+    <list default="true" id="144484ec-eacf-4846-9224-3f1541ac9bdc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/SpiderMove.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LawSpider/src/test/java/Main2.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/LawSpider/target/classes/LawCollection.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/log4j.log.1" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/DBProperties.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/DBProperties.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/LawArticle.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/LawArticle.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/LawSpider$1.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/LawSpider$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/LawSpider.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/LawSpider.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/Main$1.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/Main$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/Main$2.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/Main$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/Main.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/Main.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/MongoDB.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/MongoDB.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/DBProperties.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/DBProperties.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/LawArticle.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/LawArticle.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/LawLogger.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/LawLogger.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/LawSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/LawSpider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/Main.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/LawCollection.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/LawDocument.java" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/LawSpider/target/" />
@@ -17,8 +38,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="74" column="131" lean-forward="false" selection-start-line="74" selection-start-column="131" selection-end-line="74" selection-end-column="131" />
+            <state relative-caret-position="1298">
+              <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -26,28 +47,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Element.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/nodes/Element.class">
+      <file leaf-file-name="SpiderMove.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/SpiderMove.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="162" column="11" lean-forward="true" selection-start-line="162" selection-start-column="11" selection-end-line="162" selection-end-column="11" />
-              <folding>
-                <element signature="e#4679#4680#0" expanded="true" />
-                <element signature="e#4733#4734#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="286">
+              <caret line="17" column="38" lean-forward="true" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LawLogger.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawLogger.java">
+      <file leaf-file-name="Main2.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/test/java/Main2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="21" column="32" lean-forward="true" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+            <state relative-caret-position="616">
+              <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="105" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#267#268#0" expanded="true" />
-                <element signature="e#294#295#0" expanded="true" />
+                <element signature="e#3952#3960#0" expanded="true" />
+                <element signature="e#4023#4035#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -56,16 +74,25 @@
       <file leaf-file-name="MongoDB.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1036">
-              <caret line="77" column="5" lean-forward="true" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
+            <state relative-caret-position="266">
+              <caret line="79" column="30" lean-forward="false" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1953#1965#0" expanded="true" />
-                <element signature="e#2125#2133#0" expanded="true" />
-                <element signature="e#2756#2766#0" expanded="true" />
-                <element signature="e#3214#3215#0" expanded="true" />
-                <element signature="e#3249#3250#0" expanded="true" />
+                <element signature="e#3240#3241#0" expanded="true" />
+                <element signature="e#3270#3271#0" expanded="true" />
+                <element signature="e#3321#3322#0" expanded="true" />
+                <element signature="e#3372#3373#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MongoCollection.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/3.5.0/mongo-java-driver-3.5.0.jar!/com/mongodb/client/MongoCollection.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="177">
+              <caret line="87" column="13" lean-forward="false" selection-start-line="87" selection-start-column="13" selection-end-line="87" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -73,101 +100,78 @@
       <file leaf-file-name="LawSpider.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawSpider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="129" column="128" lean-forward="false" selection-start-line="129" selection-start-column="128" selection-end-line="129" selection-end-column="128" />
+            <state relative-caret-position="173">
+              <caret line="31" column="11" lean-forward="false" selection-start-line="31" selection-start-column="11" selection-end-line="31" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#10118#10126#0" expanded="true" />
+                <element signature="e#10189#10201#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="44">
-                <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Jsoup.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/Jsoup.class">
+      <file leaf-file-name="Throwable.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/lang/Throwable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="36" column="34" lean-forward="false" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
+            <state relative-caret-position="177">
+              <caret line="375" column="18" lean-forward="false" selection-start-line="375" selection-start-column="18" selection-end-line="375" selection-end-column="18" />
               <folding>
-                <element signature="e#923#924#0" expanded="true" />
-                <element signature="e#973#974#0" expanded="true" />
+                <element signature="e#15711#15712#0" expanded="true" />
+                <element signature="e#15747#15748#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HttpConnection.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/helper/HttpConnection.class">
+      <file leaf-file-name="db.properties" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/db.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="40" column="13" lean-forward="false" selection-start-line="40" selection-start-column="13" selection-end-line="40" selection-end-column="13" />
+            <state relative-caret-position="132">
+              <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Connection.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/Connection.class">
+      <file leaf-file-name="WebClient.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/WebClient.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="17" column="15" lean-forward="false" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+            <state relative-caret-position="10">
+              <caret line="122" column="11" lean-forward="false" selection-start-line="122" selection-start-column="11" selection-end-line="122" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LawCollection.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawCollection.java">
+      <file leaf-file-name="LawDocument.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawDocument.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1872">
-              <caret line="89" column="9" lean-forward="true" selection-start-line="89" selection-start-column="9" selection-end-line="89" selection-end-column="9" />
+            <state relative-caret-position="492">
+              <caret line="135" column="53" lean-forward="true" selection-start-line="135" selection-start-column="53" selection-end-line="135" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#466#467#0" expanded="true" />
-                <element signature="e#494#495#0" expanded="true" />
-                <element signature="e#536#537#0" expanded="true" />
-                <element signature="e#570#571#0" expanded="true" />
+                <element signature="e#575#576#0" expanded="true" />
                 <element signature="e#607#608#0" expanded="true" />
-                <element signature="e#640#641#0" expanded="true" />
-                <element signature="e#692#693#0" expanded="true" />
-                <element signature="e#736#737#0" expanded="true" />
-                <element signature="e#777#778#0" expanded="true" />
-                <element signature="e#814#815#0" expanded="true" />
-                <element signature="e#874#875#0" expanded="true" />
-                <element signature="e#926#927#0" expanded="true" />
-                <element signature="e#961#962#0" expanded="true" />
-                <element signature="e#992#993#0" expanded="true" />
-                <element signature="e#1040#1041#0" expanded="true" />
-                <element signature="e#1080#1081#0" expanded="true" />
-                <element signature="e#1112#1113#0" expanded="true" />
-                <element signature="e#1140#1141#0" expanded="true" />
-                <element signature="e#1182#1183#0" expanded="true" />
-                <element signature="e#1216#1217#0" expanded="true" />
-                <element signature="e#1251#1252#0" expanded="true" />
-                <element signature="e#1282#1283#0" expanded="true" />
-                <element signature="e#1330#1331#0" expanded="true" />
-                <element signature="e#1370#1371#0" expanded="true" />
-                <element signature="e#1414#1415#0" expanded="true" />
-                <element signature="e#1444#1445#0" expanded="true" />
-                <element signature="e#1501#1502#0" expanded="true" />
-                <element signature="e#1539#1540#0" expanded="true" />
-                <element signature="e#1578#1579#0" expanded="true" />
-                <element signature="e#1613#1614#0" expanded="true" />
-                <element signature="e#1669#1670#0" expanded="true" />
-                <element signature="e#1717#1718#0" expanded="true" />
-                <element signature="e#1811#1821#0" expanded="true" />
+                <element signature="e#657#658#0" expanded="true" />
+                <element signature="e#699#700#0" expanded="true" />
+                <element signature="e#730#731#0" expanded="true" />
+                <element signature="e#760#761#0" expanded="true" />
+                <element signature="e#803#804#0" expanded="true" />
+                <element signature="e#841#842#0" expanded="true" />
+                <element signature="e#875#876#0" expanded="true" />
+                <element signature="e#905#906#0" expanded="true" />
+                <element signature="e#951#952#0" expanded="true" />
+                <element signature="e#989#990#0" expanded="true" />
+                <element signature="e#1019#1020#0" expanded="true" />
+                <element signature="e#1045#1046#0" expanded="true" />
+                <element signature="e#1083#1084#0" expanded="true" />
+                <element signature="e#1113#1114#0" expanded="true" />
+                <element signature="e#2093#2094#0" expanded="true" />
+                <element signature="e#2123#2124#0" expanded="true" />
+                <element signature="e#2179#2180#0" expanded="true" />
+                <element signature="e#2217#2218#0" expanded="true" />
+                <element signature="e#2488#2498#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -191,6 +195,9 @@
       <find>bbbbbbbbbbbbb</find>
       <find>sdghskjdhgkjshjkdh</find>
       <find>ddddd</find>
+      <find>jsoup get document error</find>
+      <find>jsoup get</find>
+      <find>401</find>
       <find>ERROR</find>
     </findStrings>
   </component>
@@ -217,13 +224,18 @@
         <option value="$PROJECT_DIR$/LawSpider/pom.xml" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/LawLogger.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/DBProperties.java" />
-        <option value="$PROJECT_DIR$/config/db.properties" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/MongDBCollection.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/Article.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/test/java/Main.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/LawArticle.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/LawCollection.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/test/java/Main2.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/LawDocument.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/LawSpider.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/SpiderMove.java" />
+        <option value="$PROJECT_DIR$/config/db.properties" />
       </list>
     </option>
   </component>
@@ -240,7 +252,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="309" />
     <option name="y" value="71" />
     <option name="width" value="1400" />
@@ -275,6 +287,32 @@
               <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
               <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
               <item name="config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -315,10 +353,38 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.SpiderMove">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="Main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="LawSpider" />
+      <envs />
+    </configuration>
+    <configuration name="Main2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="Main2" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="LawSpider" />
+      <envs />
+    </configuration>
+    <configuration name="SpiderMove" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="SpiderMove" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -411,9 +477,16 @@
       <properties />
       <listeners />
     </configuration>
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+      <item index="1" class="java.lang.String" itemvalue="Application.Main2" />
+      <item index="2" class="java.lang.String" itemvalue="Application.SpiderMove" />
+    </list>
     <recent_temporary>
-      <list size="1">
-        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Application.SpiderMove" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Main2" />
+        <item index="2" class="java.lang.String" itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -429,38 +502,38 @@
       <updated>1510305354167</updated>
       <workItem from="1510305357375" duration="16989000" />
       <workItem from="1510649298605" duration="3937000" />
-      <workItem from="1510661838486" duration="11663000" />
+      <workItem from="1510661838486" duration="37244000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32589000" />
+    <option name="totallyTimeSpent" value="58170000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="309" y="71" width="1400" height="997" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277027" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32769555" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2863585" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4640592" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19364162" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13958333" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19027483" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -478,101 +551,29 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/LawSpider/src/test/java/Main2.java</url>
+          <line>120</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar!/org/apache/log4j/PropertyConfigurator.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="64" column="60" lean-forward="false" selection-start-line="64" selection-start-column="46" selection-end-line="64" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="17" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1953#1965#0" expanded="true" />
-            <element signature="e#2125#2133#0" expanded="true" />
-            <element signature="e#2756#2766#0" expanded="true" />
-            <element signature="e#3214#3215#0" expanded="true" />
-            <element signature="e#3249#3250#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/db.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/DBProperties.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="16" column="25" lean-forward="true" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1024#1025#0" expanded="true" />
-            <element signature="e#1059#1060#0" expanded="true" />
-            <element signature="e#1092#1093#0" expanded="true" />
-            <element signature="e#1124#1125#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="946">
-          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="17" column="26" lean-forward="false" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1892">
-          <caret line="102" column="51" lean-forward="false" selection-start-line="102" selection-start-column="51" selection-end-line="102" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/resources/log4j.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="17" column="1" lean-forward="false" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1953#1965#0" expanded="true" />
-            <element signature="e#2125#2133#0" expanded="true" />
-            <element signature="e#2756#2766#0" expanded="true" />
-            <element signature="e#3214#3215#0" expanded="true" />
-            <element signature="e#3249#3250#0" expanded="true" />
+            <element signature="e#3240#3241#0" expanded="true" />
+            <element signature="e#3270#3271#0" expanded="true" />
+            <element signature="e#3321#3322#0" expanded="true" />
+            <element signature="e#3372#3373#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -597,6 +598,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8118">
           <caret line="407" column="20" lean-forward="false" selection-start-line="407" selection-start-column="20" selection-end-line="407" selection-end-column="20" />
+          <folding>
+            <element signature="e#8741#8742#0" expanded="true" />
+            <element signature="e#8826#8827#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -639,20 +644,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/util/ArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2952">
-          <caret line="149" column="40" lean-forward="false" selection-start-line="149" selection-start-column="25" selection-end-line="149" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/WebClient.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1518">
-          <caret line="122" column="11" lean-forward="false" selection-start-line="122" selection-start-column="11" selection-end-line="122" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/DomNode.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
@@ -664,13 +655,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="213">
           <caret line="115" column="18" lean-forward="false" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/select/Elements.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8118">
-          <caret line="407" column="20" lean-forward="false" selection-start-line="407" selection-start-column="20" selection-end-line="407" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -718,14 +702,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="18" column="31" lean-forward="false" selection-start-line="18" selection-start-column="31" selection-end-line="18" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="20" column="39" lean-forward="false" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -790,19 +766,11 @@
           <caret line="23" column="56" lean-forward="false" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1024#1025#0" expanded="true" />
-            <element signature="e#1059#1060#0" expanded="true" />
-            <element signature="e#1092#1093#0" expanded="true" />
-            <element signature="e#1124#1125#0" expanded="true" />
+            <element signature="e#1025#1026#0" expanded="true" />
+            <element signature="e#1060#1061#0" expanded="true" />
+            <element signature="e#1095#1096#0" expanded="true" />
+            <element signature="e#1127#1128#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/db.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="3" column="22" lean-forward="true" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -811,81 +779,6 @@
         <state relative-caret-position="204">
           <caret line="59" column="20" lean-forward="false" selection-start-line="59" selection-start-column="20" selection-end-line="59" selection-end-column="20" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawArticle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding>
-            <element signature="e#222#223#0" expanded="true" />
-            <element signature="e#249#250#0" expanded="true" />
-            <element signature="e#289#290#0" expanded="true" />
-            <element signature="e#321#322#0" expanded="true" />
-            <element signature="e#363#364#0" expanded="true" />
-            <element signature="e#395#396#0" expanded="true" />
-            <element signature="e#451#452#0" expanded="true" />
-            <element signature="e#493#494#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawCollection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1872">
-          <caret line="89" column="9" lean-forward="true" selection-start-line="89" selection-start-column="9" selection-end-line="89" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#466#467#0" expanded="true" />
-            <element signature="e#494#495#0" expanded="true" />
-            <element signature="e#536#537#0" expanded="true" />
-            <element signature="e#570#571#0" expanded="true" />
-            <element signature="e#607#608#0" expanded="true" />
-            <element signature="e#640#641#0" expanded="true" />
-            <element signature="e#692#693#0" expanded="true" />
-            <element signature="e#736#737#0" expanded="true" />
-            <element signature="e#777#778#0" expanded="true" />
-            <element signature="e#814#815#0" expanded="true" />
-            <element signature="e#874#875#0" expanded="true" />
-            <element signature="e#926#927#0" expanded="true" />
-            <element signature="e#961#962#0" expanded="true" />
-            <element signature="e#992#993#0" expanded="true" />
-            <element signature="e#1040#1041#0" expanded="true" />
-            <element signature="e#1080#1081#0" expanded="true" />
-            <element signature="e#1112#1113#0" expanded="true" />
-            <element signature="e#1140#1141#0" expanded="true" />
-            <element signature="e#1182#1183#0" expanded="true" />
-            <element signature="e#1216#1217#0" expanded="true" />
-            <element signature="e#1251#1252#0" expanded="true" />
-            <element signature="e#1282#1283#0" expanded="true" />
-            <element signature="e#1330#1331#0" expanded="true" />
-            <element signature="e#1370#1371#0" expanded="true" />
-            <element signature="e#1414#1415#0" expanded="true" />
-            <element signature="e#1444#1445#0" expanded="true" />
-            <element signature="e#1501#1502#0" expanded="true" />
-            <element signature="e#1539#1540#0" expanded="true" />
-            <element signature="e#1578#1579#0" expanded="true" />
-            <element signature="e#1613#1614#0" expanded="true" />
-            <element signature="e#1669#1670#0" expanded="true" />
-            <element signature="e#1717#1718#0" expanded="true" />
-            <element signature="e#1811#1821#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1036">
-          <caret line="77" column="5" lean-forward="true" selection-start-line="77" selection-start-column="5" selection-end-line="77" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1953#1965#0" expanded="true" />
-            <element signature="e#2125#2133#0" expanded="true" />
-            <element signature="e#2756#2766#0" expanded="true" />
-            <element signature="e#3214#3215#0" expanded="true" />
-            <element signature="e#3249#3250#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -916,45 +809,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawLogger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="21" column="32" lean-forward="true" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#267#268#0" expanded="true" />
-            <element signature="e#294#295#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/nodes/Element.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
-          <caret line="162" column="11" lean-forward="true" selection-start-line="162" selection-start-column="11" selection-end-line="162" selection-end-column="11" />
+          <caret line="162" column="11" lean-forward="false" selection-start-line="162" selection-start-column="11" selection-end-line="162" selection-end-column="11" />
           <folding>
             <element signature="e#4679#4680#0" expanded="true" />
             <element signature="e#4733#4734#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="74" column="131" lean-forward="false" selection-start-line="74" selection-start-column="131" selection-end-line="74" selection-end-column="131" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="129" column="128" lean-forward="false" selection-start-line="129" selection-start-column="128" selection-end-line="129" selection-end-column="128" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -963,10 +824,225 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="44">
-            <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
             <folding />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/test/Main">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" column="39" lean-forward="false" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/select/Elements.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="370" column="19" lean-forward="false" selection-start-line="370" selection-start-column="19" selection-end-line="370" selection-end-column="19" />
+          <folding>
+            <element signature="e#8741#8742#0" expanded="true" />
+            <element signature="e#8826#8827#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="2420" column="20" lean-forward="false" selection-start-line="2420" selection-start-column="20" selection-end-line="2420" selection-end-column="20" />
+          <folding>
+            <element signature="e#94598#94599#0" expanded="false" />
+            <element signature="e#94636#94637#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/util/regex/Pattern.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="1085" column="19" lean-forward="false" selection-start-line="1085" selection-start-column="19" selection-end-line="1085" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/util/ArrayList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="163" column="11" lean-forward="false" selection-start-line="163" selection-start-column="11" selection-end-line="163" selection-end-column="11" />
+          <folding>
+            <element signature="e#6252#6253#0" expanded="false" />
+            <element signature="e#6320#6321#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/util/regex/Matcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="340" column="15" lean-forward="false" selection-start-line="340" selection-start-column="15" selection-end-line="340" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawArticle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="26" column="24" lean-forward="false" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#357#358#0" expanded="true" />
+            <element signature="e#384#385#0" expanded="true" />
+            <element signature="e#424#425#0" expanded="true" />
+            <element signature="e#456#457#0" expanded="true" />
+            <element signature="e#498#499#0" expanded="true" />
+            <element signature="e#530#531#0" expanded="true" />
+            <element signature="e#586#587#0" expanded="true" />
+            <element signature="e#628#629#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="15" column="25" lean-forward="false" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/test/java/Main2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="105" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3952#3960#0" expanded="true" />
+            <element signature="e#4023#4035#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/WebClient.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10">
+          <caret line="122" column="11" lean-forward="false" selection-start-line="122" selection-start-column="11" selection-end-line="122" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1298">
+          <caret line="106" column="0" lean-forward="true" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawDocument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="135" column="53" lean-forward="true" selection-start-line="135" selection-start-column="53" selection-end-line="135" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#575#576#0" expanded="true" />
+            <element signature="e#607#608#0" expanded="true" />
+            <element signature="e#657#658#0" expanded="true" />
+            <element signature="e#699#700#0" expanded="true" />
+            <element signature="e#730#731#0" expanded="true" />
+            <element signature="e#760#761#0" expanded="true" />
+            <element signature="e#803#804#0" expanded="true" />
+            <element signature="e#841#842#0" expanded="true" />
+            <element signature="e#875#876#0" expanded="true" />
+            <element signature="e#905#906#0" expanded="true" />
+            <element signature="e#951#952#0" expanded="true" />
+            <element signature="e#989#990#0" expanded="true" />
+            <element signature="e#1019#1020#0" expanded="true" />
+            <element signature="e#1045#1046#0" expanded="true" />
+            <element signature="e#1083#1084#0" expanded="true" />
+            <element signature="e#1113#1114#0" expanded="true" />
+            <element signature="e#2093#2094#0" expanded="true" />
+            <element signature="e#2123#2124#0" expanded="true" />
+            <element signature="e#2179#2180#0" expanded="true" />
+            <element signature="e#2217#2218#0" expanded="true" />
+            <element signature="e#2488#2498#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/3.5.0/mongo-java-driver-3.5.0.jar!/com/mongodb/client/MongoCollection.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="87" column="13" lean-forward="false" selection-start-line="87" selection-start-column="13" selection-end-line="87" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/MongoDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="79" column="30" lean-forward="false" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3240#3241#0" expanded="true" />
+            <element signature="e#3270#3271#0" expanded="true" />
+            <element signature="e#3321#3322#0" expanded="true" />
+            <element signature="e#3372#3373#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/lang/Throwable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="375" column="18" lean-forward="false" selection-start-line="375" selection-start-column="18" selection-end-line="375" selection-end-column="18" />
+          <folding>
+            <element signature="e#15711#15712#0" expanded="true" />
+            <element signature="e#15747#15748#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/LawSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="31" column="11" lean-forward="false" selection-start-line="31" selection-start-column="11" selection-end-line="31" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10118#10126#0" expanded="true" />
+            <element signature="e#10189#10201#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/db.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/SpiderMove.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="17" column="38" lean-forward="true" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>

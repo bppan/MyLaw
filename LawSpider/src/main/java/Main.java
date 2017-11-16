@@ -1,6 +1,5 @@
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
@@ -65,7 +64,7 @@ public class Main {
             for (Element ele : eles) {
                 System.out.println(ele.childNode(0).toString());
                 System.out.println(ele.attr("href"));
-                url = "http://www.pkulaw.cn"+"/"+ele.attr("href");
+                url = "http://www.pkulaw.cn" + "/" + ele.attr("href");
 
             }
             System.out.println(url);
@@ -107,9 +106,7 @@ public class Main {
         DBProperties properties = DBProperties.getDBProperties();
 
 
-        MongoDB db = MongoDB.getMongoDBClint();
-
-
+        MongoDB db = MongoDB.getMongoDB();
 
 
     }

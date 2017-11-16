@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,6 +10,11 @@ public class LawArticle {
     private String name;
 
     private List<String> paragraph;
+
+    public LawArticle() {
+        this.name = "";
+        this.paragraph = new ArrayList<String>();
+    }
 
     public String getName() {
         return name;

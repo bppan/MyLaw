@@ -18,7 +18,7 @@ public class LawLogger extends Logger {
         Properties p = new Properties();
         try {
             p.load(LawLogger.class.getResourceAsStream("/log4j.properties"));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         PropertyConfigurator.configure(p);
