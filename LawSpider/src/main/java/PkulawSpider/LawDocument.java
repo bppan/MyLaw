@@ -1,5 +1,6 @@
 package PkulawSpider;
 
+import Mongo.MongoDB;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -120,7 +121,8 @@ public class LawDocument {
         this.release_data = release_data;
     }
 
-    public Document getDocument() {
+    public synchronized boolean saveToDB() {
+        MongoDB mongoDB = MongoDB.getMongoDB();
         List<Document> interlDocuments = new ArrayList<Document>();
         for (int i = 0; i < article.size(); i++) {
             Document par = new Document("name", article.get(i).getName()).append("paragraph", article.get(i).getParagraph());
@@ -138,8 +140,8 @@ public class LawDocument {
                 append("rawHtml", this.getRawHtml()).
                 append("content", this.getCleanHtml()).
                 append("article_num", this.getTiaoNum());
-        return document;
 
+        return mongoDB.saveLawDocument(document);
     }
 
 }

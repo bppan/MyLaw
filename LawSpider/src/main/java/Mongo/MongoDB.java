@@ -1,14 +1,17 @@
 package Mongo;
+
 import Interface.DB;
 import Log.LawLogger;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
-import org.bson.BsonDocument;
 import org.bson.Document;
-import java.util.Properties;
+
+import java.util.*;
 
 /**
  * @Author : Administrator
@@ -18,7 +21,9 @@ import java.util.Properties;
 public class MongoDB extends DB {
     private static Logger LOGGER = LawLogger.getLawLogger(MongoDB.class);
     private static MongoDB mongoDB = new MongoDB();
-    public MongoCollection<Document> collection;
+    private final String CrawJobCollectionName = "crawJob";
+    private MongoCollection<Document> lawcollection;
+    private MongoCollection<Document> crawJobcollection;
 
     private MongoDB() {
         //初始化mongodb
@@ -28,45 +33,18 @@ public class MongoDB extends DB {
             String db_host = prop.getProperty("mongodb_host");
             int db_port = Integer.parseInt(prop.getProperty("mongodb_port"));
             String db_database = prop.getProperty("mongodb_database");
-            String db_collection = prop.getProperty("mongodb_collection");
+            String db_collection = prop.getProperty("mongodb_law_collection");
             try {
                 // 连接到 mongodb 服务
                 MongoClient mongoClient = new MongoClient(db_host, db_port);
                 // 连接到数据库
                 MongoDatabase mongoDatabase = mongoClient.getDatabase(db_database);
                 LOGGER.info("Connect to mongodb database successfully");
-                collection = mongoDatabase.getCollection(db_collection);
-                LOGGER.info("select " + db_collection + " colleciont successfully");
-//                LawDocument mycollection = new LawDocument();
-//                mycollection.setTitle("123");
-//                mycollection.setCategory("ppp");
-//                mycollection.setDepartment("456");
-//                mycollection.setImplement_date("655656");
-//                mycollection.setRelease_data("0000");
-//                mycollection.setLevel("llll");
-//                mycollection.setTimeless("2017:11");
-//
-//                List<LawArticle> articles = new ArrayList<LawArticle>();
-//                for(int i = 0; i < 10; i++){
-//                    LawArticle article = new LawArticle();
-//                    List<String> par = new ArrayList<String>();
-//                    for(int j = 0; j < 3; j++){
-//                        par.add(i + "par " + j);
-//                    }
-//                    article.setName(String.valueOf(i));
-//                    article.setParagraph(par);
-//                    articles.add(article);
-//                }
-//                mycollection.setArticle(articles);
-//
-////                Document document = new Document("title", "MongoDB").
-////                        append("description", "database").
-////                        append("likes", 100).
-////                        append("by", "Fly");
-//                List<Document> documents = new ArrayList<Document>();
-//                documents.add(mycollection.getCollection());
-//                collection.insertMany(documents);
-//                System.out.println("文档插入成功");
+                if (loadCollection(mongoDatabase, db_collection)) {
+                    LOGGER.info("select all colleciont successfully");
+                } else {
+                    LOGGER.error("select all colleciont failure");
+                }
             } catch (Exception e) {
                 LOGGER.error("Connect to mongodb database Error!");
                 LOGGER.error(e);
@@ -80,14 +58,52 @@ public class MongoDB extends DB {
         return mongoDB;
     }
 
-    public synchronized boolean saveDocument(Document document) {
-        FindIterable<Document> findIterable = this.collection.find(new Document("url",document.get("url")));
-        if(findIterable.first() == null){
-            this.collection.insertOne(document);
+    //保存法律法规文档
+    public synchronized boolean saveLawDocument(Document document) {
+        FindIterable<Document> findIterable = this.lawcollection.find(new Document("url", document.get("url")));
+        if (findIterable.first() == null) {
+            this.lawcollection.insertOne(document);
             return true;
         }
         return false;
-
     }
+
+    //保存爬取任务文档
+    public synchronized boolean saveCrawJobDocument(Document document) {
+        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("url", document.get("url")));
+        if (findIterable.first() == null) {
+            this.crawJobcollection.insertOne(document);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean loadCollection(MongoDatabase mongoDatabasem, String db_collection) {
+        try {
+            lawcollection = mongoDatabasem.getCollection(db_collection);
+            LOGGER.info("select " + db_collection + " colleciont successfully");
+            crawJobcollection = mongoDatabasem.getCollection(CrawJobCollectionName);
+            LOGGER.info("select " + CrawJobCollectionName + " colleciont successfully");
+        } catch (Exception e) {
+            LOGGER.error(e);
+            return false;
+        }
+        return true;
+    }
+
+    public synchronized List<Document> loadAllCrawJob() {
+        List<Document> result = Collections.synchronizedList(new LinkedList<>());
+        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("isCraw", false)).sort(new Document("getTime", 1));
+        MongoCursor<Document> mongoCursor = findIterable.iterator();
+        while (mongoCursor.hasNext()) {
+            result.add(mongoCursor.next());
+        }
+        return result;
+    }
+    public synchronized boolean updateDocument(Document document, Document updatedocument){
+
+        UpdateResult result = this.crawJobcollection.updateMany(document, updatedocument);
+    }
+
 }
 

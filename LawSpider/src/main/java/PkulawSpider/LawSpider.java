@@ -23,8 +23,7 @@ public class LawSpider extends Spider {
     private static final Object signal = new Object();   //线程间通信变量
     private static Logger LOGGER = LawLogger.getLawLogger(LawSpider.class);
     private final int waitToCrawNextHtmlTime = (int) (1000 + Math.random() * 5000);
-    private Set urlSet;
-    private List<String> urlList;
+    private List<org.bson.Document> urlList;
     private String indexUrl;
     private int crawHtmlthreadCount;
     private int waitCrawHtmlThreadCount;
@@ -33,8 +32,6 @@ public class LawSpider extends Spider {
     public LawSpider(String indexUrl, int crawHtmlthreadCount) {
         this.crawHtmlthreadCount = crawHtmlthreadCount;
         this.indexUrl = indexUrl;
-        this.urlSet = Collections.synchronizedSet(new HashSet<String>());
-        this.urlList = Collections.synchronizedList(new ArrayList<String>());
         this.mongoDB = MongoDB.getMongoDB();
         this.waitCrawHtmlThreadCount = 0;
     }
@@ -55,8 +52,12 @@ public class LawSpider extends Spider {
         return false;
     }
 
+
+
     @Override
     public void doCraw() {
+        //加载crawJobUrl
+        this.urlList = mongoDB.loadAllCrawJob();
         //获取种子url对应的下一个爬取的url
         for (int i = 0; i < crawHtmlthreadCount; i++) {
             new Thread(new Runnable() {
@@ -129,7 +130,7 @@ public class LawSpider extends Spider {
                 LawDocument lawDocument = this.parseLawHtml(doc);
                 lawDocument.setUrl(htmlUrl);
                 lawDocument.setRawHtml(doc.html());
-                if (this.mongoDB.saveDocument(lawDocument.getDocument())) {
+                if (lawDocument.saveToDB()) {
                     LOGGER.info("Save document to MongoDB success....");
                 } else {
                     LOGGER.info("Save document to MongoDB skip: the document already exits....");
