@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -27,37 +28,41 @@ public class LawSpider extends Spider {
     private String indexUrl;
     private int crawHtmlthreadCount;
     private int waitCrawHtmlThreadCount;
-    private MongoDB mongoDB;
 
     public LawSpider(String indexUrl, int crawHtmlthreadCount) {
         this.crawHtmlthreadCount = crawHtmlthreadCount;
         this.indexUrl = indexUrl;
-        this.mongoDB = MongoDB.getMongoDB();
         this.waitCrawHtmlThreadCount = 0;
     }
 
     @Override
     public boolean addUrl(String url) {
-        if (urlSet.add(url)) {
-            this.urlList.add(url);
-            if (this.waitCrawHtmlThreadCount > 0) {//如果有等待的线程，则唤醒
-                synchronized (signal) {  //---------------------（2）
-                    LOGGER.info("Wake up thread，current waiting thread num:" + (this.waitCrawHtmlThreadCount - 1));
-                    this.waitCrawHtmlThreadCount--;
-                    signal.notify();
-                }
-            }
-            return true;
-        }
-        return false;
+        return CrawJob.addJob(url);
     }
-
-
 
     @Override
     public void doCraw() {
-        //加载crawJobUrl
-        this.urlList = mongoDB.loadAllCrawJob();
+        //监视数据库获取爬取任务
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    if (CrawJob.getCrawJobNum() > 0 && waitCrawHtmlThreadCount > 0) {//如果有等待的线程，则唤醒
+                        synchronized (signal) {
+                            LOGGER.info("Wake up thread，current waiting thread num:" + (waitCrawHtmlThreadCount - 1));
+                            waitCrawHtmlThreadCount--;
+                            signal.notify();
+                        }
+                    }
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        LOGGER.error("monitor craw job thread sleep error: " + e.getMessage());
+                    }
+                }
+            }
+        }).start();
+
         //获取种子url对应的下一个爬取的url
         for (int i = 0; i < crawHtmlthreadCount; i++) {
             new Thread(new Runnable() {
@@ -95,15 +100,19 @@ public class LawSpider extends Spider {
 
     @Override
     public String getUrl() {
-        String tempUrl = "";
-        if (this.urlList != null && this.urlList.size() != 0) {
-            tempUrl = this.urlList.get(0);
-            this.urlList.remove(0);
-        }
-        return tempUrl;
+        return CrawJob.getJob();
     }
 
     public void crawHtml(String htmlUrl) {
+        if(LawDocument.isExits(htmlUrl)){
+            LOGGER.info("Save document to MongoDB skip: the document already exits....");
+            if (CrawJob.doneJob(htmlUrl)){
+                LOGGER.info("Craw job url["+ htmlUrl+"] done....");
+            }else {
+                LOGGER.info("Craw job url["+ htmlUrl +"] fail....");
+            }
+            return;
+        }
         int retry_count = 3;//默认重试3次
         int retry_time = 3000;//每次重试间隔3秒
         int current_retry_count = 0;
@@ -131,14 +140,21 @@ public class LawSpider extends Spider {
                 lawDocument.setUrl(htmlUrl);
                 lawDocument.setRawHtml(doc.html());
                 if (lawDocument.saveToDB()) {
+                    is_retry = false;
                     LOGGER.info("Save document to MongoDB success....");
                 } else {
                     LOGGER.info("Save document to MongoDB skip: the document already exits....");
+                }
+                if (CrawJob.doneJob(htmlUrl)){
+                    LOGGER.info("Craw job url["+ htmlUrl+"] done....");
+                }else {
+                    LOGGER.info("Craw job url["+ htmlUrl +"] fail....");
                 }
             } catch (Exception e) {
                 is_retry = true;
                 current_retry_count++;
                 LOGGER.error("Jsoup get html err: " + e.getMessage());
+                CrawJob.resetJob(htmlUrl);
             }
             try {
                 Thread.sleep(retry_time);
@@ -382,8 +398,11 @@ public class LawSpider extends Spider {
                 HtmlAnchor contentAnchor = (HtmlAnchor) clickAnchorNodes.get(i);
                 if (contentAnchor.getAttribute("class").trim().equals("main-ljwenzi")) {
                     count++;
-                    LOGGER.info("当前url[" + categoryName + "][" + page + "][" + count + "]" + this.indexUrl + "/" + contentAnchor.getHrefAttribute());
-                    this.addUrl(this.indexUrl + "/" + contentAnchor.getHrefAttribute());
+                    if(this.addUrl(this.indexUrl + "/" + contentAnchor.getHrefAttribute())){
+                        LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + this.indexUrl + "/" + contentAnchor.getHrefAttribute());
+                    }else {
+                        LOGGER.info("alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + this.indexUrl + "/" + contentAnchor.getHrefAttribute());
+                    }
                 }
                 if (contentAnchor.asText().trim().contains("下一页")) {
                     nextPageAnchor = contentAnchor;

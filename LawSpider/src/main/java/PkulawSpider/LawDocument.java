@@ -24,6 +24,7 @@ public class LawDocument {
     private String cleanHtml;
     private String url;
     private int tiaoNum;
+    private static MongoDB mongoDB = MongoDB.getMongoDB();
 
     public String getCleanHtml() {
         return cleanHtml;
@@ -142,6 +143,9 @@ public class LawDocument {
                 append("article_num", this.getTiaoNum());
 
         return mongoDB.saveLawDocument(document);
+    }
+    public static boolean isExits(String url){
+        return mongoDB.isLawDocumentExits(url);
     }
 
 }

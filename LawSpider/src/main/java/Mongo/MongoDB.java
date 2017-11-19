@@ -11,6 +11,7 @@ import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -91,7 +92,7 @@ public class MongoDB extends DB {
         return true;
     }
 
-    public synchronized List<Document> loadAllCrawJob() {
+    public List<Document> loadAllCrawJob() {
         List<Document> result = Collections.synchronizedList(new LinkedList<>());
         FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("isCraw", false)).sort(new Document("getTime", 1));
         MongoCursor<Document> mongoCursor = findIterable.iterator();
@@ -100,10 +101,32 @@ public class MongoDB extends DB {
         }
         return result;
     }
-    public synchronized boolean updateDocument(Document document, Document updatedocument){
 
-        UpdateResult result = this.crawJobcollection.updateMany(document, updatedocument);
+    public synchronized boolean updateCrawJob(Document oldJob, Document newJob){
+        try {
+            this.crawJobcollection.replaceOne(oldJob, newJob);
+            return true;
+        }catch (Exception e){
+            LOGGER.error("Update craw job error:" + e.getMessage());
+        }
+        return false;
+    }
+    public Document getJobUseUrl(String url){
+        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("url", url));
+        return findIterable.first();
     }
 
+    public Document getCrawJob(){
+        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("isCraw", false)).sort(new Document("getTime", 1));
+        return findIterable.first();
+    }
+
+    public boolean isLawDocumentExits(String url) {
+        FindIterable<Document> findIterable = this.lawcollection.find(new Document("url", url));
+        if (findIterable.first() == null) {
+            return false;
+        }
+        return true;
+    }
 }
 

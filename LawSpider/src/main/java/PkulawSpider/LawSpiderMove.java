@@ -31,6 +31,8 @@ public class LawSpiderMove {
 //        }
         String indexUrl = "http://www.pkulaw.cn";
         LawSpider spider = new LawSpider(indexUrl, 1);
+//        spider.crawHtml("http://www.pkulaw.cn/fulltext_form.aspx?Db=chl&Gid=105c796092fb2031&keyword=&EncodingName=&Search_Mode=accurate&Search_IsTitle=0");
+//        System.out.println(LawDocument.isExits("http://www.pkulaw.cn/fulltext_form.aspx?Db=chl&Gid=7746832c221b9378&keyword=&EncodingName=&Search_Mode=accurate&Search_IsTitle=0"));
         List<String> urlFieldXpath = new ArrayList<String>();
         urlFieldXpath.add("//*[@id=\"0\"]/td");
         urlFieldXpath.add("//*[@id=\"1\"]/td");
