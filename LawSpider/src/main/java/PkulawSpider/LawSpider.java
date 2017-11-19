@@ -2,16 +2,15 @@ package PkulawSpider;
 
 import Interface.Spider;
 import Log.LawLogger;
-import Mongo.MongoDB;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import sun.reflect.generics.tree.Tree;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,7 +23,6 @@ public class LawSpider extends Spider {
     private static final Object signal = new Object();   //线程间通信变量
     private static Logger LOGGER = LawLogger.getLawLogger(LawSpider.class);
     private final int waitToCrawNextHtmlTime = (int) (1000 + Math.random() * 5000);
-    private List<org.bson.Document> urlList;
     private String indexUrl;
     private int crawHtmlthreadCount;
     private int waitCrawHtmlThreadCount;
@@ -46,7 +44,7 @@ public class LawSpider extends Spider {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true){
+                while (true) {
                     if (CrawJob.getCrawJobNum() > 0 && waitCrawHtmlThreadCount > 0) {//如果有等待的线程，则唤醒
                         synchronized (signal) {
                             LOGGER.info("Wake up thread，current waiting thread num:" + (waitCrawHtmlThreadCount - 1));
@@ -104,12 +102,12 @@ public class LawSpider extends Spider {
     }
 
     public void crawHtml(String htmlUrl) {
-        if(LawDocument.isExits(htmlUrl)){
+        if (LawDocument.isExits(htmlUrl)) {
             LOGGER.info("Save document to MongoDB skip: the document already exits....");
-            if (CrawJob.doneJob(htmlUrl)){
-                LOGGER.info("Craw job url["+ htmlUrl+"] done....");
-            }else {
-                LOGGER.info("Craw job url["+ htmlUrl +"] fail....");
+            if (CrawJob.doneJob(htmlUrl)) {
+                LOGGER.info("Craw job url[" + htmlUrl + "] done....");
+            } else {
+                LOGGER.info("Craw job url[" + htmlUrl + "] fail....");
             }
             return;
         }
@@ -145,10 +143,10 @@ public class LawSpider extends Spider {
                 } else {
                     LOGGER.info("Save document to MongoDB skip: the document already exits....");
                 }
-                if (CrawJob.doneJob(htmlUrl)){
-                    LOGGER.info("Craw job url["+ htmlUrl+"] done....");
-                }else {
-                    LOGGER.info("Craw job url["+ htmlUrl +"] fail....");
+                if (CrawJob.doneJob(htmlUrl)) {
+                    LOGGER.info("Craw job url[" + htmlUrl + "] done....");
+                } else {
+                    LOGGER.info("Craw job url[" + htmlUrl + "] fail....");
                 }
             } catch (Exception e) {
                 is_retry = true;
@@ -372,7 +370,6 @@ public class LawSpider extends Spider {
     public void crawUrl(String categoryName, HtmlTableDataCell content) {
         DomNodeList<HtmlElement> clickAnchorNodes = content.getElementsByTagName("a");
         deepCrawContentUrl(categoryName, clickAnchorNodes);
-        LOGGER.info("当前url池中个数:[" + this.urlList.size() + "]");
     }
 
     public HtmlTableDataCell getContentPage(HtmlPage nextClickPage) {
@@ -398,9 +395,9 @@ public class LawSpider extends Spider {
                 HtmlAnchor contentAnchor = (HtmlAnchor) clickAnchorNodes.get(i);
                 if (contentAnchor.getAttribute("class").trim().equals("main-ljwenzi")) {
                     count++;
-                    if(this.addUrl(this.indexUrl + "/" + contentAnchor.getHrefAttribute())){
+                    if (this.addUrl(this.indexUrl + "/" + contentAnchor.getHrefAttribute())) {
                         LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + this.indexUrl + "/" + contentAnchor.getHrefAttribute());
-                    }else {
+                    } else {
                         LOGGER.info("alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + this.indexUrl + "/" + contentAnchor.getHrefAttribute());
                     }
                 }

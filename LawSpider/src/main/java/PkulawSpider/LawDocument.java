@@ -12,6 +12,7 @@ import java.util.List;
  * @Description :
  */
 public class LawDocument {
+    private static MongoDB mongoDB = MongoDB.getMongoDB();
     private String title;
     private String department;
     private String release_data;
@@ -24,7 +25,10 @@ public class LawDocument {
     private String cleanHtml;
     private String url;
     private int tiaoNum;
-    private static MongoDB mongoDB = MongoDB.getMongoDB();
+
+    public static boolean isExits(String url) {
+        return mongoDB.isLawDocumentExits(url);
+    }
 
     public String getCleanHtml() {
         return cleanHtml;
@@ -143,9 +147,6 @@ public class LawDocument {
                 append("article_num", this.getTiaoNum());
 
         return mongoDB.saveLawDocument(document);
-    }
-    public static boolean isExits(String url){
-        return mongoDB.isLawDocumentExits(url);
     }
 
 }
