@@ -1,5 +1,6 @@
-package PkulawSpider;
+package Mongo;
 
+import Mongo.LawArticle;
 import Mongo.MongoDB;
 import org.bson.Document;
 

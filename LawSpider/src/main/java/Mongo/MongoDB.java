@@ -22,7 +22,7 @@ import java.util.*;
 public class MongoDB extends DB {
     private static Logger LOGGER = LawLogger.getLawLogger(MongoDB.class);
     private static MongoDB mongoDB = new MongoDB();
-    private final String CrawJobCollectionName = "crawJob";
+    private final String CrawJobCollectionName = "chinacourt_crawJob";
     private MongoCollection<Document> lawcollection;
     private MongoCollection<Document> crawJobcollection;
 

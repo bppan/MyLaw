@@ -6,7 +6,7 @@ package Interface;
  * @Description :
  */
 public abstract class Spider {
-    public abstract boolean addUrl(String url);
+    public abstract boolean addUrl(String title, String url);
 
     public abstract String getUrl();
 

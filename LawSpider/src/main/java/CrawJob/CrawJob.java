@@ -1,4 +1,4 @@
-package PkulawSpider;
+package CrawJob;
 
 import Log.LawLogger;
 import Mongo.MongoDB;
@@ -21,40 +21,77 @@ public class CrawJob {
     private boolean isCraw;
     private String beginTime;
     private String doneTime;
+    private String comments ;
+    private String title;
 
-    public static synchronized boolean addJob(String url) {
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public static synchronized boolean addJob(String title, String url, String... comments) {
         Document document = new Document("url", url)
+                .append("title",title)
                 .append("getTime", getCurrentTime())
                 .append("isCraw", false)
                 .append("beginTime", "")
                 .append("doneTime", "");
+        if(comments.length != 0){
+            document.append("comments", "Add job:" + comments[0]);
+        }else {
+            document.append("comments", "Add job!");
+        }
         return mongoDB.saveCrawJobDocument(document);
     }
 
-    public static synchronized boolean doneJob(String url) {
+    public static synchronized boolean doneJob(String url, String... comments) {
         Document jobInDB = mongoDB.getJobUseUrl(url);
         if (jobInDB == null) {
             return false;
         }
         Document doneJob = new Document("url", jobInDB.getString("url"))
+                .append("title", jobInDB.getString("title"))
                 .append("getTime", jobInDB.getString("getTime"))
                 .append("isCraw", true)
                 .append("beginTime", jobInDB.getString("beginTime"))
                 .append("doneTime", getCurrentTime());
 
+        if (comments.length != 0){
+            doneJob.append("comments", jobInDB.getString("comments") + "\nDone job:" + comments[0]);
+        }else {
+            doneJob.append("comments", jobInDB.getString("comments") + "\nDone job!");
+        }
         return mongoDB.updateCrawJob(new Document("url", url), doneJob);
     }
 
-    public static synchronized boolean resetJob(String url) {
+    public static synchronized boolean resetJob(String url, String... comments) {
         Document jobInDB = mongoDB.getJobUseUrl(url);
         if (jobInDB == null) {
             return false;
         }
         Document doneJob = new Document("url", jobInDB.getString("url"))
+                .append("title", jobInDB.getString("title"))
                 .append("getTime", getCurrentTime())
                 .append("isCraw", false)
                 .append("beginTime", "")
                 .append("doneTime", "");
+        if (comments.length != 0){
+            doneJob.append("comments", jobInDB.getString("comments") + "\nReset job:" + comments[0]);
+        }else {
+            doneJob.append("comments", jobInDB.getString("comments") + "\nReset job!");
+        }
+
         return mongoDB.updateCrawJob(new Document("url", url), doneJob);
     }
 
@@ -69,10 +106,13 @@ public class CrawJob {
             return "";
         }
         Document doneJob = new Document("url", job.get("url"))
+                .append("title", job.getString("title"))
                 .append("getTime", job.get("getTime"))
                 .append("isCraw", true)
                 .append("beginTime", getCurrentTime())
-                .append("doneTime", job.get("doneTime"));
+                .append("doneTime", job.get("doneTime"))
+                .append("comments", job.getString("comments") + "\nGet job!");
+
         mongoDB.updateCrawJob(job, doneJob);
 
         return job.getString("url");

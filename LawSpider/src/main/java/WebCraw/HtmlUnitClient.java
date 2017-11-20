@@ -1,4 +1,4 @@
-package PkulawSpider;
+package WebCraw;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
