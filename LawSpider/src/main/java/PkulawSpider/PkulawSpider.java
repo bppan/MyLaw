@@ -26,9 +26,8 @@ import java.util.regex.Pattern;
 public class PkulawSpider extends LawSpider {
     private static Logger LOGGER = LawLogger.getLawLogger(PkulawSpider.class);
 
-    public PkulawSpider(String indexUrl, int crawHtmlthreadCount) {
-        super(indexUrl, crawHtmlthreadCount);
-        this.indexUrl = indexUrl;
+    public PkulawSpider(String indexUrl, int crawHtmlthreadCount, String pkulawSpider_crawJobCollection, String pkulawSpider_lawCollection) {
+        super(indexUrl, crawHtmlthreadCount, pkulawSpider_crawJobCollection, pkulawSpider_lawCollection);
     }
 
     public void crawUrl(String categoryName, HtmlElement content) {
@@ -39,7 +38,7 @@ public class PkulawSpider extends LawSpider {
     public HtmlPage getSoureUrlPage(WebClient client, String xpath) {
         HtmlPage page = null;
         try {
-            page = client.getPage(this.indexUrl);
+            page = client.getPage(getIndexUrl());
             //等待5秒后获取页面
             Thread.sleep(3000);
             //获取局部source url
@@ -118,6 +117,7 @@ public class PkulawSpider extends LawSpider {
     public LawDocument parseLawHtml(Document doc) {
         LawDocument lawDocument = new LawDocument();
         try {
+            lawDocument.setRawHtml(doc.html());
             String title = doc.select("#tbl_content_main > tbody > tr:nth-child(1) > td > span > strong").first().childNode(0).toString();
             String regEx_delet = "\\(.*北大法宝.*\\)";//定义空格回车换行符
             Pattern p_delete = Pattern.compile(regEx_delet, Pattern.CASE_INSENSITIVE);
@@ -147,7 +147,6 @@ public class PkulawSpider extends LawSpider {
         }
         try {
             String level = doc.select("#tbl_content_main > tbody > tr:nth-child(5) > td").first().text();
-            ;
             lawDocument.setLevel(level);
         } catch (NullPointerException e) {
             LOGGER.warn("no level of law");
@@ -174,69 +173,10 @@ public class PkulawSpider extends LawSpider {
         try {
             doc.select(".TiaoYinV2").remove();
             String html = doc.select("#div_content").first().html();
-            String regEx_space = "\\s*|\t|\r|\n";//定义空格回车换行符
-            Pattern p_space = Pattern.compile(regEx_space, Pattern.CASE_INSENSITIVE);
-            Matcher m_space = p_space.matcher(html);
-            html = m_space.replaceAll("").replaceAll("　", ""); // 过滤空格回车标签
-            String regEx_html = "<br>|<br />|<br/>|</p>|</div>"; // 定义HTML标签的正则表达式
-            Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
-            Matcher m_html = p_html.matcher(html);
-            html = m_html.replaceAll("\n"); // 过滤html标签
-            String regEx2_html = "<[^>]+>"; // 定义HTML标签的正则表达式
-            Pattern p2_html = Pattern.compile(regEx2_html, Pattern.CASE_INSENSITIVE);
-            Matcher m2_html = p2_html.matcher(html);
-            html = m2_html.replaceAll(""); // 过滤html标签
-            lawDocument.setCleanHtml(html);
-
-            String[] result = html.split("\r|\n");
-            String tiao = "第[一二三四五六七八九十百千万]+条";//定义条数
-            String xiang = "（[一二三四五六七八九十百千万]+）";//定义项数
-            boolean tiao_in = false;
-            String current_kuan = "";
-            List<LawArticle> lawArticleList = new ArrayList<LawArticle>();
-            LawArticle currentLaw = new LawArticle();
-            for (int i = 0; i < result.length; i++) {
-                String par = result[i].trim();
-                if (!par.isEmpty()) {
-                    Pattern regEx_tiao = Pattern.compile(tiao, Pattern.CASE_INSENSITIVE);
-                    Matcher m_tiao = regEx_tiao.matcher(par);
-
-                    Pattern regEx_tiao_xiang = Pattern.compile(xiang, Pattern.CASE_INSENSITIVE);
-                    Matcher m_tiao_xiang = regEx_tiao_xiang.matcher(par);
-
-                    if (m_tiao.find() && m_tiao.start() == 0) {
-                        if (!tiao_in) {
-                            tiao_in = true;
-                        }
-                        if (!current_kuan.isEmpty()) {
-                            currentLaw.getParagraph().add(current_kuan);
-                            lawArticleList.add(currentLaw);
-                        }
-
-                        LawArticle law = new LawArticle();
-                        String name = par.substring(m_tiao.start(), m_tiao.end());
-                        law.setName(name);
-                        current_kuan = par.substring(m_tiao.end(), par.length()).trim();
-                        currentLaw = law;
-                        continue;
-                    }
-
-                    if (m_tiao_xiang.find() && tiao_in && m_tiao_xiang.start() == 0) {
-                        current_kuan += par;
-                        continue;
-                    }
-                    if (tiao_in) {
-                        if (!current_kuan.isEmpty()) {
-                            currentLaw.getParagraph().add(current_kuan);
-                        }
-                        current_kuan = par.trim();
-                    }
-                }
-            }
-            currentLaw.getParagraph().add(current_kuan);
-            lawArticleList.add(currentLaw);
-            lawDocument.setArticle(lawArticleList);
-
+            String cleanHtmlContent = cleanHtml(html);
+            lawDocument.setCleanHtml(cleanHtmlContent);
+            List<LawArticle> articleList = getLawArticleAndParagraph(cleanHtmlContent);
+            lawDocument.setArticle(articleList);
         } catch (Exception e) {
             LOGGER.error("Get article error...");
             LOGGER.error(e);
@@ -257,10 +197,10 @@ public class PkulawSpider extends LawSpider {
                 HtmlAnchor contentAnchor = (HtmlAnchor) currentClickAnchorNodes.get(i);
                 if (contentAnchor.getAttribute("class").trim().equals("main-ljwenzi")) {
                     count++;
-                    if (this.addUrl(categoryName, this.indexUrl + "/" + contentAnchor.getHrefAttribute())) {
-                        LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + this.indexUrl + "/" + contentAnchor.getHrefAttribute());
+                    if (this.addUrl(categoryName, getIndexUrl() + "/" + contentAnchor.getHrefAttribute())) {
+                        LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + getIndexUrl() + "/" + contentAnchor.getHrefAttribute());
                     } else {
-                        LOGGER.info("alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + this.indexUrl + "/" + contentAnchor.getHrefAttribute());
+                        LOGGER.info("alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + getIndexUrl() + "/" + contentAnchor.getHrefAttribute());
                     }
                 }
                 if (contentAnchor.asText().trim().contains("下一页")) {
@@ -297,7 +237,7 @@ public class PkulawSpider extends LawSpider {
                 .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
                 .header("Accept-Encoding", "gzip, deflate")
                 .header("Accept-Language", "zh-CN,zh;q=0.9")
-                .header("Host", this.indexUrl)
+                .header("Host", getIndexUrl())
                 .header("Connection", "keep-alive")
                 .header("Cache-Control", "max-age=0")
                 .header("Referer", htmlUrl)

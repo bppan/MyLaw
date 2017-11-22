@@ -22,9 +22,7 @@ import java.util.*;
 public class MongoDB extends DB {
     private static Logger LOGGER = LawLogger.getLawLogger(MongoDB.class);
     private static MongoDB mongoDB = new MongoDB();
-    private final String CrawJobCollectionName = "chinacourt_crawJob";
-    private MongoCollection<Document> lawcollection;
-    private MongoCollection<Document> crawJobcollection;
+    private MongoDatabase mongoDatabase;
 
     private MongoDB() {
         //初始化mongodb
@@ -39,13 +37,8 @@ public class MongoDB extends DB {
                 // 连接到 mongodb 服务
                 MongoClient mongoClient = new MongoClient(db_host, db_port);
                 // 连接到数据库
-                MongoDatabase mongoDatabase = mongoClient.getDatabase(db_database);
+                mongoDatabase = mongoClient.getDatabase(db_database);
                 LOGGER.info("Connect to mongodb database successfully");
-                if (loadCollection(mongoDatabase, db_collection)) {
-                    LOGGER.info("select all colleciont successfully");
-                } else {
-                    LOGGER.error("select all colleciont failure");
-                }
             } catch (Exception e) {
                 LOGGER.error("Connect to mongodb database Error!");
                 LOGGER.error(e);
@@ -55,46 +48,42 @@ public class MongoDB extends DB {
         }
     }
 
+    public synchronized MongoCollection<Document> getCollection(String collectionName){
+        try {
+            return mongoDB.mongoDatabase.getCollection(collectionName);
+        } catch (Exception e) {
+            LOGGER.error(e);
+            return null;
+        }
+    }
+
     public static MongoDB getMongoDB() {
         return mongoDB;
     }
 
     //保存法律法规文档
-    public synchronized boolean saveLawDocument(Document document) {
-        FindIterable<Document> findIterable = this.lawcollection.find(new Document("url", document.get("url")));
+    public synchronized boolean saveLawDocument(MongoCollection<Document> lawcollection, Document document) {
+        FindIterable<Document> findIterable = lawcollection.find(new Document("url", document.get("url")));
         if (findIterable.first() == null) {
-            this.lawcollection.insertOne(document);
+            lawcollection.insertOne(document);
             return true;
         }
         return false;
     }
 
     //保存爬取任务文档
-    public synchronized boolean saveCrawJobDocument(Document document) {
-        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("url", document.get("url")));
+    public synchronized boolean saveCrawJobDocument(MongoCollection<Document> crawJobcollection, Document document) {
+        FindIterable<Document> findIterable = crawJobcollection.find(new Document("url", document.get("url")));
         if (findIterable.first() == null) {
-            this.crawJobcollection.insertOne(document);
+            crawJobcollection.insertOne(document);
             return true;
         }
         return false;
     }
 
-    private boolean loadCollection(MongoDatabase mongoDatabasem, String db_collection) {
-        try {
-            lawcollection = mongoDatabasem.getCollection(db_collection);
-            LOGGER.info("select " + db_collection + " colleciont successfully");
-            crawJobcollection = mongoDatabasem.getCollection(CrawJobCollectionName);
-            LOGGER.info("select " + CrawJobCollectionName + " colleciont successfully");
-        } catch (Exception e) {
-            LOGGER.error(e);
-            return false;
-        }
-        return true;
-    }
-
-    public List<Document> loadAllCrawJob() {
+    public List<Document> loadAllCrawJob(MongoCollection<Document> collection) {
         List<Document> result = Collections.synchronizedList(new LinkedList<>());
-        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("isCraw", false)).sort(new Document("getTime", 1));
+        FindIterable<Document> findIterable = collection.find(new Document("isCraw", false)).sort(new Document("getTime", 1));
         MongoCursor<Document> mongoCursor = findIterable.iterator();
         while (mongoCursor.hasNext()) {
             result.add(mongoCursor.next());
@@ -102,27 +91,27 @@ public class MongoDB extends DB {
         return result;
     }
 
-    public synchronized boolean updateCrawJob(Document oldJob, Document newJob){
+    public synchronized boolean updateCrawJob(MongoCollection<Document> crawJobcollection, Document oldJob, Document newJob){
         try {
-            this.crawJobcollection.replaceOne(oldJob, newJob);
+            crawJobcollection.replaceOne(oldJob, newJob);
             return true;
         }catch (Exception e){
             LOGGER.error("Update craw job error:" + e.getMessage());
         }
         return false;
     }
-    public Document getJobUseUrl(String url){
-        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("url", url));
+    public Document getJobUseUrl(MongoCollection<Document> crawJobcollection, String url){
+        FindIterable<Document> findIterable = crawJobcollection.find(new Document("url", url));
         return findIterable.first();
     }
 
-    public Document getCrawJob(){
-        FindIterable<Document> findIterable = this.crawJobcollection.find(new Document("isCraw", false)).sort(new Document("getTime", 1));
+    public Document getCrawJob(MongoCollection<Document> crawJobcollection){
+        FindIterable<Document> findIterable = crawJobcollection.find(new Document("isCraw", false)).sort(new Document("getTime", 1));
         return findIterable.first();
     }
 
-    public boolean isLawDocumentExits(String url) {
-        FindIterable<Document> findIterable = this.lawcollection.find(new Document("url", url));
+    public boolean isLawDocumentExits(MongoCollection<Document> lawcollection, String url) {
+        FindIterable<Document> findIterable = lawcollection.find(new Document("url", url));
         if (findIterable.first() == null) {
             return false;
         }
