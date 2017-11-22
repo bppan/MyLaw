@@ -70,34 +70,27 @@ public abstract class LawSpider extends Spider {
     //添加url
     @Override
     public boolean addUrl(String title, String url) {
-        return CrawJob.addJob(getCrawJob().getCrawJobcollection(), title, url);
+        if(CrawJob.addJob(getCrawJob().getCrawJobcollection(), title, url)){
+            //如果有等待的线程，则唤醒
+            if (waitCrawHtmlThreadCount > 0) {
+                synchronized (signal) {
+                    //双重检查
+                    if(waitCrawHtmlThreadCount > 0){
+                        LOGGER.info("Wake up thread，current waiting thread num:" + (waitCrawHtmlThreadCount - 1));
+                        waitCrawHtmlThreadCount--;
+                        signal.notify();
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     //开始爬取
     @Override
     public void doCraw() {
-        //监视数据库获取爬取任务线程
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (CrawJob.getNum(getCrawJob().getCrawJobcollection()) > 0 && waitCrawHtmlThreadCount > 0) {//如果有等待的线程，则唤醒
-                        synchronized (signal) {
-                            LOGGER.info("Wake up thread，current waiting thread num:" + (waitCrawHtmlThreadCount - 1));
-                            waitCrawHtmlThreadCount--;
-                            signal.notify();
-                        }
-                    }
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        LOGGER.error("monitor craw job thread sleep error: " + e.getMessage());
-                    }
-                }
-            }
-        }).start();
-
-        //获取种子url对应的下一个爬取的url线程
+        //爬取页面线程
         for (int i = 0; i < crawHtmlthreadCount; i++) {
             new Thread(new Runnable() {
                 public void run() {
@@ -129,7 +122,7 @@ public abstract class LawSpider extends Spider {
                 }
             }, "Thread-spider-craw-" + i).start();
         }
-
+        //爬取url
         crawManySoureceUrlField();
     }
 
@@ -274,13 +267,12 @@ public abstract class LawSpider extends Spider {
     }
 
     public Document getJsoupConnection(String htmlUrl) throws IOException {
-        Document doc = Jsoup.connect(htmlUrl).get();
-        return doc;
+        return Jsoup.connect(htmlUrl).get();
     }
 
     public abstract void crawUrl(String categoryName, HtmlElement content);
 
-    //爬取特地域的url和抓取特定页面部分
+    //爬取特地域的url
     public abstract void crawOneSoureceUrlField(String xpath);
 
     public abstract HtmlPage getSoureUrlPage(WebClient client, String xpath);
