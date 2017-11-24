@@ -44,7 +44,7 @@ public abstract class LawSpider extends Spider {
 
     //模拟人工翻页等待时间
     public synchronized int getRandomWaitTime(){
-        return (int) (1000 + Math.random() * 6000);
+        return (int) (1000 + Math.random() * 5000);
     }
 
     public LawDocument getLawDocumen() {
