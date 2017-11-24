@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="144484ec-eacf-4846-9224-3f1541ac9bdc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LawSpider/target/classes/WenshuCourtSpider/MainWenshuCourt.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LawSpider/target/classes/WenshuCourtSpider/WenshuCourtSpider.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/MainWenshuCourt.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/Interface/LawSpider$1.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/Interface/LawSpider$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/Interface/LawSpider.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/Interface/LawSpider.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/WenshuCourtSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/WenshuCourtSpider.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -47,11 +54,11 @@
       <file leaf-file-name="WenshuCourtSpider.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/WenshuCourtSpider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="96" column="9" lean-forward="true" selection-start-line="96" selection-start-column="9" selection-end-line="96" selection-end-column="9" />
+            <state relative-caret-position="63">
+              <caret line="81" column="5" lean-forward="true" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#9023#9036#0" expanded="true" />
+                <element signature="e#9613#9626#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -123,23 +130,17 @@
               <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1471#1472#0" expanded="true" />
-                <element signature="e#1529#1530#0" expanded="true" />
-                <element signature="e#1571#1572#0" expanded="true" />
-                <element signature="e#1604#1605#0" expanded="true" />
-                <element signature="e#1659#1660#0" expanded="true" />
-                <element signature="e#1718#1719#0" expanded="true" />
-                <element signature="e#1753#1754#0" expanded="true" />
-                <element signature="e#1783#1784#0" expanded="true" />
-                <element signature="e#1839#1840#0" expanded="true" />
-                <element signature="e#1895#1896#0" expanded="true" />
-                <element signature="e#1930#1931#0" expanded="true" />
-                <element signature="e#1966#1967#0" expanded="true" />
-                <element signature="e#2022#2023#0" expanded="true" />
-                <element signature="e#2064#2065#0" expanded="true" />
-                <marker date="1511509120877" expanded="false" signature="4583:4594" ph=" { " />
-                <marker date="1511509120877" expanded="false" signature="4653:4659" ph=" }" />
-                <marker date="1511509120877" expanded="false" signature="8565:8577" ph="&lt;~&gt;" />
+                <marker date="1511528129396" expanded="true" signature="3580:4541" ph="{...}" />
+                <marker date="1511528129396" expanded="true" signature="3580:4555" ph="{...}" />
+                <marker date="1511528129396" expanded="true" signature="3580:4659" ph="{...}" />
+                <marker date="1511528129396" expanded="false" signature="4701:4712" ph=" { " />
+                <marker date="1511528129396" expanded="false" signature="4771:4777" ph=" }" />
+                <marker date="1511528129396" expanded="true" signature="4820:7236" ph="{...}" />
+                <marker date="1511528129396" expanded="true" signature="7352:7458" ph="{...}" />
+                <marker date="1511528129396" expanded="true" signature="7501:8332" ph="{...}" />
+                <marker date="1511528129396" expanded="true" signature="8406:10450" ph="{...}" />
+                <marker date="1511528129396" expanded="false" signature="8683:8695" ph="&lt;~&gt;" />
+                <marker date="1511528129396" expanded="true" signature="10526:10578" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -242,12 +243,6 @@
         <option name="importAutomatically" value="true" />
       </MavenImportingSettings>
     </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="17" />
-    <option name="y" value="69" />
-    <option name="width" value="1376" />
-    <option name="height" value="726" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -591,16 +586,15 @@
       <workItem from="1510661838486" duration="121483000" />
       <workItem from="1511254923912" duration="17615000" />
       <workItem from="1511342397206" duration="800000" />
-      <workItem from="1511350790619" duration="12805000" />
+      <workItem from="1511350790619" duration="12815000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="173629000" />
+    <option name="totallyTimeSpent" value="173639000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -615,7 +609,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1953125" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1953125" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -1015,23 +1009,17 @@
           <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1471#1472#0" expanded="true" />
-            <element signature="e#1529#1530#0" expanded="true" />
-            <element signature="e#1571#1572#0" expanded="true" />
-            <element signature="e#1604#1605#0" expanded="true" />
-            <element signature="e#1659#1660#0" expanded="true" />
-            <element signature="e#1718#1719#0" expanded="true" />
-            <element signature="e#1753#1754#0" expanded="true" />
-            <element signature="e#1783#1784#0" expanded="true" />
-            <element signature="e#1839#1840#0" expanded="true" />
-            <element signature="e#1895#1896#0" expanded="true" />
-            <element signature="e#1930#1931#0" expanded="true" />
-            <element signature="e#1966#1967#0" expanded="true" />
-            <element signature="e#2022#2023#0" expanded="true" />
-            <element signature="e#2064#2065#0" expanded="true" />
-            <marker date="1511509120877" expanded="false" signature="4583:4594" ph=" { " />
-            <marker date="1511509120877" expanded="false" signature="4653:4659" ph=" }" />
-            <marker date="1511509120877" expanded="false" signature="8565:8577" ph="&lt;~&gt;" />
+            <marker date="1511528129396" expanded="true" signature="3580:4541" ph="{...}" />
+            <marker date="1511528129396" expanded="true" signature="3580:4555" ph="{...}" />
+            <marker date="1511528129396" expanded="true" signature="3580:4659" ph="{...}" />
+            <marker date="1511528129396" expanded="false" signature="4701:4712" ph=" { " />
+            <marker date="1511528129396" expanded="false" signature="4771:4777" ph=" }" />
+            <marker date="1511528129396" expanded="true" signature="4820:7236" ph="{...}" />
+            <marker date="1511528129396" expanded="true" signature="7352:7458" ph="{...}" />
+            <marker date="1511528129396" expanded="true" signature="7501:8332" ph="{...}" />
+            <marker date="1511528129396" expanded="true" signature="8406:10450" ph="{...}" />
+            <marker date="1511528129396" expanded="false" signature="8683:8695" ph="&lt;~&gt;" />
+            <marker date="1511528129396" expanded="true" signature="10526:10578" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1060,11 +1048,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/WenshuCourtSpider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="96" column="9" lean-forward="true" selection-start-line="96" selection-start-column="9" selection-end-line="96" selection-end-column="9" />
+        <state relative-caret-position="63">
+          <caret line="81" column="5" lean-forward="true" selection-start-line="81" selection-start-column="5" selection-end-line="81" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9023#9036#0" expanded="true" />
+            <element signature="e#9613#9626#0" expanded="true" />
           </folding>
         </state>
       </provider>
