@@ -27,7 +27,6 @@ public abstract class LawSpider extends Spider {
 
     private static final Object signal = new Object();   //线程间通信变量
     private static Logger LOGGER = LawLogger.getLawLogger(LawSpider.class); //日志类
-    private final int waitToCrawNextHtmlTime = (int) (1000 + Math.random() * 5000); //模拟翻页等待时间
     protected String indexUrl; //根url
     private int crawHtmlthreadCount; //爬取线程数
     private int waitCrawHtmlThreadCount = 0; //记录等待爬取线程数
@@ -41,6 +40,11 @@ public abstract class LawSpider extends Spider {
         this.indexUrl = indexUrl;
         this.setCrawJob(crawJobCollectionName);
         this.setLawDocumen(lawCollectionName);
+    }
+
+    //模拟人工翻页等待时间
+    public synchronized int getRandomWaitTime(){
+        return (int) (1000 + Math.random() * 5000);
     }
 
     public LawDocument getLawDocumen() {
@@ -102,7 +106,7 @@ public abstract class LawSpider extends Spider {
                             crawHtml(crawUrl);
                             long endTime = System.currentTimeMillis();
                             try {
-                                Thread.sleep(waitToCrawNextHtmlTime);
+                                Thread.sleep(getRandomWaitTime());
                             } catch (InterruptedException e) {
                                 LOGGER.error("WaitToCrawNextHtml thread sleep error: " + e.getMessage());
                             }
