@@ -110,7 +110,7 @@ public class WenshuCourtSpider extends LawSpider {
                 }
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1000, 2000);
             }catch (InterruptedException e){
                 LOGGER.error("sleep thread error: " + e.getMessage());
             }
@@ -122,7 +122,7 @@ public class WenshuCourtSpider extends LawSpider {
                 count = 0;
                 try {
                     HtmlPage nextClickPage = nextPageAnchor.click();
-                    Thread.sleep(3000);
+                    Thread.sleep(3000, 4000);
                     HtmlDivision clickfinshedContent = (HtmlDivision) getContentPage(nextClickPage);
                     if (clickfinshedContent.asXml().trim().equals(clickPageHtml)) {
                         break;
@@ -146,7 +146,7 @@ public class WenshuCourtSpider extends LawSpider {
             try {
                 HtmlAnchor anchor = (HtmlAnchor) anchoresNodes.get(m);
                 HtmlPage clickPage = anchor.click();
-                Thread.sleep(5000);
+                Thread.sleep(getRandomWaitTime(3000, 5000));
                 clickPageCrawUrl(anchor, clickPage);
             } catch (Exception e) {
                 LOGGER.error("Get content error:" + e.getMessage());
@@ -217,7 +217,7 @@ public class WenshuCourtSpider extends LawSpider {
         try {
             page = client.getPage(getIndexUrl());
             //等待5秒后获取页面
-            Thread.sleep(3000);
+            Thread.sleep(getRandomWaitTime(3000, 5000));
         } catch (Exception e) {
             LOGGER.error("Get SoureUrlPage error: " + e.getMessage());
         }

@@ -43,8 +43,12 @@ public abstract class LawSpider extends Spider {
     }
 
     //模拟人工翻页等待时间
-    public synchronized int getRandomWaitTime(){
-        return (int) (1000 + Math.random() * 5000);
+    public synchronized int getRandomWaitTime(int left, int right){
+        if(left <= right){
+            return (int) (left + Math.random() * (right - left));
+        }else {
+            return 0;
+        }
     }
 
     public LawDocument getLawDocumen() {
@@ -106,7 +110,7 @@ public abstract class LawSpider extends Spider {
                             crawHtml(crawUrl);
                             long endTime = System.currentTimeMillis();
                             try {
-                                Thread.sleep(getRandomWaitTime());
+                                Thread.sleep(getRandomWaitTime(2000, 5000));
                             } catch (InterruptedException e) {
                                 LOGGER.error("WaitToCrawNextHtml thread sleep error: " + e.getMessage());
                             }
