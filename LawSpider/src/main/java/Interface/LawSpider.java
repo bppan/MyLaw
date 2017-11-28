@@ -127,7 +127,7 @@ public abstract class LawSpider extends Spider {
             }, "Thread-spider-craw-" + i).start();
         }
         //爬取url
-//        crawManySoureceUrlField();
+        crawManySoureceUrlField();
     }
 
     @Override
