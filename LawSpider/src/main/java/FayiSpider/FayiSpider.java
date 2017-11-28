@@ -186,7 +186,6 @@ public class FayiSpider extends LawSpider {
         }
         try {
             String html = doc.select("#articleContnet").first().html();
-            System.out.println(html);
             String cleanHtmlContent = cleanHtml(html);
             lawDocument.setCleanHtml(cleanHtmlContent);
             List<LawArticle> articleList = getLawArticleAndParagraph(cleanHtmlContent);
