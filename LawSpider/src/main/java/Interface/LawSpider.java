@@ -109,11 +109,6 @@ public abstract class LawSpider extends Spider {
                             long startTime = System.currentTimeMillis();
                             crawHtml(crawUrl);
                             long endTime = System.currentTimeMillis();
-                            try {
-                                Thread.sleep(getRandomWaitTime(2000, 5000));
-                            } catch (InterruptedException e) {
-                                LOGGER.error("WaitToCrawNextHtml thread sleep error: " + e.getMessage());
-                            }
                             LOGGER.info(Thread.currentThread().getName() + " cost time:" + (endTime - startTime) + " craw done...");
                         } else {
                             synchronized (signal) {
@@ -152,12 +147,11 @@ public abstract class LawSpider extends Spider {
         }
 
         int retry_count = 3;//默认重试3次
-        int retry_time = 3000;//每次重试间隔3秒
         int current_retry_count = 0;
         boolean is_retry = false;
         do {
             LOGGER.info("Spider crawing url：" + htmlUrl);
-            if (current_retry_count > retry_count) {
+            if (current_retry_count >= retry_count) {
                 break;
             }
             try {
@@ -187,9 +181,9 @@ public abstract class LawSpider extends Spider {
                 CrawJob.resetJob(getCrawJob().getCrawJobcollection(), htmlUrl, "Jsoup get html error: " + e.getMessage());
             }
             try {
-                Thread.sleep(retry_time);
+                Thread.sleep(getRandomWaitTime(2000, 5000));
             } catch (InterruptedException e) {
-                LOGGER.error("Thread sleep error: " + e.getMessage());
+                LOGGER.error("WaitToCrawNextHtml thread sleep error: " + e.getMessage());
             }
         } while (is_retry);
 
