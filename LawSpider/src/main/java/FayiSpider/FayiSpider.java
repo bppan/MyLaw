@@ -58,11 +58,8 @@ public class FayiSpider extends LawSpider {
 
     public void crawUrl(String categoryName, HtmlPage page) {
         HtmlDivision clickContent = getNextPageContent(page);
-        System.out.println(clickContent.asXml());
         HtmlUnorderedList content = getHtmlContentPage(page);
-        System.out.println(content);
         DomNodeList<HtmlElement> clickAnchorNodes = content.getElementsByTagName("a");
-        System.out.println(clickAnchorNodes.size());
 
         String clickPageHtml = "";
         int count = 0;
@@ -114,12 +111,9 @@ public class FayiSpider extends LawSpider {
         WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
         try {
             HtmlPage page = client.getPage(getIndexUrl());
-            System.out.println(page.asXml());
             //等待5秒后获取页面
             Thread.sleep(3000);
             HtmlElement category = (HtmlElement) page.getByXPath("/html/body/div[4]/div[2]/div[3]/h3/span/em").get(0);
-            System.out.println("==============");
-            System.out.println(category.asText());
             this.crawUrl(category.asText(), page);
         } catch (IOException e) {
             LOGGER.error("Get Html page error:" + e.getMessage());
