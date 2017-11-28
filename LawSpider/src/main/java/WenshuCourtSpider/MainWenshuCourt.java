@@ -22,8 +22,5 @@ public class MainWenshuCourt {
         urlFieldXpath.add("//*[@id=\"container\"]");
         spider.setXpathList(urlFieldXpath);
         spider.doCraw();
-//        WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
-//        spider.getSoureceUrlField(client, "//*[@id=\"nav\"]");
-//        spider.crawOneSoureceUrlField("//*[@id=\"container\"]");
     }
 }
