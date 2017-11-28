@@ -237,7 +237,7 @@ public class PkulawSpider extends LawSpider {
                 .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
                 .header("Accept-Encoding", "gzip, deflate")
                 .header("Accept-Language", "zh-CN,zh;q=0.9")
-                .header("Host", getIndexUrl())
+                .header("Host", "www.pkulaw.cn")
                 .header("Connection", "keep-alive")
                 .header("Cache-Control", "max-age=0")
                 .header("Referer", htmlUrl)
