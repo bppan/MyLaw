@@ -151,7 +151,14 @@ public class ChinacourtSpider extends LawSpider {
     }
 
     @Override
-    public LawDocument parseLawHtml(Document doc) {
+    public LawDocument parseLawHtml(String htmlUrl) {
+        Document doc = null;
+        try {
+            doc = this.getJsoupConnection(htmlUrl);
+        }catch (IOException e){
+            LOGGER.warn("Jsoup get html error"+ e.getMessage());
+        }
+
         LawDocument lawDocument = new LawDocument();
         try {
             lawDocument.setRawHtml(doc.html());
