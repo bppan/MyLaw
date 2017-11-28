@@ -13,7 +13,7 @@ import java.util.List;
  * Modified By:
  */
 public class MainFayiSpider {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         FayiSpider spider = new FayiSpider("http://law.fayi.com.cn", 1, "fayi_crawJob", "fayi_law");
         List<String> urlFieldXpath = new ArrayList<String>();
         urlFieldXpath.add("");
