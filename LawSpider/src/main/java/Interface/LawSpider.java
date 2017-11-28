@@ -4,6 +4,7 @@ import CrawJob.CrawJob;
 import Log.LawLogger;
 import Mongo.LawArticle;
 import Mongo.LawDocument;
+import WebCraw.HtmlUnitClient;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -126,7 +127,7 @@ public abstract class LawSpider extends Spider {
             }, "Thread-spider-craw-" + i).start();
         }
         //爬取url
-        crawManySoureceUrlField();
+//        crawManySoureceUrlField();
     }
 
     @Override
@@ -156,8 +157,7 @@ public abstract class LawSpider extends Spider {
             }
             try {
                 LOGGER.debug("Jsoup get document url: " + htmlUrl);
-                Document doc = this.getJsoupConnection(htmlUrl);
-                LawDocument lawDocument = this.parseLawHtml(doc);
+                LawDocument lawDocument = this.parseLawHtml(htmlUrl);
                 lawDocument.setUrl(htmlUrl);
                 lawDocument.setCollection(getLawDocumen().getLawcollection());
                 String comments = "";
@@ -190,7 +190,7 @@ public abstract class LawSpider extends Spider {
     }
 
     //解析主页
-    public abstract LawDocument parseLawHtml(Document doc);
+    public abstract LawDocument parseLawHtml(String url);
 
     public void crawManySoureceUrlField() {
         for (String xpath : this.xpathList) {
