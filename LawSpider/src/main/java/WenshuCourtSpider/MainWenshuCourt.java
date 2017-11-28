@@ -17,13 +17,13 @@ import java.util.List;
  */
 public class MainWenshuCourt {
     public static void main(String[] args){
-        WenshuCourtSpider spider = new WenshuCourtSpider("http://wenshu.court.gov.cn", 1, "wenshucourt_crawJob", "wenshucourt_law");
-//        List<String> urlFieldXpath = new ArrayList<String>();
-//        urlFieldXpath.add("//*[@id=\"nav\"]");
-//        spider.setXpathList(urlFieldXpath);
-//        spider.doCraw();
+        WenshuCourtSpider spider = new WenshuCourtSpider("http://www.court.gov.cn/wenshu.html", 1, "wenshucourt_crawJob", "wenshucourt_law");
+        List<String> urlFieldXpath = new ArrayList<String>();
+        urlFieldXpath.add("//*[@id=\"container\"]");
+        spider.setXpathList(urlFieldXpath);
+        spider.doCraw();
 //        WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
 //        spider.getSoureceUrlField(client, "//*[@id=\"nav\"]");
-        spider.crawOneSoureceUrlField("//*[@id=\"nav\"]");
+//        spider.crawOneSoureceUrlField("//*[@id=\"container\"]");
     }
 }

@@ -42,8 +42,11 @@ public class WenshuCourtSpider extends LawSpider {
                 .header("Accept-Language", "zh-CN,zh;q=0.9")
                 .header("Host", "wenshu.court.gov.cn")
                 .header("Connection", "keep-alive")
+                .header("Cookie", "COURTID=p9didu5o5g9nncl06uv2p9u4h4; _gscs_125736681=t11844468nu6xjr19|pv:1; _gscbrs_125736681=1; _gscu_125736681=11161573uztglt17; Hm_lvt_9e03c161142422698f5b0d82bf699727=1511161574,1511353052,1511524853,1511840275; Hm_lpvt_9e03c161142422698f5b0d82bf699727=1511845363")
+                .header("Host","www.court.gov.cn")
+                .header("Referer", htmlUrl)
                 .header("Cache-Control", "max-age=0")
-                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36")
                 .timeout(8000)
                 .get();
     }
@@ -52,7 +55,7 @@ public class WenshuCourtSpider extends LawSpider {
     public HtmlElement getContentPage(HtmlPage nextClickPage) {
         HtmlElement content = null;
         try {
-            content = (HtmlElement) nextClickPage.getByXPath("//*[@id=\"resultList\"]").get(0);
+            content = (HtmlElement) nextClickPage.getByXPath("//*[@id=\"container\"]/div/div[3]/div[2]").get(0);
         } catch (Exception e) {
             LOGGER.error("Get content page error: " + e.getMessage());
         }
@@ -62,7 +65,7 @@ public class WenshuCourtSpider extends LawSpider {
     public HtmlElement getNextPageContent(HtmlPage nextClickPage){
         HtmlElement content = null;
         try {
-            content = (HtmlElement) nextClickPage.getByXPath("//*[@id=\"pageNumber\"]").get(0);
+            content = (HtmlElement) nextClickPage.getByXPath("//*[@id=\"container\"]/div/div[3]/div[3]").get(0);
         } catch (Exception e) {
             LOGGER.error("Get content page error: " + e.getMessage());
         }
@@ -82,10 +85,7 @@ public class WenshuCourtSpider extends LawSpider {
     }
 
     public void clickPageCrawUrl(HtmlAnchor anchor, HtmlPage page){
-
         HtmlDivision clickContent = (HtmlDivision) getNextPageContent(page);
-        getNextAnchor(clickContent);
-
         HtmlDivision reulstContent = (HtmlDivision) getContentPage(page);
         String categoryName = anchor.asText();
         String clickPageHtml = "";
@@ -96,23 +96,18 @@ public class WenshuCourtSpider extends LawSpider {
             //遍历当前页
             for (int i = 0; i < resultContentAnchorNodes.size(); i++) {
                 HtmlAnchor contentAnchor = (HtmlAnchor) resultContentAnchorNodes.get(i);
-                if(contentAnchor.getAttribute("style").trim().contains("display:none")){
+                if(contentAnchor.getHrefAttribute().contains("downloadPdf")){
                     continue;
                 }
                 if(contentAnchor.getHrefAttribute().isEmpty()){
                     continue;
                 }
                 count++;
-                if (this.addUrl(categoryName, getIndexUrl() + contentAnchor.getHrefAttribute())) {
-                    LOGGER.info("Sava success url:[" + categoryName + "][" + pagenum + "][" + count + "]" + getIndexUrl() + contentAnchor.getHrefAttribute());
+                if (this.addUrl(categoryName, "http://www.court.gov.cn" + contentAnchor.getHrefAttribute())) {
+                    LOGGER.info("Sava success url:[" + categoryName + "][" + pagenum + "][" + count + "]" + "http://www.court.gov.cn" + contentAnchor.getHrefAttribute());
                 } else {
-                    LOGGER.info("alerady exits url:[" + categoryName + "][" + pagenum + "][" + count + "]" + getIndexUrl() + contentAnchor.getHrefAttribute());
+                    LOGGER.info("alerady exits url:[" + categoryName + "][" + pagenum + "][" + count + "]" + "http://www.court.gov.cn" + contentAnchor.getHrefAttribute());
                 }
-            }
-            try {
-                Thread.sleep(1000, 2000);
-            }catch (InterruptedException e){
-                LOGGER.error("sleep thread error: " + e.getMessage());
             }
             HtmlAnchor nextPageAnchor = getNextAnchor(clickContent);
             if (nextPageAnchor == null) {
@@ -122,7 +117,7 @@ public class WenshuCourtSpider extends LawSpider {
                 count = 0;
                 try {
                     HtmlPage nextClickPage = nextPageAnchor.click();
-                    Thread.sleep(3000, 4000);
+                    Thread.sleep(getRandomWaitTime(2000, 5000));
                     HtmlDivision clickfinshedContent = (HtmlDivision) getContentPage(nextClickPage);
                     if (clickfinshedContent.asXml().trim().equals(clickPageHtml)) {
                         break;
@@ -163,39 +158,19 @@ public class WenshuCourtSpider extends LawSpider {
         LawDocument lawDocument = new LawDocument();
         try {
             lawDocument.setRawHtml(doc.html());
-            Element head = doc.select("body > div.container > div > div.law_content > span").first();
-            if (head == null) {
-                LOGGER.warn("No head of content");
-            } else {
-                for (Node node : head.childNodes()) {
-                    String headContent = node.toString().trim().replace("&nbsp;", "");
-                    if (headContent.contains("发布单位")) {
-                        lawDocument.setDepartment(headContent.replace("【发布单位】", ""));
-                    }
-                    if (headContent.contains("发布日期")) {
-                        lawDocument.setRelease_data(headContent.replace("【发布日期】", ""));
-                    }
-                    if (headContent.contains("生效日期")) {
-                        lawDocument.setImplement_date(headContent.replace("【生效日期】", ""));
-                    }
-                    if (headContent.contains("失效日期")) {
-                        lawDocument.setTimeless(headContent.replace("【失效日期】", ""));
-                    }
-                    if (headContent.contains("所属类别")) {
-                        lawDocument.setCategory(headContent.replace("【所属类别】", ""));
-                    }
-                    if (headContent.contains("发布文号")) {
-                        lawDocument.setRelease_number(headContent.replace("【发布文号】", ""));
-                    }
-                }
+            try {
+                String title = doc.select("#container > div > div > div.clearfix.detail_mes > ul > li.fl.print").first().childNode(0).toString();
+                lawDocument.setRelease_data(title.trim().replace("&nbsp;", ""));
+            } catch (NullPointerException e) {
+                LOGGER.warn("No release_data of content");
             }
             try {
-                String title = doc.select("body > div.container > div > div.law_content > div > p:nth-child(1) > strong").first().childNode(0).toString();
+                String title = doc.select("#container > div > div > div.title").first().childNode(0).toString();
                 lawDocument.setTitle(title.trim().replace("&nbsp;", ""));
             } catch (NullPointerException e) {
                 LOGGER.warn("No tile of content");
             }
-            String html = doc.select("body > div.container > div > div.law_content").first().html().replaceAll("&nbsp;", "");
+            String html = doc.select("#zoom").first().html().replaceAll("&nbsp;", "");
             String cleanContent = cleanHtml(html);
             lawDocument.setCleanHtml(cleanContent);
             List<LawArticle> articleList = getLawArticleAndParagraph(cleanContent);
@@ -203,7 +178,6 @@ public class WenshuCourtSpider extends LawSpider {
         } catch (Exception e) {
             LOGGER.error("parse Html error:" + e.getMessage());
         }
-
         return lawDocument;
     }
 
@@ -228,12 +202,18 @@ public class WenshuCourtSpider extends LawSpider {
     public List<HtmlElement> getSoureceUrlField(WebClient client, String xpath) {
         List<HtmlElement> anchorsList = new ArrayList<HtmlElement>();
         HtmlPage page = getSoureUrlPage(client, xpath);
+        System.out.println(page.asXml());
         //获取局部source url
-        HtmlDivision sourceFiled = (HtmlDivision) page.getByXPath(xpath).get(0);
+        HtmlDivision sourceFiled = (HtmlDivision) page.getByXPath(xpath).get(1);
+        System.out.println(sourceFiled.asXml());
         DomNodeList<HtmlElement> anchoresNodes = sourceFiled.getElementsByTagName("a");
+        System.out.println(anchoresNodes.size());
         //去除页面上不需要的anchor
         for (int i = 0; i < anchoresNodes.size(); i++) {
             HtmlAnchor tempAnchor = (HtmlAnchor) anchoresNodes.get(i);
+            if(tempAnchor.asText().trim().equals("裁判文书")){
+                anchorsList.add(tempAnchor);
+            }
             if(tempAnchor.asText().trim().equals("刑事案件")){
                 anchorsList.add(tempAnchor);
             }
