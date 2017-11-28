@@ -7,8 +7,6 @@ import Mongo.LawDocument;
 import WebCraw.HtmlUnitClient;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
-import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLCollection;
-import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLUListElement;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,10 +14,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Description：
@@ -39,19 +34,19 @@ public class FayiSpider extends LawSpider {
     public void crawUrl(String categoryName, HtmlElement content) {
     }
 
-    public HtmlAnchor getNextAnchor(HtmlDivision content){
+    public HtmlAnchor getNextAnchor(HtmlDivision content) {
         DomNodeList<HtmlElement> currentClickAnchorNodes = content.getElementsByTagName("a");
         System.out.println(currentClickAnchorNodes.size());
-        for (int i = 0; i < currentClickAnchorNodes.size(); i++){
+        for (int i = 0; i < currentClickAnchorNodes.size(); i++) {
             HtmlAnchor contentAnchor = (HtmlAnchor) currentClickAnchorNodes.get(i);
-            if(contentAnchor.asText().trim().equals("下一页")){
+            if (contentAnchor.asText().trim().equals("下一页")) {
                 return contentAnchor;
             }
         }
         return null;
     }
 
-    public HtmlDivision getNextPageContent(HtmlPage nextClickPage){
+    public HtmlDivision getNextPageContent(HtmlPage nextClickPage) {
         HtmlDivision content = null;
         try {
             content = (HtmlDivision) nextClickPage.getByXPath("/html/body/div[4]/div[2]/div[3]/div[2]").get(0);
@@ -76,7 +71,7 @@ public class FayiSpider extends LawSpider {
             //遍历当前页
             for (int i = 0; i < clickAnchorNodes.size(); i++) {
                 HtmlAnchor contentAnchor = (HtmlAnchor) clickAnchorNodes.get(i);
-                if(contentAnchor.getHrefAttribute().isEmpty()){
+                if (contentAnchor.getHrefAttribute().isEmpty()) {
                     continue;
                 }
                 count++;
@@ -96,9 +91,9 @@ public class FayiSpider extends LawSpider {
                     HtmlPage nextClickPage = nextPageAnchor.click();
                     Thread.sleep(getRandomWaitTime(2000, 5000));
                     HtmlUnorderedList clickfinshedContent = getHtmlContentPage(nextClickPage);
-                    if(clickfinshedContent.asText().equals(clickPageHtml)){
+                    if (clickfinshedContent.asText().equals(clickPageHtml)) {
                         break;
-                    }else {
+                    } else {
                         clickPageHtml = clickfinshedContent.asText();
                     }
 
@@ -110,6 +105,7 @@ public class FayiSpider extends LawSpider {
             }
         } while (true);
     }
+
     public HtmlPage getSoureUrlPage(WebClient client, String xpath) {
         return null;
     }
@@ -121,14 +117,14 @@ public class FayiSpider extends LawSpider {
             System.out.println(page.asXml());
             //等待5秒后获取页面
             Thread.sleep(3000);
-            HtmlElement category = (HtmlElement)page.getByXPath("/html/body/div[4]/div[2]/div[3]/h3/span/em").get(0);
+            HtmlElement category = (HtmlElement) page.getByXPath("/html/body/div[4]/div[2]/div[3]/h3/span/em").get(0);
             System.out.println("==============");
             System.out.println(category.asText());
             this.crawUrl(category.asText(), page);
-        }catch (IOException e){
-            LOGGER.error("Get Html page error:"+e.getMessage());
-        }catch (InterruptedException e){
-            LOGGER.error("Sleep thread error:"+e.getMessage());
+        } catch (IOException e) {
+            LOGGER.error("Get Html page error:" + e.getMessage());
+        } catch (InterruptedException e) {
+            LOGGER.error("Sleep thread error:" + e.getMessage());
         }
 
     }
@@ -159,8 +155,8 @@ public class FayiSpider extends LawSpider {
         Document doc = null;
         try {
             doc = this.getJsoupConnection(htmlUrl);
-        }catch (IOException e){
-            LOGGER.error("Jsoup parse html error"+ e.getMessage());
+        } catch (IOException e) {
+            LOGGER.error("Jsoup parse html error" + e.getMessage());
         }
         LawDocument lawDocument = new LawDocument();
         try {
@@ -177,19 +173,19 @@ public class FayiSpider extends LawSpider {
         Elements elements = doc.select("#fontzoom > p.bh");
         for (Element ele : elements) {
             String tag = ele.childNode(0).childNode(0).toString();
-            if(tag.trim().equals("发文单位")){
+            if (tag.trim().equals("发文单位")) {
                 String content = ele.childNode(1).toString().replace("：", "");
                 lawDocument.setDepartment(content);
             }
-            if(tag.trim().equals("发布日期")){
+            if (tag.trim().equals("发布日期")) {
                 String content = ele.childNode(1).toString().replace("：", "");
                 lawDocument.setRelease_data(content);
             }
-            if(tag.trim().equals("执行日期")){
+            if (tag.trim().equals("执行日期")) {
                 String content = ele.childNode(1).toString().replace("：", "");
                 lawDocument.setImplement_date(content);
             }
-            if(tag.trim().equals("文　　号")){
+            if (tag.trim().equals("文　　号")) {
                 String content = ele.childNode(1).toString().replace("：", "");
                 lawDocument.setRelease_number(content);
             }
