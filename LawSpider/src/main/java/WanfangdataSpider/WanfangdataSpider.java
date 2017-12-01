@@ -57,7 +57,6 @@ public class WanfangdataSpider extends LawSpider {
                 Thread.sleep(3000);
                 HtmlDivision content = getContentPage(clickPage);
                 this.crawUrl(anchor.asText(), content);
-                break;
             } catch (Exception e) {
                 LOGGER.error("Get content error:" + e.getMessage());
             }
