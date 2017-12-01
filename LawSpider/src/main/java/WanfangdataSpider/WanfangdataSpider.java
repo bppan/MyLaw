@@ -152,33 +152,37 @@ public class WanfangdataSpider extends LawSpider {
         }
         List<Node> nodes = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div").first().childNodes();
         for (Node node:nodes) {
-            String name = node.childNode(0).toString();
+            if(node.childNodes().size() != 5){
+                System.out.println("skip");
+                continue;
+            }
+            String name = node.childNode(1).toString();
             if(name.contains("发文文号")){
-                String release_number = node.childNode(1).toString();
+                String release_number = node.childNode(3).childNode(0).toString();
                 lawDocument.setRelease_number(release_number);
             }
             if (name.contains("颁布部门")){
-                String department = node.childNode(1).toString();
+                String department = node.childNode(3).childNode(0).toString();
                 lawDocument.setDepartment(department);
             }
             if (name.contains("效力级别")){
-                String level = node.childNode(1).toString();
+                String level = node.childNode(3).childNode(0).toString();
                 lawDocument.setLevel(level);
             }
             if (name.contains("时效性")){
-                String timeless = node.childNode(1).toString();
+                String timeless = node.childNode(3).childNode(0).toString();
                 lawDocument.setTimeless(timeless);
             }
             if (name.contains("颁布日期")){
-                String release_data = node.childNode(1).toString();
+                String release_data = node.childNode(3).childNode(0).toString();
                 lawDocument.setRelease_data(release_data);
             }
             if (name.contains("实施日期")){
-                String implement_data = node.childNode(1).toString();
+                String implement_data = node.childNode(3).childNode(0).toString();
                 lawDocument.setImplement_date(implement_data);
             }
             if (name.contains("内容分类")){
-                String category = node.childNode(1).toString();
+                String category = node.childNode(3).childNode(0).toString();
                 lawDocument.setCategory(category);
             }
         }
