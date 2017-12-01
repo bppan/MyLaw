@@ -26,7 +26,6 @@ public class HtmlUnitClient {
         webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         webClient.getOptions().setThrowExceptionOnScriptError(false); // js运行错误时，是否抛出异常
         webClient.getOptions().setTimeout(50000); // 设置连接超时时间 ，这里是50S。如果为0，则无限期等待
-
         System.out.println("load htmlUnitClient success...");
     }
 
