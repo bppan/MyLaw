@@ -197,7 +197,7 @@ public class WanfangdataSpider extends LawSpider {
     }
 
     public void extratHtmlAndSave(String url, HtmlPage page, LawDocument document) {
-        document.setUrl(page.getBaseURI());
+        document.setUrl(url);
         document.setRawHtml(page.asXml());
         String html = page.asXml();
         String cleanContent = cleanHtml(html);
@@ -240,12 +240,12 @@ public class WanfangdataSpider extends LawSpider {
                         if (allContent != null) {
                             HtmlPage page1 = allContent.click();
                             Thread.sleep(3000);
-                            if (this.addUrl(categoryName, page1.getBaseURI())) {
-                                LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + allContent.getHrefAttribute());
+                            if (this.addUrl(categoryName, page1.getBaseURL().toString())) {
+                                LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + page1.getBaseURL().toString());
                             } else {
-                                LOGGER.info("Alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + allContent.getHrefAttribute());
+                                LOGGER.info("Alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + page1.getBaseURL().toString());
                             }
-                            extratHtmlAndSave(page1.getBaseURI(), page1, document);
+                            extratHtmlAndSave(page1.getBaseURL().toString(), page1, document);
                         }
                     } catch (Exception e) {
                         LOGGER.error("Click content anchor error:" + e.getMessage());
