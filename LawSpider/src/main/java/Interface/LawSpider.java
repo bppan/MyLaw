@@ -127,7 +127,7 @@ public abstract class LawSpider extends Spider {
             }, "Thread-spider-craw-" + i).start();
         }
         //爬取url
-//        crawManySoureceUrlField();
+        crawManySoureceUrlField();
     }
 
     @Override
@@ -219,7 +219,7 @@ public abstract class LawSpider extends Spider {
 
     public List<LawArticle> getLawArticleAndParagraph(String cleanHtml) {
         String[] result = cleanHtml.split("\r|\n");
-        String tiao = "第[零一二三四五六七八九十百千万]+条";//定义条数
+        String tiao = "第[一二三四五六七八九十百千万]+条";//定义条数
         String xiang = "（[一二三四五六七八九十百千万]+）";//定义项数
         boolean tiao_in = false;
         String current_kuan = "";

@@ -11,6 +11,7 @@ import com.gargoylesoftware.htmlunit.html.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,6 @@ public class WanfangdataSpider extends LawSpider {
                 Thread.sleep(3000);
                 HtmlDivision content = getContentPage(clickPage);
                 this.crawUrl(anchor.asText(), content);
-                break;
             } catch (Exception e) {
                 LOGGER.error("Get content error:" + e.getMessage());
             }
@@ -144,60 +144,53 @@ public class WanfangdataSpider extends LawSpider {
             LOGGER.warn("Jsoup get html error:" + e.getMessage());
         }
         LawDocument lawDocument = new LawDocument();
-        lawDocument.setRawHtml(page.asXml());
         try {
             String title = doc.select("body > div.fixed-width.baseinfo.clear > div > h1").first().childNode(0).toString();
             lawDocument.setTitle(title.trim());
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             LOGGER.warn("No tile of content");
         }
-        try {
-            String release_number = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div > div:nth-child(2) > span.text").first().childNode(0).toString();
-            lawDocument.setRelease_number(release_number);
-        } catch (NullPointerException e) {
-            LOGGER.warn("No release_number of content");
-        }
-        try {
-            String department = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div > div:nth-child(3) > span.text").first().childNode(0).toString();
-            lawDocument.setDepartment(department);
-        } catch (NullPointerException e) {
-            LOGGER.warn("No department of content");
-        }
-        try {
-            String level = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div > div:nth-child(4) > span.text").first().childNode(0).toString();
-            lawDocument.setLevel(level);
-        } catch (NullPointerException e) {
-            LOGGER.warn("No level of content");
-        }
-        try {
-            String timeless = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div > div:nth-child(5) > span.text").first().childNode(0).toString();
-            lawDocument.setTimeless(timeless);
-        } catch (NullPointerException e) {
-            LOGGER.warn("No level of content");
-        }
-        try {
-            String release_data = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div > div:nth-child(6) > span.text").first().childNode(0).toString();
-            lawDocument.setRelease_data(release_data);
-        } catch (NullPointerException e) {
-            LOGGER.warn("No release_data of content");
-        }
-        try {
-            String implement_data = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div > div:nth-child(7) > span.text").first().childNode(0).toString();
-            lawDocument.setImplement_date(implement_data);
-        } catch (NullPointerException e) {
-            LOGGER.warn("No release_data of content");
-        }
-        try {
-            String category = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div > div:nth-child(8) > span.text").first().childNode(0).toString();
-            lawDocument.setCategory(category);
-        } catch (NullPointerException e) {
-            LOGGER.warn("No category of content");
+        List<Node> nodes = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div").first().childNodes();
+        for (Node node:nodes) {
+            if(node.childNodes().size() != 5){
+                System.out.println("skip");
+                continue;
+            }
+            String name = node.childNode(1).toString();
+            if(name.contains("发文文号")){
+                String release_number = node.childNode(3).childNode(0).toString();
+                lawDocument.setRelease_number(release_number);
+            }
+            if (name.contains("颁布部门")){
+                String department = node.childNode(3).childNode(0).toString();
+                lawDocument.setDepartment(department);
+            }
+            if (name.contains("效力级别")){
+                String level = node.childNode(3).childNode(0).toString();
+                lawDocument.setLevel(level);
+            }
+            if (name.contains("时效性")){
+                String timeless = node.childNode(3).childNode(0).toString();
+                lawDocument.setTimeless(timeless);
+            }
+            if (name.contains("颁布日期")){
+                String release_data = node.childNode(3).childNode(0).toString();
+                lawDocument.setRelease_data(release_data);
+            }
+            if (name.contains("实施日期")){
+                String implement_data = node.childNode(3).childNode(0).toString();
+                lawDocument.setImplement_date(implement_data);
+            }
+            if (name.contains("内容分类")){
+                String category = node.childNode(3).childNode(0).toString();
+                lawDocument.setCategory(category);
+            }
         }
         return lawDocument;
     }
 
     public void extratHtmlAndSave(String url, HtmlPage page, LawDocument document) {
-        document.setUrl(page.getBaseURI());
+        document.setUrl(url);
         document.setRawHtml(page.asXml());
         String html = page.asXml();
         String cleanContent = cleanHtml(html);
@@ -240,12 +233,12 @@ public class WanfangdataSpider extends LawSpider {
                         if (allContent != null) {
                             HtmlPage page1 = allContent.click();
                             Thread.sleep(3000);
-                            if (this.addUrl(categoryName, page1.getBaseURI())) {
-                                LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + allContent.getHrefAttribute());
+                            if (this.addUrl(categoryName, page1.getBaseURL().toString())) {
+                                LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + page1.getBaseURL().toString());
                             } else {
-                                LOGGER.info("Alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + allContent.getHrefAttribute());
+                                LOGGER.info("Alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + page1.getBaseURL().toString());
                             }
-                            extratHtmlAndSave(page1.getBaseURI(), page1, document);
+                            extratHtmlAndSave(page1.getBaseURL().toString(), page1, document);
                         }
                     } catch (Exception e) {
                         LOGGER.error("Click content anchor error:" + e.getMessage());
