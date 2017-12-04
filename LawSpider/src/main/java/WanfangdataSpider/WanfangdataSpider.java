@@ -13,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,14 +92,43 @@ public class WanfangdataSpider extends LawSpider {
                 anchorsList.add(tempAnchor);
             }
         } catch (InterruptedException e) {
-            LOGGER.error("get sourece filed url InterruptedException: " + e.getMessage());
+            LOGGER.error("get source filed url InterruptedException: " + e.getMessage());
         }
         return anchorsList;
     }
 
     //从获取主页上分类的url
     public LawDocument parseLawHtml(String htmlUrl) {
-        return null;
+        WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
+        HtmlPage page = null;
+        try {
+            page = client.getPage(htmlUrl);
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            LOGGER.error("Get SoureUrlPage error: " + e.getMessage());
+        }
+        LawDocument doc = parseLawHtmlGetDocument(page);
+        HtmlAnchor contentAnchor = null;
+        try {
+            contentAnchor = (HtmlAnchor) page.getByXPath("/html/body/div[3]/div/div[1]/a[2]").get(0);
+        }catch (NullPointerException e){
+            LOGGER.error("Not find content anchor");
+        }
+        if (contentAnchor != null) {
+            try {
+                HtmlPage contentPage = contentAnchor.click();
+                Thread.sleep(2000);
+                String html = contentPage.asXml();
+                doc.setRawHtml(html);
+                String cleanContent = cleanHtml(html);
+                doc.setCleanHtml(cleanContent);
+                List<LawArticle> articleList = getLawArticleAndParagraph(cleanContent);
+                doc.setArticle(articleList);
+            } catch (Exception e) {
+                LOGGER.error("pase html content error: " + e.getMessage());
+            }
+        }
+        return doc;
     }
 
     private boolean isPageNum(String num) {
@@ -136,7 +166,7 @@ public class WanfangdataSpider extends LawSpider {
         return false;
     }
 
-    public LawDocument parseLawHtml(HtmlPage page) {
+    public LawDocument parseLawHtmlGetDocument(HtmlPage page) {
         Document doc = null;
         try {
             doc = Jsoup.parse(page.asXml());
@@ -189,30 +219,6 @@ public class WanfangdataSpider extends LawSpider {
         return lawDocument;
     }
 
-    public void extratHtmlAndSave(String url, HtmlPage page, LawDocument document) {
-        document.setUrl(url);
-        document.setRawHtml(page.asXml());
-        String html = page.asXml();
-        String cleanContent = cleanHtml(html);
-        document.setCleanHtml(cleanContent);
-        List<LawArticle> articleList = getLawArticleAndParagraph(cleanContent);
-        document.setArticle(articleList);
-        document.setCollection(getLawDocumen().getLawcollection());
-        String comments = "";
-        if (LawDocument.saveToDB(document)) {
-            comments = "Save document to MongoDB success....";
-
-        } else {
-            comments = "Save document to MongoDB skip: the document already exits....";
-        }
-        LOGGER.info(comments);
-        if (CrawJob.doneJob(getCrawJob().getCrawJobcollection(), url, comments)) {
-            LOGGER.info("Craw job url[" + url + "] done....");
-        } else {
-            LOGGER.info("Craw job url[" + url + "] fail....");
-        }
-    }
-
     public void deepCrawContentUrl(String categoryName, DomNodeList<HtmlElement> clickAnchorNodes) {
         String clickPageHtml = "";
         DomNodeList<HtmlElement> currentClickAnchorNodes = clickAnchorNodes;
@@ -223,25 +229,12 @@ public class WanfangdataSpider extends LawSpider {
             HtmlAnchor nextPageAnchor = null;
             for (int i = 0; i < currentClickAnchorNodes.size(); i++) {
                 HtmlAnchor contentAnchor = (HtmlAnchor) currentClickAnchorNodes.get(i);
-                if (!isPageNext(contentAnchor.asText())) {
+                if (!isPageNext(contentAnchor.asText()) && contentAnchor.getAttribute("class").trim().equals("title")) {
                     count++;
-                    try {
-                        HtmlPage lawContent = contentAnchor.click();
-                        Thread.sleep(2000);
-                        LawDocument document = parseLawHtml(lawContent);
-                        HtmlAnchor allContent = (HtmlAnchor) lawContent.getByXPath("/html/body/div[3]/div/div[1]/a[2]").get(0);
-                        if (allContent != null) {
-                            HtmlPage page1 = allContent.click();
-                            Thread.sleep(3000);
-                            if (this.addUrl(categoryName, page1.getBaseURL().toString())) {
-                                LOGGER.info("Sava success url:[" + categoryName + "][" + page + "][" + count + "]" + page1.getBaseURL().toString());
-                            } else {
-                                LOGGER.info("Alerady exits url:[" + categoryName + "][" + page + "][" + count + "]" + page1.getBaseURL().toString());
-                            }
-                            extratHtmlAndSave(page1.getBaseURL().toString(), page1, document);
-                        }
-                    } catch (Exception e) {
-                        LOGGER.error("Click content anchor error:" + e.getMessage());
+                    if (this.addUrl(categoryName, contentAnchor.getHrefAttribute())) {
+                        LOGGER.info("Save success url:[" + categoryName + "][" + page + "][" + count + "]" + contentAnchor.getHrefAttribute());
+                    } else {
+                        LOGGER.info("Already exists url:[" + categoryName + "][" + page + "][" + count + "]" + contentAnchor.getHrefAttribute());
                     }
                 }
                 if (contentAnchor.asText().trim().contains("下一页>>")) {
