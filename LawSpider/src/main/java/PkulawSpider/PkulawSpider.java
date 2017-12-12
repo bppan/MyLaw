@@ -247,9 +247,9 @@ public class PkulawSpider extends LawSpider {
                 .header("Connection", "keep-alive")
                 .header("Cache-Control", "max-age=0")
                 .header("Referer", htmlUrl)
-                .header("Cookie", "ASP.NET_SessionId=xj3z4sf5qzljnxibhdce3sim; bdyh_record=1970324846989066%2C1970324846989064%2C1970324845702078%2C1970324845892060%2C1970324845892065%2C1970324845702079%2C1970324846989065%2C1970324846989063%2C; CheckIPAuto=0; CheckIPDate=2017-11-15 21:44:03; xj3z4sf5qzljnxibhdce3sim3isIPlogin=1; click0=2017/11/14 22:51:31; click1=2017/11/14 22:51:31; click2=2017/11/15 21:45:18; click3=2017/11/15 22:10:44; Hm_lvt_58c470ff9657d300e66c7f33590e53a8=1510045402,1510119472,1510301767; Hm_lpvt_58c470ff9657d300e66c7f33590e53a8=1510755043; CookieId=xj3z4sf5qzljnxibhdce3sim; User_User=%d6%d0%b9%fa%c8%cb%c3%f1%b4%f3%d1%a7; FWinCookie=1")
+                .header("Cookie", "FWinCookie=1; ASP.NET_SessionId=0tde12rd4sbyxyxjr2w5x235; Hm_lvt_58c470ff9657d300e66c7f33590e53a8=1512709873,1512714972,1512809279,1512918694; CookieId=0tde12rd4sbyxyxjr2w5x235; CheckIPAuto=0; CheckIPDate=2017-12-10 22:57:56; 0tde12rd4sbyxyxjr2w5x2353isIPlogin=1; User_User=%d6%d0%b9%fa%c8%cb%c3%f1%b4%f3%d1%a7; Hm_lpvt_58c470ff9657d300e66c7f33590e53a8=1512918738")
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36")
-                .timeout(50000)
+                .timeout(3000)
                 .get();
         return doc;
     }

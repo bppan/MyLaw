@@ -127,7 +127,7 @@ public abstract class LawSpider extends Spider {
             }, "Thread-spider-craw-" + i).start();
         }
         //爬取url
-        crawManySoureceUrlField();
+//        crawManySoureceUrlField();
     }
 
     @Override
@@ -147,7 +147,7 @@ public abstract class LawSpider extends Spider {
             return;
         }
 
-        int retry_count = 3;//默认重试3次
+        int retry_count = 2;//默认重试3次
         int current_retry_count = 0;
         boolean is_retry = false;
         do {
@@ -179,11 +179,11 @@ public abstract class LawSpider extends Spider {
                 current_retry_count++;
                 LOGGER.error("Jsoup get html err: " + e.getMessage());
                 CrawJob.resetJob(getCrawJob().getCrawJobcollection(), htmlUrl, "Jsoup get html error: " + e.getMessage());
-            }
-            try {
-                Thread.sleep(getRandomWaitTime(2000, 5000));
-            } catch (InterruptedException e) {
-                LOGGER.error("WaitToCrawNextHtml thread sleep error: " + e.getMessage());
+                try {
+                    Thread.sleep(getRandomWaitTime(1000, 3000));
+                } catch (InterruptedException intere) {
+                    LOGGER.error("WaitToCrawNextHtml thread sleep error: " + intere.getMessage());
+                }
             }
         } while (is_retry);
 
@@ -205,7 +205,7 @@ public abstract class LawSpider extends Spider {
         Matcher m_space = p_space.matcher(result);
         result = m_space.replaceAll("").replaceAll("　", ""); // 过滤空格回车标签
 
-        String regEx_html = "<br>|<br />|<br/>|</p>|</div>"; // 定义HTML标签的正则表达式
+        String regEx_html = "<br>|<br />|<br/>|</p>|</div>|</li>"; // 定义HTML标签的正则表达式
         Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
         Matcher m_html = p_html.matcher(result);
         result = m_html.replaceAll("\n"); // 过滤html标签

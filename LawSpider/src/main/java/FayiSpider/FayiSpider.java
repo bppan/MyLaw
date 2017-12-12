@@ -7,6 +7,7 @@ import Mongo.LawDocument;
 import WebCraw.HtmlUnitClient;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
+import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLDivElement;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 public class FayiSpider extends LawSpider {
     private static Logger LOGGER = LawLogger.getLawLogger(FayiSpider.class);
+    private static WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
 
     public FayiSpider(String indexUrl, int crawHtmlthreadCount, String pkulawSpider_crawJobCollection, String pkulawSpider_lawCollection) {
         super(indexUrl, crawHtmlthreadCount, pkulawSpider_crawJobCollection, pkulawSpider_lawCollection);
@@ -86,7 +88,7 @@ public class FayiSpider extends LawSpider {
                 count = 0;
                 try {
                     HtmlPage nextClickPage = nextPageAnchor.click();
-                    Thread.sleep(getRandomWaitTime(2000, 5000));
+                    Thread.sleep(getRandomWaitTime(1500, 2000));
                     HtmlUnorderedList clickfinshedContent = getHtmlContentPage(nextClickPage);
                     if (clickfinshedContent.asText().equals(clickPageHtml)) {
                         break;
@@ -145,7 +147,7 @@ public class FayiSpider extends LawSpider {
     }
 
     //从获取主页上分类的url
-    public LawDocument parseLawHtml(String htmlUrl) {
+    public LawDocument parseLawHtml(String htmlUrl) throws NullPointerException{
         Document doc = null;
         try {
             doc = this.getJsoupConnection(htmlUrl);
@@ -162,31 +164,38 @@ public class FayiSpider extends LawSpider {
             String title = doc.select("body > div.wrapper.mtop10 > div.content > div.article.mtop10 > div.article_content > h1 > span > font").first().childNode(0).toString();
             lawDocument.setTitle(title);
         } catch (NullPointerException e) {
-            LOGGER.warn("no title of law");
+            throw new NullPointerException("no title of law");
         }
         Elements elements = doc.select("#fontzoom > p.bh");
         for (Element ele : elements) {
-            String tag = ele.childNode(0).childNode(0).toString();
-            if (tag.trim().equals("发文单位")) {
-                String content = ele.childNode(1).toString().replace("：", "");
-                lawDocument.setDepartment(content);
-            }
-            if (tag.trim().equals("发布日期")) {
-                String content = ele.childNode(1).toString().replace("：", "");
-                lawDocument.setRelease_data(content);
-            }
-            if (tag.trim().equals("执行日期")) {
-                String content = ele.childNode(1).toString().replace("：", "");
-                lawDocument.setImplement_date(content);
-            }
-            if (tag.trim().equals("文　　号")) {
-                String content = ele.childNode(1).toString().replace("：", "");
-                lawDocument.setRelease_number(content);
+            try {
+                String tag = ele.childNode(0).childNode(0).toString();
+                if (tag.trim().equals("发文单位")) {
+                    String content = ele.childNode(1).toString().replace("：", "");
+                    lawDocument.setDepartment(content);
+                }
+                if (tag.trim().equals("发布日期")) {
+                    String content = ele.childNode(1).toString().replace("：", "");
+                    lawDocument.setRelease_data(content);
+                }
+                if (tag.trim().equals("执行日期")) {
+                    String content = ele.childNode(1).toString().replace("：", "");
+                    lawDocument.setImplement_date(content);
+                }
+                if (tag.trim().equals("文　　号")) {
+                    String content = ele.childNode(1).toString().replace("：", "");
+                    lawDocument.setRelease_number(content);
+                }
+            }catch (NullPointerException e){
+                LOGGER.warn("No this tag..." + e.getMessage());
             }
         }
         try {
-            String html = doc.select("#articleContnet").first().html();
-            String cleanHtmlContent = cleanHtml(html);
+            doc.select("#articleContnet").first().html();
+            String cleanHtmlContent = getWholeContent(htmlUrl);
+            if(cleanHtmlContent.contains("此文章仅供VIP会员浏览")){
+                throw new NullPointerException("此文章仅供VIP会员浏览");
+            }
             lawDocument.setCleanHtml(cleanHtmlContent);
             List<LawArticle> articleList = getLawArticleAndParagraph(cleanHtmlContent);
             lawDocument.setArticle(articleList);
@@ -195,6 +204,88 @@ public class FayiSpider extends LawSpider {
             LOGGER.error(e);
         }
         return lawDocument;
+    }
+
+    public HtmlDivision getDivContent(HtmlPage page) {
+        try {
+            return (HtmlDivision)page.getByXPath("//*[@id=\"articleContnet\"]").get(0);
+        }catch (NullPointerException e){
+            return null;
+        }
+    }
+
+    public HtmlDivision getNextPageDivContent(HtmlPage page) {
+        try {
+            return (HtmlDivision)page.getByXPath("//*[@id=\"fontzoom\"]/div[2]").get(0);
+        }catch (NullPointerException e){
+            return null;
+        }
+    }
+
+    public String getWholeContent(String htmlUrl){
+        StringBuilder content = new StringBuilder();
+        HtmlPage page = null;
+        try {
+            page = client.getPage(htmlUrl);
+            Thread.sleep(1000);
+            HtmlDivision contentDiv = getDivContent(page);
+            if(contentDiv == null){
+                Thread.sleep(2500);
+                contentDiv = getDivContent(page);
+            }
+            if(contentDiv == null){
+                return content.toString();
+            }
+            String currentPage = contentDiv.asXml();
+            content.append(cleanHtml(currentPage));
+
+            HtmlDivision nextPageDiv = getNextPageDivContent(page);
+            do {
+                if(nextPageDiv == null){
+                    break;
+                }
+                DomNodeList<HtmlElement> anchoresNodes = nextPageDiv.getElementsByTagName("a");
+                HtmlAnchor nextPageAnchor = null;
+                for (int i = 0; i < anchoresNodes.size(); i++) {
+                    HtmlAnchor tempAnchor = (HtmlAnchor) anchoresNodes.get(i);
+                    if (tempAnchor.asText().trim().contains("下一页")) {
+                        nextPageAnchor = tempAnchor;
+                        break;
+                    }
+                }
+                if(nextPageAnchor != null){
+                    HtmlPage nextpage = nextPageAnchor.click();
+                    Thread.sleep(1000);
+                    contentDiv = getDivContent(nextpage);
+                    if(contentDiv == null){
+                        Thread.sleep(2000);
+                        contentDiv = getDivContent(nextpage);
+                    }
+                    if(contentDiv == null){
+                        break;
+                    }
+                    if(contentDiv.asXml().equals(currentPage)){
+                        break;
+                    }else {
+                        currentPage = contentDiv.asXml();
+                        for(int i = content.length() -1; i > 0; i--){
+                            if(content.charAt(i) == '\n'){
+                                content.deleteCharAt(i);
+                            }else {
+                                break;
+                            }
+                        }
+                        content.append(cleanHtml(contentDiv.asXml()));
+                        nextPageDiv = getNextPageDivContent(nextpage);
+                    }
+                }else {
+                    break;
+                }
+            }while (true);
+        } catch (Exception e) {
+            LOGGER.error("Get whole content error: " + e.getMessage());
+        }
+        return content.toString();
     }
 
     public void deepCrawContentUrl(String categoryName, DomNodeList<HtmlElement> clickAnchorNodes) {
