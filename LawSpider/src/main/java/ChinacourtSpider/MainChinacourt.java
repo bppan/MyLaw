@@ -15,6 +15,5 @@ public class MainChinacourt {
         urlFieldXpath.add("//*[@id=\"mycontenta\"]/ul");
         spider.setXpathList(urlFieldXpath);
         spider.doCraw();
-//        spider.crawHtml("http://www.chinacourt.org/law/detail/2017/07/id/149523.shtml");
     }
 }
