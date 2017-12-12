@@ -28,6 +28,7 @@ import java.util.List;
 
 public class WanfangdataSpider extends LawSpider {
     private static Logger LOGGER = LawLogger.getLawLogger(WanfangdataSpider.class);
+    private static WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
 
     public WanfangdataSpider(String indexUrl, int crawHtmlthreadCount, String pkulawSpider_crawJobCollection, String pkulawSpider_lawCollection) {
         super(indexUrl, crawHtmlthreadCount, pkulawSpider_crawJobCollection, pkulawSpider_lawCollection);
@@ -52,9 +53,15 @@ public class WanfangdataSpider extends LawSpider {
         WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
         List<HtmlElement> anchoresNodes = getSoureceUrlField(client, xpath);
         LOGGER.info("Get source filed url count:" + anchoresNodes.size());
-        for (int m = 0; m < anchoresNodes.size(); m++) {
+        for (int m = 6; m < anchoresNodes.size(); m++) {
             try {
                 HtmlAnchor anchor = (HtmlAnchor) anchoresNodes.get(m);
+                if (anchor.asText().trim().contains("合同范本")){
+                    continue;
+                }
+                if (anchor.asText().trim().contains("法律文书样式")){
+                    continue;
+                }
                 HtmlPage clickPage = anchor.click();
                 Thread.sleep(3000);
                 HtmlDivision content = getContentPage(clickPage);
@@ -99,7 +106,6 @@ public class WanfangdataSpider extends LawSpider {
 
     //从获取主页上分类的url
     public LawDocument parseLawHtml(String htmlUrl) {
-        WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
         HtmlPage page = null;
         try {
             page = client.getPage(htmlUrl);
@@ -224,9 +230,11 @@ public class WanfangdataSpider extends LawSpider {
         DomNodeList<HtmlElement> currentClickAnchorNodes = clickAnchorNodes;
         int count = 0;
         int page = 0;
+        //遍历当前页
+        HtmlAnchor nextPageAnchor = null;
+        boolean hasNextPage = false;
+        HtmlPage nextClickPage = null;
         do {
-            //遍历当前页
-            HtmlAnchor nextPageAnchor = null;
             for (int i = 0; i < currentClickAnchorNodes.size(); i++) {
                 HtmlAnchor contentAnchor = (HtmlAnchor) currentClickAnchorNodes.get(i);
                 if (!isPageNext(contentAnchor.asText()) && contentAnchor.getAttribute("class").trim().equals("title")) {
@@ -242,24 +250,37 @@ public class WanfangdataSpider extends LawSpider {
                 }
             }
             if (nextPageAnchor == null) {
-                break;
+                hasNextPage = false;
             } else {
+                hasNextPage = true;
                 page++;
                 count = 0;
                 try {
-                    HtmlPage nextClickPage = nextPageAnchor.click();
+                    HtmlPage tempNextClickPage = nextPageAnchor.click();
                     Thread.sleep(2000);
-                    HtmlDivision content = getContentPage(nextClickPage);
-                    if (content.asXml().trim().equals(clickPageHtml)) {
-                        break;
+                    HtmlDivision content = getContentPage(tempNextClickPage);
+                    if(content == null){
+                        Thread.sleep(2000);
+                        content = getContentPage(tempNextClickPage);
                     }
-                    clickPageHtml = content.asXml().trim();
-                    currentClickAnchorNodes = content.getElementsByTagName("a");
-
+                    if(content != null){
+                        if (content.asXml().equals(clickPageHtml)) {
+                            break;
+                        }
+                        clickPageHtml = content.asXml();
+                        currentClickAnchorNodes = content.getElementsByTagName("a");
+                        nextPageAnchor = null;
+                        nextClickPage = tempNextClickPage;
+                    }else {
+                        LOGGER.error("Connect server wait 4 seconds no response content!");
+                        content = getContentPage(nextClickPage);
+                        currentClickAnchorNodes = content.getElementsByTagName("a");
+                        nextPageAnchor = null;
+                    }
                 } catch (Exception e) {
                     LOGGER.error("Deep craw content error: " + e.getMessage());
                 }
             }
-        } while (true);
+        } while (hasNextPage);
     }
 }

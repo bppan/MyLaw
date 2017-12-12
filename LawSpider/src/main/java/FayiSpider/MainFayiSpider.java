@@ -14,10 +14,14 @@ import java.util.List;
  */
 public class MainFayiSpider {
     public static void main(String[] args) {
-        FayiSpider spider = new FayiSpider("http://law.fayi.com.cn", 1, "fayi_crawJob", "fayi_law");
+        FayiSpider spider = new FayiSpider("http://law.fayi.com.cn", 1, "fayi2_crawJob", "fayi2_law");
         List<String> urlFieldXpath = new ArrayList<String>();
         urlFieldXpath.add("");
         spider.setXpathList(urlFieldXpath);
         spider.doCraw();
+//        spider.crawManySoureceUrlField();
+//        spider.getWholeContent("http://law.fayi.com.cn/qtl/244395.html");
+//        System.out.println(spider.getWholeContent("http://law.fayi.com.cn/qtl/244395.html"));
+
     }
 }

@@ -15,8 +15,10 @@ public class MainWanfangdataSpider {
     public static void main(String[] args) {
         WanfangdataSpider spider = new WanfangdataSpider("http://c.wanfangdata.com.cn/Claw.aspx", 1, "wanfangdata_crawJob", "wanfangdata_law");
         List<String> urlFieldXpath = new ArrayList<String>();
-        urlFieldXpath.add("/html/body/div[4]/div[1]/div[2]/div");
+//        urlFieldXpath.add("/html/body/div[4]/div[1]/div[2]/div");
+        urlFieldXpath.add("/html/body/div[4]/div[2]/div[2]/div");
         spider.setXpathList(urlFieldXpath);
+//        spider.crawManySoureceUrlField();
         spider.doCraw();
     }
 }
