@@ -200,10 +200,10 @@ public abstract class LawSpider extends Spider {
 
     public String cleanHtml(String html) {
         String result = html;
-        String regEx_space = "\\s*|\t|\r|\n";//定义空格回车换行符
-        Pattern p_space = Pattern.compile(regEx_space, Pattern.CASE_INSENSITIVE);
-        Matcher m_space = p_space.matcher(result);
-        result = m_space.replaceAll("").replaceAll("　", ""); // 过滤空格回车标签
+        String regEx_return = "\t|\r|\n";//定义空格回车换行符
+        Pattern p_return = Pattern.compile(regEx_return, Pattern.CASE_INSENSITIVE);
+        Matcher m_return = p_return.matcher(result);
+        result = m_return.replaceAll("").replaceAll("　", " "); // 过滤空格回车标签
 
         String regEx_html = "<br>|<br />|<br/>|</p>|</div>|</li>"; // 定义HTML标签的正则表达式
         Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
@@ -214,11 +214,18 @@ public abstract class LawSpider extends Spider {
         Pattern p2_html = Pattern.compile(regEx2_html, Pattern.CASE_INSENSITIVE);
         Matcher m2_html = p2_html.matcher(result);
         result = m2_html.replaceAll(""); // 过滤html标签
+
+        String regEx_space = " +";//定义多个空白符
+        Pattern p_space = Pattern.compile(regEx_space, Pattern.CASE_INSENSITIVE);
+        Matcher m_space = p_space.matcher(result);
+        result = m_space.replaceAll(" "); // 过滤空格回车标签
+
         return result;
     }
 
     public List<LawArticle> getLawArticleAndParagraph(String cleanHtml) {
-        String[] result = cleanHtml.split("\r|\n");
+        String[] result = cleanHtml.split("\n");
+        String zhang = "第[一二三四五六七八九十百千万]+章";//定义章数
         String tiao = "第[一二三四五六七八九十百千万]+条";//定义条数
         String xiang = "（[一二三四五六七八九十百千万]+）";//定义项数
         boolean tiao_in = false;
@@ -227,6 +234,11 @@ public abstract class LawSpider extends Spider {
         LawArticle currentLaw = new LawArticle();
         for (int i = 0; i < result.length; i++) {
             String par = result[i].trim();
+            Pattern regEx_zhang = Pattern.compile(zhang, Pattern.CASE_INSENSITIVE);
+            Matcher m_zhang = regEx_zhang.matcher(par);
+            if(m_zhang.find()){
+                continue;
+            }
             if (!par.isEmpty()) {
                 Pattern regEx_tiao = Pattern.compile(tiao, Pattern.CASE_INSENSITIVE);
                 Matcher m_tiao = regEx_tiao.matcher(par);
