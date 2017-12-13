@@ -277,6 +277,7 @@ public class FayiSpider extends LawSpider {
                         }
                         content.append(cleanHtml(contentDiv.asXml()));
                         nextPageDiv = getNextPageDivContent(nextpage);
+                        nextpage.cleanUp();
                     }
                 }else {
                     break;
@@ -284,6 +285,8 @@ public class FayiSpider extends LawSpider {
             }while (true);
         } catch (Exception e) {
             LOGGER.error("Get whole content error: " + e.getMessage());
+        }finally {
+            page.cleanUp();
         }
         return content.toString();
     }
