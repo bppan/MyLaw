@@ -62,7 +62,7 @@ public class FayiSpider extends LawSpider {
         HtmlDivision clickContent = getNextPageContent(page);
         HtmlUnorderedList content = getHtmlContentPage(page);
         DomNodeList<HtmlElement> clickAnchorNodes = content.getElementsByTagName("a");
-
+        page.cleanUp();
         String clickPageHtml = "";
         int count = 0;
         int pageNum = 0;
@@ -91,6 +91,7 @@ public class FayiSpider extends LawSpider {
                     Thread.sleep(getRandomWaitTime(1500, 2000));
                     HtmlUnorderedList clickfinshedContent = getHtmlContentPage(nextClickPage);
                     if (clickfinshedContent.asText().equals(clickPageHtml)) {
+                        nextClickPage.cleanUp();
                         break;
                     } else {
                         clickPageHtml = clickfinshedContent.asText();
@@ -98,6 +99,7 @@ public class FayiSpider extends LawSpider {
 
                     clickAnchorNodes = clickfinshedContent.getElementsByTagName("a");
                     clickContent = getNextPageContent(nextClickPage);
+                    nextClickPage.cleanUp();
                 } catch (Exception e) {
                     LOGGER.error("Deep craw content error: " + e.getMessage());
                 }
@@ -262,9 +264,11 @@ public class FayiSpider extends LawSpider {
                         contentDiv = getDivContent(nextpage);
                     }
                     if(contentDiv == null){
+                        nextpage.cleanUp();
                         break;
                     }
                     if(contentDiv.asXml().equals(currentPage)){
+                        nextpage.cleanUp();
                         break;
                     }else {
                         currentPage = contentDiv.asXml();

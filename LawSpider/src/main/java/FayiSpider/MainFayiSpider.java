@@ -18,8 +18,8 @@ public class MainFayiSpider {
         List<String> urlFieldXpath = new ArrayList<String>();
         urlFieldXpath.add("");
         spider.setXpathList(urlFieldXpath);
-        spider.doCraw();
-//        spider.crawManySoureceUrlField();
+//        spider.doCraw();
+        spider.crawManySoureceUrlField();
 //        spider.getWholeContent("http://law.fayi.com.cn/qtl/244395.html");
 //        System.out.println(spider.getWholeContent("http://law.fayi.com.cn/qtl/244395.html"));
 

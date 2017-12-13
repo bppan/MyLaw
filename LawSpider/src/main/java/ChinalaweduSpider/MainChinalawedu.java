@@ -17,6 +17,7 @@ public class MainChinalawedu {
         List<String> urlFieldXpath = new ArrayList<String>();
         urlFieldXpath.add("/html/body/div[3]/div[1]/div");
         spider.setXpathList(urlFieldXpath);
-        spider.doCraw();
+//        spider.doCraw();
+        spider.crawManySoureceUrlField();
     }
 }
