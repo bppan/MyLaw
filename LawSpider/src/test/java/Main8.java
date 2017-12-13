@@ -1,5 +1,8 @@
-import java.util.ArrayList;
-import java.util.List;
+import WebCraw.HtmlUnitClient;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 /**
  * Description：
@@ -11,28 +14,16 @@ import java.util.List;
  */
 public class Main8 {
     public static void main(String[] args){
-        System.out.print(get());
-        StringBuilder tes = new StringBuilder("cccc\r\n");
-        for (int i = tes.length() -1; i > 0; i--){
-            System.out.println(i +" " + tes.charAt(i));
-            if(tes.charAt(i) == '\n'){
-                System.out.println("mm");
-            }
-        }
-        StringBuilder tes2 = new StringBuilder("ccccd");
-        System.out.print(tes2.deleteCharAt(4));
-    }
-    public static String get(){
-        String test = "";
-        List<String> testlist = new ArrayList<String>();
+        WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
+        HtmlPage page = null;
         try {
-            String tt = testlist.get(0);
-        }catch (Exception e){
-            return test;
-        }finally {
-            test = "bbbb";
-            System.out.println("aa");
+            page = client.getPage("https://www.itslaw.com/bj");
+            Thread.sleep(5000);
+            System.out.println(page.asXml());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return test;
+
+
     }
 }
