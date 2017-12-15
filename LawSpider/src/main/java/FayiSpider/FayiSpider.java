@@ -8,6 +8,8 @@ import WebCraw.HtmlUnitClient;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLDivElement;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -162,7 +164,7 @@ public class FayiSpider extends LawSpider {
         }
         try {
             String title = doc.select("body > div.wrapper.mtop10 > div.content > div.article.mtop10 > div.article_content > h1 > span > font").first().childNode(0).toString();
-            lawDocument.setTitle(title);
+            lawDocument.setTitle(title);nbeiping
         } catch (NullPointerException e) {
             throw new NullPointerException("no title of law");
         }
@@ -224,6 +226,8 @@ public class FayiSpider extends LawSpider {
 
     public String getWholeContent(String htmlUrl){
         StringBuilder content = new StringBuilder();
+        LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log","org.apache.commons.logging.impl.NoOpLog");
+        java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(java.util.logging.Level.OFF);
         HtmlPage page = null;
         try {
             page = client.getPage(htmlUrl);
