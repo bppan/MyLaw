@@ -44,7 +44,7 @@ public class Clean extends LawClean{
     }
     public void cleanContent(Document law, String category){
         String html = law.getString("rawHtml");
-        String id = law.getString("_id");
+        org.bson.types.ObjectId id = law.getObjectId("_id");
 
         String content = getContentHtmlByselect(html);
         String cleanHtml = LawSpider.cleanHtml(content);
