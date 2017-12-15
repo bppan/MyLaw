@@ -4,6 +4,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @Author : Administrator
@@ -14,6 +15,7 @@ public class HtmlUnitClient {
     private WebClient webClient;
 
     private HtmlUnitClient() {
+        LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
         System.out.println("load htmlUnitClient begin...");
         webClient = new WebClient(BrowserVersion.CHROME);
         // 这里是配置一下不加载css和加载javaScript

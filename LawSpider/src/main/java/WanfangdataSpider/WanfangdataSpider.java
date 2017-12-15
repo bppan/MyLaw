@@ -112,6 +112,15 @@ public class WanfangdataSpider extends LawSpider {
             Thread.sleep(1000);
         } catch (Exception e) {
             LOGGER.error("Get SoureUrlPage error: " + e.getMessage());
+            client.close();
+            return null;
+        }
+        try {
+            if(page == null){
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e){
+            LOGGER.error("wait thread interrupt error: " + e.getMessage());
         }
         LawDocument doc = parseLawHtmlGetDocument(page);
         HtmlAnchor contentAnchor = null;
@@ -122,12 +131,14 @@ public class WanfangdataSpider extends LawSpider {
             if(page != null){
                 page.cleanUp();
             }
+            client.close();
+            return doc;
         }
         if (contentAnchor != null) {
             HtmlPage contentPage = null;
             try {
                 contentPage = contentAnchor.click();
-                Thread.sleep(2000);
+                Thread.sleep(2300);
                 String html = contentPage.asXml();
                 doc.setRawHtml(html);
                 String cleanContent = cleanHtml(html);
@@ -141,7 +152,10 @@ public class WanfangdataSpider extends LawSpider {
                     contentPage.cleanUp();
                 }
                 page.cleanUp();
+                client.close();
             }
+        }else {
+            client.close();
         }
         return doc;
     }
@@ -198,7 +212,6 @@ public class WanfangdataSpider extends LawSpider {
         List<Node> nodes = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div").first().childNodes();
         for (Node node:nodes) {
             if(node.childNodes().size() != 5){
-                System.out.println("skip");
                 continue;
             }
             String name = node.childNode(1).toString();

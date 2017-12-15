@@ -198,7 +198,7 @@ public abstract class LawSpider extends Spider {
         }
     }
 
-    public String cleanHtml(String html) {
+    public static String cleanHtml(String html) {
         String result = html;
         String regEx_return = "\t|\r|\n";//定义空格回车换行符
         Pattern p_return = Pattern.compile(regEx_return, Pattern.CASE_INSENSITIVE);
@@ -216,6 +216,7 @@ public abstract class LawSpider extends Spider {
         result = m2_html.replaceAll(""); // 过滤html标签
 
         result = result.replaceAll(" +", " ").trim(); // 过滤多个空格为一个
+        result = result.replaceAll(" ", "");
 
         return result;
     }
