@@ -3,6 +3,8 @@ package ChinalaweduSpider;
 import Interface.LawClean;
 import Interface.LawSpider;
 import Log.LawLogger;
+import Mongo.LawArticle;
+import Mongo.LawDocument;
 import Mongo.MongoDB;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.jsoup.Jsoup;
 import org.neo4j.cypher.internal.frontend.v2_3.ast.functions.E;
+import org.neo4j.cypher.internal.frontend.v2_3.ast.functions.Str;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,6 @@ import java.util.regex.Pattern;
  * Modified By:
  */
 public class Clean extends LawClean{
-    private static Logger LOGGER = LawLogger.getLawLogger(Clean.class);
 
     public Clean( String crawJobCollection, String lawCollection, String cleanCollection){
         super(crawJobCollection, lawCollection, cleanCollection);
@@ -42,14 +44,24 @@ public class Clean extends LawClean{
             return "";
         }
     }
-    public void cleanContent(Document law, String category){
-        String html = law.getString("rawHtml");
+
+    public void updateDocumentContent(String category, String content, List<Document> interlDocuments, Document law) {
+        String level = "法律法规";
+        String timeless = "现行有效";
         org.bson.types.ObjectId id = law.getObjectId("_id");
+        Document filter = new Document();
+        filter.append("_id", id);
+        Document update = new Document();
+        update.append("$set", new Document("content", content)
+                .append("category", category)
+                .append("level", level)
+                .append("timeless", timeless)
+                .append("article_num", interlDocuments.size())
+                .append("articles", interlDocuments));
+        getLawCollecion().updateOne(filter, update);
+    }
 
-        String content = getContentHtmlByselect(html);
-        String cleanHtml = LawSpider.cleanHtml(content);
-        int tiaoNum = LawSpider.getLawArticleAndParagraph(cleanHtml).size();
-
+    public String getCleanContent(String cleanHtml){
         String[] contentList = cleanHtml.split("\n");
         StringBuilder updateContent = new StringBuilder();
         for (String contentpar:contentList) {
@@ -61,6 +73,6 @@ public class Clean extends LawClean{
             }
             updateContent.append(contentpar.trim()).append("\n");
         }
-        updateDocumentContent(id, "法律法规", category, "现行有效", updateContent.toString(), tiaoNum);
+        return updateContent.toString();
     }
 }

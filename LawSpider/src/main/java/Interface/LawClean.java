@@ -1,6 +1,8 @@
 package Interface;
 
 import Log.LawLogger;
+import Mongo.LawArticle;
+import Mongo.LawDocument;
 import Mongo.MongoDB;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -25,6 +27,18 @@ public abstract class LawClean {
     private MongoCollection<Document> crawJobcollection;
     private MongoCollection<Document> lawCollecion;
     private MongoCollection<Document> cleanCollection;
+
+    public MongoCollection<Document> getCrawJobcollection() {
+        return crawJobcollection;
+    }
+
+    public MongoCollection<Document> getLawCollecion() {
+        return lawCollecion;
+    }
+
+    public MongoCollection<Document> getCleanCollection() {
+        return cleanCollection;
+    }
 
     public LawClean(String crawJobCollection, String lawCollection, String cleanCollection) {
         this.crawJobcollection = mongoDB.getCollection(crawJobCollection);
@@ -80,22 +94,22 @@ public abstract class LawClean {
             }
         }
     }
+    public void cleanContent(Document law, String category){
+        String html = law.getString("rawHtml");
+        String content = getContentHtmlByselect(html);
+        String cleanHtml = LawSpider.cleanHtml(content);
+        List<LawArticle> articleList = LawSpider.getLawArticleAndParagraph(cleanHtml);
+        List<Document> interlDocuments = LawDocument.getArticleDocument(articleList);
 
-    public abstract void cleanContent(Document law, String category);
+        String updateContent = getCleanContent(cleanHtml);
+        updateDocumentContent(category, updateContent, interlDocuments, law);
+    }
 
     public abstract String getContentHtmlByselect(String html);
 
-    public void updateDocumentContent(org.bson.types.ObjectId id, String level, String category, String timeless, String content, int tiaoNum) {
-        Document filter = new Document();
-        filter.append("_id", id);
-        Document update = new Document();
-        update.append("$set", new Document("content", content)
-                .append("category", category)
-                .append("level", level)
-                .append("timeless", timeless)
-                .append("article_num", tiaoNum));
-        this.lawCollecion.updateOne(filter, update);
-    }
+    public abstract String getCleanContent(String cleanHtml);
+
+    public abstract void updateDocumentContent(String category, String content, List<Document> interlDocuments, Document law);
 
     public void saveToCleanCollection(Document law) {
         String url = law.getString("url");

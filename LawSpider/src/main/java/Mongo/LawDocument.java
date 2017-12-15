@@ -175,6 +175,13 @@ public class LawDocument {
 
         return mongoDB.saveLawDocument(lawDocument.getLawcollection(), document);
     }
-
+    public static List<Document> getArticleDocument(List<LawArticle> articleList){
+        List<Document> interlDocuments = new ArrayList<Document>();
+        for (int i = 0; i < articleList.size(); i++) {
+            Document par = new Document("name", articleList.get(i).getName()).append("paragraph", articleList.get(i).getParagraph());
+            interlDocuments.add(par);
+        }
+        return interlDocuments;
+    }
 }
 
