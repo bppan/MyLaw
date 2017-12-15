@@ -48,6 +48,7 @@ public class Clean extends LawClean{
 
         String content = getContentHtmlByselect(html);
         String cleanHtml = LawSpider.cleanHtml(content);
+        int tiaoNum = LawSpider.getLawArticleAndParagraph(cleanHtml).size();
 
         String[] contentList = cleanHtml.split("\n");
         StringBuilder updateContent = new StringBuilder();
@@ -60,6 +61,6 @@ public class Clean extends LawClean{
             }
             updateContent.append(contentpar.trim()).append("\n");
         }
-        updateDocumentContent(id, "法律法规", category, "现行有效", updateContent.toString());
+        updateDocumentContent(id, "法律法规", category, "现行有效", updateContent.toString(), tiaoNum);
     }
 }

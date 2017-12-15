@@ -85,11 +85,15 @@ public abstract class LawClean {
 
     public abstract String getContentHtmlByselect(String html);
 
-    public void updateDocumentContent(org.bson.types.ObjectId id, String level, String category, String timeless, String content) {
+    public void updateDocumentContent(org.bson.types.ObjectId id, String level, String category, String timeless, String content, int tiaoNum) {
         Document filter = new Document();
         filter.append("_id", id);
         Document update = new Document();
-        update.append("$set", new Document("content", content).append("category", category).append("level", level).append("timeless", timeless));
+        update.append("$set", new Document("content", content)
+                .append("category", category)
+                .append("level", level)
+                .append("timeless", timeless)
+                .append("article_num", tiaoNum));
         this.lawCollecion.updateOne(filter, update);
     }
 
