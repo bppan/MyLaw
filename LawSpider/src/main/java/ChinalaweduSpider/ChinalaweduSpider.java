@@ -37,7 +37,6 @@ public class ChinalaweduSpider extends LawSpider {
 
     public HtmlAnchor getNextAnchor(HtmlDivision content) {
         DomNodeList<HtmlElement> currentClickAnchorNodes = content.getElementsByTagName("a");
-        System.out.println(currentClickAnchorNodes.size());
         for (int i = 0; i < currentClickAnchorNodes.size(); i++) {
             HtmlAnchor contentAnchor = (HtmlAnchor) currentClickAnchorNodes.get(i);
             if (contentAnchor.asText().trim().equals("下一页")) {
@@ -107,7 +106,7 @@ public class ChinalaweduSpider extends LawSpider {
         WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
         List<HtmlElement> anchoresNodes = getSoureceUrlField(client, xpath);
         LOGGER.info("Get source filed url count:" + anchoresNodes.size());
-        for (int m = 0; m < anchoresNodes.size(); m++) {
+        for (int m = 4; m < anchoresNodes.size(); m++) {
             try {
                 HtmlAnchor anchor = (HtmlAnchor) anchoresNodes.get(m);
                 HtmlPage clickPage = anchor.click();

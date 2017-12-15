@@ -14,6 +14,8 @@ public class MainChinacourt {
         List<String> urlFieldXpath = new ArrayList<String>();
         urlFieldXpath.add("//*[@id=\"mycontenta\"]/ul");
         spider.setXpathList(urlFieldXpath);
-        spider.doCraw();
+//        spider.doCraw();
+        spider.crawManySoureceUrlField();
+//        spider.crawHtml("http://www.chinacourt.org/law/detail/2017/07/id/149523.shtml");
     }
 }

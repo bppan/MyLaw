@@ -2,16 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="144484ec-eacf-4846-9224-3f1541ac9bdc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/flexCompiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Mainclean.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawClean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/ChinacourtSpider/MainChinacourt.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/ChinacourtSpider/MainChinacourt.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/ChinalaweduSpider/Clean.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/ChinalaweduSpider/Clean.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/ChinalaweduSpider/MainChinalawedu.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/ChinalaweduSpider/MainChinalawedu.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/FayiSpider/FayiSpider.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/FayiSpider/FayiSpider.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/FayiSpider/MainFayiSpider.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/FayiSpider/MainFayiSpider.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/Interface/LawSpider.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/Interface/LawSpider.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/PkulawSpider/PkulawSpider.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/PkulawSpider/PkulawSpider.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/target/classes/WanfangdataSpider/WanfangdataSpider.class" afterPath="$PROJECT_DIR$/LawSpider/target/classes/WanfangdataSpider/WanfangdataSpider.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/flexCompiler.xml" afterPath="$PROJECT_DIR$/.idea/flexCompiler.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/MainChinacourt.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/MainChinacourt.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/ChinalaweduSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/ChinalaweduSpider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Clean.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Clean.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/MainChinalawedu.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/MainChinalawedu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/FayiSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/FayiSpider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/MainFayiSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/MainFayiSpider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/Mongo/MongoDB.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/Mongo/MongoDB.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkulawSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkulawSpider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/MainWanfangdataSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/MainWanfangdataSpider.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/WanfangdataSpider.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/WanfangdataSpider.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LawSpider/src/main/java/WebCraw/HtmlUnitClient.java" afterPath="$PROJECT_DIR$/LawSpider/src/main/java/WebCraw/HtmlUnitClient.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,72 +40,23 @@
     <SUITE FILE_PATH="coverage/MyLaw$MainFayiSpider.coverage" NAME="MainFayiSpider Coverage Results" MODIFIED="1511869588862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>FayiSpider.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/MyLaw$MainWanfangdataSpider.coverage" NAME="MainWanfangdataSpider Coverage Results" MODIFIED="1512140892801" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>WanfangdataSpider.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/MyLaw$LawSpiderMove.coverage" NAME="LawSpiderMove Coverage Results" MODIFIED="1510903032706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>PkulawSpider.*</FILTER>
     </SUITE>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MainFayiSpider.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/MainFayiSpider.java">
+      <file leaf-file-name="HtmlUnitClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WebCraw/HtmlUnitClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainChinacourt.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/MainChinacourt.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="12" column="56" lean-forward="false" selection-start-line="12" selection-start-column="56" selection-end-line="12" selection-end-column="85" />
+            <state relative-caret-position="418">
+              <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
               <folding>
-                <element signature="e#417#425#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CleanRedundancy.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Clean/CleanRedundancy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Clean.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/Clean.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="13" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FayiSpider.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/FayiSpider.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1540">
-              <caret line="200" column="48" lean-forward="false" selection-start-line="200" selection-start-column="48" selection-end-line="200" selection-end-column="48" />
-              <folding>
-                <marker date="1513080054066" expanded="true" signature="11431:11438" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CrawJob.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/CrawJob/CrawJob.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1885">
-              <caret line="119" column="35" lean-forward="false" selection-start-line="119" selection-start-column="35" selection-end-line="119" selection-end-column="35" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -100,8 +64,18 @@
       <file leaf-file-name="ChinalaweduSpider.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/ChinalaweduSpider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="413">
-              <caret line="55" column="22" lean-forward="false" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
+            <state relative-caret-position="3124">
+              <caret line="157" column="26" lean-forward="false" selection-start-line="157" selection-start-column="26" selection-end-line="157" selection-end-column="26" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FayiSpider.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/FayiSpider.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="656">
+              <caret line="168" column="40" lean-forward="true" selection-start-line="168" selection-start-column="40" selection-end-line="168" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -110,31 +84,71 @@
       <file leaf-file-name="MainChinalawedu.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/MainChinalawedu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="418">
+              <caret line="20" column="41" lean-forward="false" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Clean.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Clean.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Clean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChinacourtSpider.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/ChinacourtSpider.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3461">
-              <caret line="58" column="38" lean-forward="false" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="38" />
+            <state relative-caret-position="365">
+              <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LawClean.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawClean.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-66">
+              <caret line="21" column="22" lean-forward="false" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mainclean.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Mainclean.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PkulawSpider.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkulawSpider.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1715">
+              <caret line="249" column="426" lean-forward="false" selection-start-line="249" selection-start-column="426" selection-end-line="249" selection-end-column="426" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Clean.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/Clean.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainChinacourt.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/MainChinacourt.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="17" column="41" lean-forward="false" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -148,6 +162,32 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>Deep craw content error</find>
+      <find>法律</find>
+      <find>error</find>
+      <find>ERROR</find>
+      <find>load htmlUnitClient begin</find>
+      <find>部门规范性文件</find>
+      <find>地方规范性文件</find>
+      <find>其他规范性文件</find>
+      <find>国际条约</find>
+      <find>Save document</find>
+      <find>Save document to MongoDB</find>
+      <find>国家法律</find>
+      <find>人民法院裁判文书</find>
+      <find>Thread-spider-craw-0</find>
+      <find>Thread-spider-craw-1</find>
+      <find>No this tag</find>
+      <find>No this tag...</find>
+      <find>Save</find>
+      <find>Save document to</find>
+      <find>部门规章</find>
+      <find>cost time:</find>
+      <find>地方法规规章</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -160,6 +200,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/LawSpider/pom.xml" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/LawLogger.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/DBProperties.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/MongDBCollection.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/Article.java" />
@@ -188,29 +231,26 @@
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/LawSpider.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/Interface/Spider.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkylawSpider.java" />
-        <option value="$PROJECT_DIR$/LawSpider/src/main/java/WebCraw/HtmlUnitClient.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/LawSpiderMove.java" />
-        <option value="$PROJECT_DIR$/LawSpider/src/main/java/Mongo/MongoDB.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/MainPkulawSpider.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/CrawJob/CrawJob.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/TestChinacourt.java" />
-        <option value="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkulawSpider.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/Mongo/LawDocument.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/ChinacourtSpider.java" />
-        <option value="$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/WenshuCourtSpider.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/resources/log4j.properties" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/Mongo/MongoDB.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/test/java/Main8.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/MainWanfangdataSpider.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/WanfangdataSpider.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Test.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/Test2.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Test3.java" />
         <option value="$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/MainChinacourt.java" />
-        <option value="$PROJECT_DIR$/LawSpider/src/main/java/Clean/CleanRedundancy.java" />
-        <option value="$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/Clean.java" />
-        <option value="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Clean.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/Interface/Test.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkulawSpider.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/MainFayiSpider.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/MainChinalawedu.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/WebCraw/HtmlUnitClient.java" />
+        <option value="$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/FayiSpider.java" />
       </list>
     </option>
   </component>
@@ -227,11 +267,11 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="428" />
-    <option name="y" value="17" />
-    <option name="width" value="1837" />
-    <option name="height" value="886" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="115" />
+    <option name="y" value="125" />
+    <option name="width" value="1351" />
+    <option name="height" value="646" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -265,15 +305,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
               <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
@@ -326,25 +369,79 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="Clean" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
-              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="CrawJob" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
-              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="FayiSpider" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Interface" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Log" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Mongo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="MySQL" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="PkulawSpider" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="WanfangdataSpider" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="WebCraw" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="WenshuCourtSpider" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
@@ -354,26 +451,38 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MyLaw" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MyLaw" type="462c0819:PsiDirectoryNode" />
+              <item name="LawSpider" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="AndroidView" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="settings.editor.selected.configurable" value="project.kotlinCompiler" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../neo-mblog" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\MySpace\MyLaw\src\main\java" />
-    </key>
+    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/GitHub/PortableGit_f02737a78695063deace08e96d5042710d3e32db/cmd/git.exe" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -387,10 +496,15 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Test3">
-    <configuration name="Main8" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="Main8" />
+  <component name="RunManager" selected="Application.Mainclean">
+    <configuration name="MainChinalawedu" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="ChinalaweduSpider.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="ChinalaweduSpider.MainChinalawedu" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -421,6 +535,25 @@
       <module name="LawSpider" />
       <envs />
     </configuration>
+    <configuration name="MainPkulawSpider" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="CrawJob.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="PkulawSpider.MainPkulawSpider" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="LawSpider" />
+      <envs />
+    </configuration>
     <configuration name="MainWanfangdataSpider" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -440,9 +573,14 @@
       <module name="LawSpider" />
       <envs />
     </configuration>
-    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="Test" />
+    <configuration name="Mainclean" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="ChinalaweduSpider.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="ChinalaweduSpider.Mainclean" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -451,21 +589,7 @@
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="MyLaw" />
-      <envs />
-    </configuration>
-    <configuration name="Test3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="Test3" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="MyLaw" />
+      <module name="LawSpider" />
       <envs />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
@@ -550,18 +674,18 @@
       <listeners />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Application.Main8" />
+      <item index="0" class="java.lang.String" itemvalue="Application.MainPkulawSpider" />
       <item index="1" class="java.lang.String" itemvalue="Application.MainWanfangdataSpider" />
       <item index="2" class="java.lang.String" itemvalue="Application.MainFayiSpider" />
-      <item index="3" class="java.lang.String" itemvalue="Application.Test" />
-      <item index="4" class="java.lang.String" itemvalue="Application.Test3" />
+      <item index="3" class="java.lang.String" itemvalue="Application.MainChinalawedu" />
+      <item index="4" class="java.lang.String" itemvalue="Application.Mainclean" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.Test3" />
-        <item index="1" class="java.lang.String" itemvalue="Application.Test" />
-        <item index="2" class="java.lang.String" itemvalue="Application.Main8" />
-        <item index="3" class="java.lang.String" itemvalue="Application.MainFayiSpider" />
+        <item index="0" class="java.lang.String" itemvalue="Application.Mainclean" />
+        <item index="1" class="java.lang.String" itemvalue="Application.MainChinalawedu" />
+        <item index="2" class="java.lang.String" itemvalue="Application.MainFayiSpider" />
+        <item index="3" class="java.lang.String" itemvalue="Application.MainPkulawSpider" />
         <item index="4" class="java.lang.String" itemvalue="Application.MainWanfangdataSpider" />
       </list>
     </recent_temporary>
@@ -582,39 +706,39 @@
       <workItem from="1511254923912" duration="17615000" />
       <workItem from="1511342397206" duration="800000" />
       <workItem from="1511350790619" duration="12815000" />
-      <workItem from="1512364955867" duration="8244000" />
-      <workItem from="1512387642958" duration="2509000" />
-      <workItem from="1512558479355" duration="22408000" />
+      <workItem from="1512811255668" duration="42119000" />
+      <workItem from="1513327399176" duration="304000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="213428000" />
+    <option name="totallyTimeSpent" value="256203000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="428" y="17" width="1837" height="886" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3266385" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32769555" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42494714" sideWeight="0.50416666" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46194503" sideWeight="0.49583334" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16752577" sideWeight="0.49583334" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19494782" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.240625" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41798943" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37526426" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -641,11 +765,39 @@
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="28" />
+      <option name="time" value="43" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/HtmlTableCell.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="11" column="22" lean-forward="false" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/HtmlTableDataCell.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="10" column="47" lean-forward="false" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/HtmlAnchor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="25" column="13" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/Jsoup.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="35" column="29" lean-forward="false" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Interface/DB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
@@ -668,13 +820,6 @@
       </provider>
     </entry>
     <entry file="jar://C:/Java/jdk1.8.0_131/src.zip!/java/util/List.java" />
-    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/HtmlDivision.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/DomElement.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5962">
@@ -689,46 +834,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Mongo/LawArticle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="10" column="17" lean-forward="false" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/test/java/Main6.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/nodes/Node.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6574">
-          <caret line="346" column="16" lean-forward="false" selection-start-line="346" selection-start-column="16" selection-end-line="346" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/select/Elements.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="370" column="19" lean-forward="false" selection-start-line="370" selection-start-column="19" selection-end-line="370" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Mongo/MongoDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="50" column="50" lean-forward="false" selection-start-line="50" selection-start-column="50" selection-end-line="50" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Mongo/LawDocument.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -752,6 +861,163 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://D:/java/jdk1.8.0_131/src.zip!/java/lang/Thread.java" />
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/WenshuCourtSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="96" column="71" lean-forward="false" selection-start-line="96" selection-start-column="71" selection-end-line="96" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#8980#8993#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/test/java/Main6.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/resources/log4j.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-231">
+          <caret line="10" column="45" lean-forward="true" selection-start-line="10" selection-start-column="45" selection-end-line="10" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/MainWenshuCourt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="23" column="24" lean-forward="false" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/java/jdk1.8.0_131/src.zip!/java/util/ArrayList.java" />
+    <entry file="jar://$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/3.5.0/mongo-java-driver-3.5.0.jar!/com/mongodb/client/MongoIterable.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="14" column="4" lean-forward="true" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Log/LawLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Mongo/DBProperties.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Mongo/LawArticle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="10" column="17" lean-forward="false" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/CrawJob/CrawJob.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="122" column="0" lean-forward="true" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/HtmlDivision.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/test/java/Main7.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/test/java/Main8.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="18" column="38" lean-forward="false" selection-start-line="18" selection-start-column="38" selection-end-line="18" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/java/jdk1.8.0_131/src.zip!/java/lang/NullPointerException.java" />
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Mongo/MongoDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-884">
+          <caret line="69" column="9" lean-forward="true" selection-start-line="69" selection-start-column="9" selection-end-line="69" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/net/sourceforge/htmlunit/htmlunit/2.23/htmlunit-2.23.jar!/com/gargoylesoftware/htmlunit/html/HtmlPage.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-22">
+          <caret line="185" column="16" lean-forward="false" selection-start-line="185" selection-start-column="16" selection-end-line="185" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Mongo/LawDocument.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="142" column="16" lean-forward="false" selection-start-line="142" selection-start-column="16" selection-end-line="142" selection-end-column="16" />
+          <folding>
+            <element signature="e#3134#3135#0" expanded="false" />
+            <element signature="e#3172#3173#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.7.2/jsoup-1.7.2.jar!/org/jsoup/nodes/Node.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="165" column="16" lean-forward="false" selection-start-line="165" selection-start-column="16" selection-end-line="165" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/ChinacourtSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-231">
+          <caret line="25" column="13" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/WanfangdataSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="939">
+          <caret line="136" column="23" lean-forward="false" selection-start-line="136" selection-start-column="23" selection-end-line="136" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Interface/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="205">
+          <caret line="20" column="38" lean-forward="false" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Interface/Spider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -760,287 +1026,124 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/MainWenshuCourt.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="25" column="1" lean-forward="false" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WenshuCourtSpider/WenshuCourtSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="96" column="71" lean-forward="false" selection-start-line="96" selection-start-column="71" selection-end-line="96" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/resources/log4j.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="15" column="63" lean-forward="false" selection-start-line="15" selection-start-column="63" selection-end-line="15" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WebCraw/HtmlUnitClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="31" column="28" lean-forward="false" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
-          <folding>
-            <element signature="e#1268#1269#0" expanded="false" />
-            <element signature="e#1323#1324#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/test/java/Main8.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/WanfangdataSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="924">
-          <caret line="57" column="52" lean-forward="false" selection-start-line="57" selection-start-column="52" selection-end-line="57" selection-end-column="52" />
-          <folding>
-            <marker date="1513080054073" expanded="false" signature="2850:2863" ph="&lt;~&gt;" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WanfangdataSpider/MainWanfangdataSpider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="e#501#509#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/neo4j/driver/neo4j-java-driver/1.4.5/neo4j-java-driver-1.4.5.jar!/org/neo4j/driver/v1/GraphDatabase.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/neo4j/driver/neo4j-java-driver/1.4.5/neo4j-java-driver-1.4.5.jar!/org/neo4j/driver/v1/AuthTokens.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="14" column="28" lean-forward="false" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/neo4j/neo4j-kernel/3.3.1/neo4j-kernel-3.3.1.jar!/org/neo4j/kernel/internal/EmbeddedGraphDatabase.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="21" column="11" lean-forward="false" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/neo4j/neo4j-graphdb-api/3.3.1/neo4j-graphdb-api-3.3.1.jar!/org/neo4j/graphdb/Label.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/neo4j/neo4j-kernel/3.3.1/neo4j-kernel-3.3.1.jar!/org/neo4j/graphdb/factory/GraphDatabaseFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-759">
-          <caret line="43" column="32" lean-forward="false" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MovieGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4361">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/CreateGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1496">
-          <caret line="161" column="55" lean-forward="false" selection-start-line="161" selection-start-column="49" selection-end-line="161" selection-end-column="55" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/neo4j/neo4j-graphdb-api/3.3.1/neo4j-graphdb-api-3.3.1.jar!/org/neo4j/graphdb/Transaction.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="14" column="9" lean-forward="false" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="72" column="11" lean-forward="false" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Java/jdk1.8.0_151/src.zip!/java/io/File.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="274" column="11" lean-forward="false" selection-start-line="274" selection-start-column="11" selection-end-line="274" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1364">
-          <caret line="62" column="25" lean-forward="false" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/neo4j/neo4j-graphdb-api/3.3.1/neo4j-graphdb-api-3.3.1.jar!/org/neo4j/graphdb/RelationshipType.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test3.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="902">
-          <caret line="246" column="54" lean-forward="false" selection-start-line="246" selection-start-column="48" selection-end-line="246" selection-end-column="54" />
+        <state relative-caret-position="169">
+          <caret line="15" column="58" lean-forward="false" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="95" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/MainPkulawSpider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="18" column="47" lean-forward="false" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
+        <state relative-caret-position="242">
+          <caret line="12" column="43" lean-forward="false" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkulawSpider.java">
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawSpider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-352">
-          <caret line="123" column="52" lean-forward="true" selection-start-line="123" selection-start-column="52" selection-end-line="123" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/ChinacourtSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3461">
-          <caret line="58" column="38" lean-forward="false" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="38" />
+        <state relative-caret-position="4048">
+          <caret line="194" column="16" lean-forward="false" selection-start-line="194" selection-start-column="16" selection-end-line="194" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1710#1711#0" expanded="true" />
+            <element signature="e#1743#1744#0" expanded="true" />
+            <element signature="e#4425#4426#0" expanded="true" />
+            <element signature="e#4499#4500#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/ChinalaweduSpider.java">
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/MainFayiSpider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="55" column="22" lean-forward="false" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/CrawJob/CrawJob.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1885">
-          <caret line="119" column="35" lean-forward="false" selection-start-line="119" selection-start-column="35" selection-end-line="119" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Clean/CleanRedundancy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state relative-caret-position="440">
+          <caret line="21" column="27" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/MainChinacourt.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="12" column="56" lean-forward="false" selection-start-line="12" selection-start-column="56" selection-end-line="12" selection-end-column="85" />
-          <folding>
-            <element signature="e#417#425#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="352">
+          <caret line="17" column="41" lean-forward="false" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/MainChinalawedu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state relative-caret-position="418">
+          <caret line="20" column="41" lean-forward="false" selection-start-line="20" selection-start-column="41" selection-end-line="20" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/MainFayiSpider.java">
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/ChinalaweduSpider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="3124">
+          <caret line="157" column="26" lean-forward="false" selection-start-line="157" selection-start-column="26" selection-end-line="157" selection-end-column="26" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/FayiSpider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1540">
-          <caret line="200" column="48" lean-forward="false" selection-start-line="200" selection-start-column="48" selection-end-line="200" selection-end-column="48" />
-          <folding>
-            <marker date="1513080054066" expanded="true" signature="11431:11438" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinacourtSpider/Clean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="13" selection-end-column="5" />
+        <state relative-caret-position="220">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/Interface/LawClean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-66">
+          <caret line="21" column="22" lean-forward="false" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/WebCraw/HtmlUnitClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/PkulawSpider/PkulawSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1715">
+          <caret line="249" column="426" lean-forward="false" selection-start-line="249" selection-start-column="426" selection-end-line="249" selection-end-column="426" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Clean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="365">
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/ChinalaweduSpider/Mainclean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LawSpider/src/main/java/FayiSpider/FayiSpider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="656">
+          <caret line="168" column="40" lean-forward="true" selection-start-line="168" selection-start-column="40" selection-end-line="168" selection-end-column="40" />
           <folding />
         </state>
       </provider>
@@ -1048,6 +1151,17 @@
   </component>
   <component name="masterDetails">
     <states>
+      <state key="ArquillianSettingsConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
@@ -1103,7 +1217,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

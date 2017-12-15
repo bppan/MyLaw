@@ -215,10 +215,8 @@ public abstract class LawSpider extends Spider {
         Matcher m2_html = p2_html.matcher(result);
         result = m2_html.replaceAll(""); // 过滤html标签
 
-        String regEx_space = " +";//定义多个空白符
-        Pattern p_space = Pattern.compile(regEx_space, Pattern.CASE_INSENSITIVE);
-        Matcher m_space = p_space.matcher(result);
-        result = m_space.replaceAll(" "); // 过滤空格回车标签
+        result = result.replaceAll(" +", " ").trim(); // 过滤多个空格为一个
+        result = result.replaceAll(" ", "");
 
         return result;
     }

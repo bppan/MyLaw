@@ -247,7 +247,7 @@ public class PkulawSpider extends LawSpider {
                 .header("Connection", "keep-alive")
                 .header("Cache-Control", "max-age=0")
                 .header("Referer", htmlUrl)
-                .header("Cookie", "FWinCookie=1; ASP.NET_SessionId=0tde12rd4sbyxyxjr2w5x235; Hm_lvt_58c470ff9657d300e66c7f33590e53a8=1512709873,1512714972,1512809279,1512918694; CookieId=0tde12rd4sbyxyxjr2w5x235; CheckIPAuto=0; CheckIPDate=2017-12-10 22:57:56; 0tde12rd4sbyxyxjr2w5x2353isIPlogin=1; User_User=%d6%d0%b9%fa%c8%cb%c3%f1%b4%f3%d1%a7; Hm_lpvt_58c470ff9657d300e66c7f33590e53a8=1512918738")
+                .header("Cookie", "FWinCookie=1; ASP.NET_SessionId=txngcx4cs0ri3c13fankvyxe; Hm_lvt_58c470ff9657d300e66c7f33590e53a8=1512714972,1512809279,1512918694,1513069994; CookieId=txngcx4cs0ri3c13fankvyxe; CheckIPAuto=0; CheckIPDate=2017-12-13 17:25:50; txngcx4cs0ri3c13fankvyxe3isIPlogin=1; User_User=%d6%d0%b9%fa%c8%cb%c3%f1%b4%f3%d1%a7; click0=2017/12/13 17:44:31; Hm_lpvt_58c470ff9657d300e66c7f33590e53a8=1513158025")
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.89 Safari/537.36")
                 .timeout(3000)
                 .get();

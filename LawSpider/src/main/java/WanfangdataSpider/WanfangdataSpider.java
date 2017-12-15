@@ -112,6 +112,15 @@ public class WanfangdataSpider extends LawSpider {
             Thread.sleep(1000);
         } catch (Exception e) {
             LOGGER.error("Get SoureUrlPage error: " + e.getMessage());
+            client.close();
+            return null;
+        }
+        try {
+            if(page == null){
+                Thread.sleep(1000);
+            }
+        }catch (InterruptedException e){
+            LOGGER.error("wait thread interrupt error: " + e.getMessage());
         }
         LawDocument doc = parseLawHtmlGetDocument(page);
         HtmlAnchor contentAnchor = null;
@@ -119,11 +128,17 @@ public class WanfangdataSpider extends LawSpider {
             contentAnchor = (HtmlAnchor) page.getByXPath("/html/body/div[3]/div/div[1]/a[2]").get(0);
         }catch (NullPointerException e){
             LOGGER.error("Not find content anchor");
+            if(page != null){
+                page.cleanUp();
+            }
+            client.close();
+            return doc;
         }
         if (contentAnchor != null) {
+            HtmlPage contentPage = null;
             try {
-                HtmlPage contentPage = contentAnchor.click();
-                Thread.sleep(2000);
+                contentPage = contentAnchor.click();
+                Thread.sleep(2300);
                 String html = contentPage.asXml();
                 doc.setRawHtml(html);
                 String cleanContent = cleanHtml(html);
@@ -132,7 +147,15 @@ public class WanfangdataSpider extends LawSpider {
                 doc.setArticle(articleList);
             } catch (Exception e) {
                 LOGGER.error("pase html content error: " + e.getMessage());
+            }finally {
+                if(contentPage != null){
+                    contentPage.cleanUp();
+                }
+                page.cleanUp();
+                client.close();
             }
+        }else {
+            client.close();
         }
         return doc;
     }
@@ -189,7 +212,6 @@ public class WanfangdataSpider extends LawSpider {
         List<Node> nodes = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div").first().childNodes();
         for (Node node:nodes) {
             if(node.childNodes().size() != 5){
-                System.out.println("skip");
                 continue;
             }
             String name = node.childNode(1).toString();
@@ -255,8 +277,9 @@ public class WanfangdataSpider extends LawSpider {
                 hasNextPage = true;
                 page++;
                 count = 0;
+                HtmlPage tempNextClickPage = null;
                 try {
-                    HtmlPage tempNextClickPage = nextPageAnchor.click();
+                    tempNextClickPage = nextPageAnchor.click();
                     Thread.sleep(2000);
                     HtmlDivision content = getContentPage(tempNextClickPage);
                     if(content == null){
@@ -268,6 +291,7 @@ public class WanfangdataSpider extends LawSpider {
                             break;
                         }
                         clickPageHtml = content.asXml();
+                        currentClickAnchorNodes.clear();
                         currentClickAnchorNodes = content.getElementsByTagName("a");
                         nextPageAnchor = null;
                         nextClickPage = tempNextClickPage;
@@ -279,6 +303,10 @@ public class WanfangdataSpider extends LawSpider {
                     }
                 } catch (Exception e) {
                     LOGGER.error("Deep craw content error: " + e.getMessage());
+                }finally {
+                    if(tempNextClickPage != null){
+                        tempNextClickPage.cleanUp();
+                    }
                 }
             }
         } while (hasNextPage);
