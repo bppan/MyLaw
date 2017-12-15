@@ -169,8 +169,8 @@ public abstract class LawClean {
     private void deleteDocumentById(List<Document> needDelete) {
         for (Document deleteLaw : needDelete) {
             Document filter = new Document();
-            filter.append("_id", deleteLaw.getString("_id"));
-            this.lawCollecion.deleteOne(filter);
+            filter.append("_id", deleteLaw.getObjectId("_id"));
+            this.cleanCollection.deleteOne(filter);
         }
     }
 }
