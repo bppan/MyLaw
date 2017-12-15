@@ -85,7 +85,7 @@ public abstract class LawClean {
 
     public abstract String getContentHtmlByselect(String html);
 
-    public void updateDocumentContent(String id, String level, String category, String timeless, String content) {
+    public void updateDocumentContent(org.bson.types.ObjectId id, String level, String category, String timeless, String content) {
         Document filter = new Document();
         filter.append("_id", id);
         Document update = new Document();
