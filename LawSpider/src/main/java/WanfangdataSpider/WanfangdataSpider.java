@@ -51,24 +51,28 @@ public class WanfangdataSpider extends LawSpider {
 
     public void crawOneSoureceUrlField(String xpath) {
         WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
-        List<HtmlElement> anchoresNodes = getSoureceUrlField(client, xpath);
-        LOGGER.info("Get source filed url count:" + anchoresNodes.size());
-        for (int m = 6; m < anchoresNodes.size(); m++) {
-            try {
-                HtmlAnchor anchor = (HtmlAnchor) anchoresNodes.get(m);
-                if (anchor.asText().trim().contains("合同范本")){
-                    continue;
+        try {
+            List<HtmlElement> anchoresNodes = getSoureceUrlField(client, xpath);
+            LOGGER.info("Get source filed url count:" + anchoresNodes.size());
+            for (int m = 6; m < anchoresNodes.size(); m++) {
+                try {
+                    HtmlAnchor anchor = (HtmlAnchor) anchoresNodes.get(m);
+                    if (anchor.asText().trim().contains("合同范本")){
+                        continue;
+                    }
+                    if (anchor.asText().trim().contains("法律文书样式")){
+                        continue;
+                    }
+                    HtmlPage clickPage = anchor.click();
+                    Thread.sleep(3000);
+                    HtmlDivision content = getContentPage(clickPage);
+                    this.crawUrl(anchor.asText(), content);
+                } catch (Exception e) {
+                    LOGGER.error("Get content error:" + e.getMessage());
                 }
-                if (anchor.asText().trim().contains("法律文书样式")){
-                    continue;
-                }
-                HtmlPage clickPage = anchor.click();
-                Thread.sleep(3000);
-                HtmlDivision content = getContentPage(clickPage);
-                this.crawUrl(anchor.asText(), content);
-            } catch (Exception e) {
-                LOGGER.error("Get content error:" + e.getMessage());
             }
+        }finally {
+            client.close();
         }
     }
 
@@ -77,10 +81,11 @@ public class WanfangdataSpider extends LawSpider {
         HtmlDivision content = null;
         try {
             content = (HtmlDivision) nextClickPage.getByXPath("/html/body/div[2]/div[2]/div[2]").get(0);
+            return content;
         } catch (Exception e) {
             LOGGER.error("Get content page error: " + e.getMessage());
+            return null;
         }
-        return content;
     }
 
     //获取带爬取的url区域
@@ -253,10 +258,8 @@ public class WanfangdataSpider extends LawSpider {
         int count = 0;
         int page = 0;
         //遍历当前页
-        HtmlAnchor nextPageAnchor = null;
-        boolean hasNextPage = false;
-        HtmlPage nextClickPage = null;
         do {
+            HtmlAnchor nextPageAnchor = null;
             for (int i = 0; i < currentClickAnchorNodes.size(); i++) {
                 HtmlAnchor contentAnchor = (HtmlAnchor) currentClickAnchorNodes.get(i);
                 if (!isPageNext(contentAnchor.asText()) && contentAnchor.getAttribute("class").trim().equals("title")) {
@@ -272,43 +275,38 @@ public class WanfangdataSpider extends LawSpider {
                 }
             }
             if (nextPageAnchor == null) {
-                hasNextPage = false;
+                break;
             } else {
-                hasNextPage = true;
                 page++;
                 count = 0;
-                HtmlPage tempNextClickPage = null;
+                HtmlPage nextClickPage = null;
                 try {
-                    tempNextClickPage = nextPageAnchor.click();
-                    Thread.sleep(2000);
-                    HtmlDivision content = getContentPage(tempNextClickPage);
+                    nextClickPage = nextPageAnchor.click();
+                    Thread.sleep(1300);
+                    HtmlDivision content = getContentPage(nextClickPage);
                     if(content == null){
                         Thread.sleep(2000);
-                        content = getContentPage(tempNextClickPage);
+                        content = getContentPage(nextClickPage);
                     }
                     if(content != null){
                         if (content.asXml().equals(clickPageHtml)) {
                             break;
                         }
                         clickPageHtml = content.asXml();
-                        currentClickAnchorNodes.clear();
                         currentClickAnchorNodes = content.getElementsByTagName("a");
-                        nextPageAnchor = null;
-                        nextClickPage = tempNextClickPage;
                     }else {
                         LOGGER.error("Connect server wait 4 seconds no response content!");
-                        content = getContentPage(nextClickPage);
-                        currentClickAnchorNodes = content.getElementsByTagName("a");
-                        nextPageAnchor = null;
+                        break;
                     }
                 } catch (Exception e) {
                     LOGGER.error("Deep craw content error: " + e.getMessage());
+                    break;
                 }finally {
-                    if(tempNextClickPage != null){
-                        tempNextClickPage.cleanUp();
+                    if(nextClickPage != null){
+                        nextClickPage.cleanUp();
                     }
                 }
             }
-        } while (hasNextPage);
+        } while (true);
     }
 }

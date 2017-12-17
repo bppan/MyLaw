@@ -18,7 +18,7 @@ public class MainWanfangdataSpider {
 //        urlFieldXpath.add("/html/body/div[4]/div[1]/div[2]/div");
         urlFieldXpath.add("/html/body/div[4]/div[2]/div[2]/div");
         spider.setXpathList(urlFieldXpath);
-//        spider.crawManySoureceUrlField();
-        spider.doCraw();
+        spider.crawManySoureceUrlField();
+//        spider.doCraw();
     }
 }
