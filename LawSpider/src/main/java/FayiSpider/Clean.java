@@ -1,6 +1,7 @@
 package FayiSpider;
 
 import Interface.LawClean;
+import Interface.LawSpider;
 import org.bson.Document;
 import org.jsoup.Jsoup;
 
@@ -28,18 +29,14 @@ public class Clean extends LawClean {
     }
 
     public void cleanContent(Document law) {
-        String html = law.getString("rawHtml");
-        org.jsoup.nodes.Document doc = Jsoup.parse(html);
-        if (!FayiSpider.hasNextpage(doc)) {
+        if (isValid(law)) {
             law.put("category", "");
             super.cleanContent(law);
         }
     }
 
     public void saveToCleanCollection(Document law) {
-        String html = law.getString("rawHtml");
-        org.jsoup.nodes.Document doc = Jsoup.parse(html);
-        if (!FayiSpider.hasNextpage(doc)) {
+        if (isValid(law)) {
             super.saveToCleanCollection(law);
         }
     }
@@ -65,5 +62,14 @@ public class Clean extends LawClean {
         return updateContent.toString();
     }
 
-
+    public boolean isValid(Document law) {
+        String html = law.getString("rawHtml");
+        org.jsoup.nodes.Document doc = Jsoup.parse(html);
+        String content = getContentHtmlBySelect(html);
+        String cleanHtml = LawSpider.cleanHtml(content);
+        if (!cleanHtml.contains("此文章仅供VIP会员浏览") && !FayiSpider.hasNextpage(doc)) {
+            return true;
+        }
+        return false;
+    }
 }
