@@ -55,6 +55,7 @@ public abstract class LawClean {
             while (cursor.hasNext()) {
                 Document crawjob = cursor.next();
                 String url = crawjob.getString("url");
+                LOGGER.info("do clean url: " + url);
                 String category = crawjob.getString("title");
                 try {
                     doDocument(url, category);

@@ -2,6 +2,8 @@ package FayiSpider;
 
 import Interface.LawClean;
 import Interface.LawSpider;
+import Log.LawLogger;
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.jsoup.Jsoup;
 
@@ -15,6 +17,7 @@ import org.jsoup.Jsoup;
  */
 public class Clean extends LawClean {
 
+    private static Logger LOGGER = LawLogger.getLawLogger(Clean.class);
     public Clean(String crawJobCollection, String lawCollection, String cleanCollection) {
         super(crawJobCollection, lawCollection, cleanCollection);
     }
@@ -32,12 +35,16 @@ public class Clean extends LawClean {
         if (isValid(law)) {
             law.put("category", "");
             super.cleanContent(law);
+        }else {
+            LOGGER.info("this law is unvaild...");
         }
     }
 
     public void saveToCleanCollection(Document law) {
         if (isValid(law)) {
             super.saveToCleanCollection(law);
+        }else {
+            LOGGER.info("this law is unvaild...");
         }
     }
 
