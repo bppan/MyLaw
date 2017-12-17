@@ -4,8 +4,6 @@ import Interface.LawClean;
 import org.bson.Document;
 import org.jsoup.Jsoup;
 
-import java.util.List;
-
 /**
  * Description：
  * Author: Administrator

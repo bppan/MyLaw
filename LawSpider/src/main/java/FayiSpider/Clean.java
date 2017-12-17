@@ -34,6 +34,8 @@ public class Clean extends LawClean {
     public void cleanContent(Document law) {
         if (isValid(law)) {
             law.put("category", "");
+            law.put("timeless", "现行有效");
+            law.put("level", "法律法规");
             super.cleanContent(law);
         }else {
             LOGGER.info("this law is unvaild...");
@@ -46,12 +48,6 @@ public class Clean extends LawClean {
         }else {
             LOGGER.info("this law is unvaild...");
         }
-    }
-
-    public void updateDocumentContent(Document law) {
-        law.put("timeless", "现行有效");
-        law.put("level", "法律法规");
-        super.updateDocumentContent(law);
     }
 
     public String getCleanContent(String cleanHtml) {
