@@ -1,15 +1,13 @@
-package ChinalaweduSpider;
+package FayiSpider;
 
 import Interface.LawClean;
 import org.bson.Document;
 import org.jsoup.Jsoup;
 
-import java.util.List;
-
 /**
  * Description：
  * Author: Administrator
- * Created:  2017/12/11 17:10
+ * Created:  2017/12/17 10:34
  * Copyright: Copyright (c) 2017
  * Version: 0.0.1
  * Modified By:
@@ -23,10 +21,33 @@ public class Clean extends LawClean {
     public String getContentHtmlBySelect(String html) {
         try {
             org.jsoup.nodes.Document doc = Jsoup.parse(html);
-            return doc.select("#fontzoom").first().html();
+            return doc.select("#articleContnet").first().html();
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public void cleanContent(Document law) {
+        String html = law.getString("rawHtml");
+        org.jsoup.nodes.Document doc = Jsoup.parse(html);
+        if (!FayiSpider.hasNextpage(doc)) {
+            law.put("category", "");
+            super.cleanContent(law);
+        }
+    }
+
+    public void saveToCleanCollection(Document law) {
+        String html = law.getString("rawHtml");
+        org.jsoup.nodes.Document doc = Jsoup.parse(html);
+        if (!FayiSpider.hasNextpage(doc)) {
+            super.saveToCleanCollection(law);
+        }
+    }
+
+    public void updateDocumentContent(Document law) {
+        law.put("timeless", "现行有效");
+        law.put("level", "法律法规");
+        super.updateDocumentContent(law);
     }
 
     public String getCleanContent(String cleanHtml) {
@@ -44,10 +65,5 @@ public class Clean extends LawClean {
         return updateContent.toString();
     }
 
-    public void updateDocumentContent(Document law) {
-        law.put("timeless", "现行有效");
-        law.put("level", "法律法规");
-        super.updateDocumentContent(law);
-    }
 
 }

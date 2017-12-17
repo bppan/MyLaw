@@ -4,7 +4,6 @@ import CrawJob.CrawJob;
 import Log.LawLogger;
 import Mongo.LawArticle;
 import Mongo.LawDocument;
-import WebCraw.HtmlUnitClient;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomNodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -43,11 +42,93 @@ public abstract class LawSpider extends Spider {
         this.setLawDocumen(lawCollectionName);
     }
 
+    public static String cleanHtml(String html) {
+        String result = html;
+        String regEx_return = "\t|\r|\n";//定义空格回车换行符
+        Pattern p_return = Pattern.compile(regEx_return, Pattern.CASE_INSENSITIVE);
+        Matcher m_return = p_return.matcher(result);
+        result = m_return.replaceAll("").replaceAll("　", " "); // 过滤空格回车标签
+
+        String regEx_html = "<br>|<br />|<br/>|</p>|</div>|</li>"; // 定义HTML标签的正则表达式
+        Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+        Matcher m_html = p_html.matcher(result);
+        result = m_html.replaceAll("\n"); // 过滤html标签
+
+        String regEx2_html = "<[^>]+>"; // 定义HTML标签的正则表达式
+        Pattern p2_html = Pattern.compile(regEx2_html, Pattern.CASE_INSENSITIVE);
+        Matcher m2_html = p2_html.matcher(result);
+        result = m2_html.replaceAll(""); // 过滤html标签
+
+        result = result.replaceAll(" +", " ").trim(); // 过滤多个空格为一个
+        result = result.replaceAll(" ", "");
+
+        result = result.replaceAll("&nbsp;", "");
+
+        return result;
+    }
+
+    public static List<LawArticle> getLawArticleAndParagraph(String cleanHtml) {
+        String[] result = cleanHtml.split("\n");
+        String zhang = "第[一二三四五六七八九十百千万]+章";//定义章数
+        String tiao = "第[一二三四五六七八九十百千万]+条";//定义条数
+        String xiang = "（[一二三四五六七八九十百千万]+）";//定义项数
+        boolean tiao_in = false;
+        String current_kuan = "";
+        List<LawArticle> lawArticleList = new ArrayList<LawArticle>();
+        LawArticle currentLaw = new LawArticle();
+        for (int i = 0; i < result.length; i++) {
+            String par = result[i].trim();
+            Pattern regEx_zhang = Pattern.compile(zhang, Pattern.CASE_INSENSITIVE);
+            Matcher m_zhang = regEx_zhang.matcher(par);
+            if (m_zhang.find()) {
+                continue;
+            }
+            if (!par.isEmpty()) {
+                Pattern regEx_tiao = Pattern.compile(tiao, Pattern.CASE_INSENSITIVE);
+                Matcher m_tiao = regEx_tiao.matcher(par);
+
+                Pattern regEx_tiao_xiang = Pattern.compile(xiang, Pattern.CASE_INSENSITIVE);
+                Matcher m_tiao_xiang = regEx_tiao_xiang.matcher(par);
+
+                if (m_tiao.find() && m_tiao.start() == 0) {
+                    if (!tiao_in) {
+                        tiao_in = true;
+                    }
+                    if (!current_kuan.isEmpty()) {
+                        currentLaw.getParagraph().add(current_kuan);
+                        lawArticleList.add(currentLaw);
+                    }
+
+                    LawArticle law = new LawArticle();
+                    String name = par.substring(m_tiao.start(), m_tiao.end());
+                    law.setName(name);
+                    current_kuan = par.substring(m_tiao.end(), par.length()).trim();
+                    currentLaw = law;
+                    continue;
+                }
+
+                if (m_tiao_xiang.find() && tiao_in && m_tiao_xiang.start() == 0) {
+                    current_kuan += par;
+                    continue;
+                }
+                if (tiao_in) {
+                    if (!current_kuan.isEmpty()) {
+                        currentLaw.getParagraph().add(current_kuan);
+                    }
+                    current_kuan = par.trim();
+                }
+            }
+        }
+        currentLaw.getParagraph().add(current_kuan);
+        lawArticleList.add(currentLaw);
+        return lawArticleList;
+    }
+
     //模拟人工翻页等待时间
-    public synchronized int getRandomWaitTime(int left, int right){
-        if(left <= right){
+    public synchronized int getRandomWaitTime(int left, int right) {
+        if (left <= right) {
             return (int) (left + Math.random() * (right - left));
-        }else {
+        } else {
             return 0;
         }
     }
@@ -79,12 +160,12 @@ public abstract class LawSpider extends Spider {
     //添加url
     @Override
     public boolean addUrl(String title, String url) {
-        if(CrawJob.addJob(getCrawJob().getCrawJobcollection(), title, url)){
+        if (CrawJob.addJob(getCrawJob().getCrawJobcollection(), title, url)) {
             //如果有等待的线程，则唤醒
             if (waitCrawHtmlThreadCount > 0) {
                 synchronized (signal) {
                     //双重检查
-                    if(waitCrawHtmlThreadCount > 0){
+                    if (waitCrawHtmlThreadCount > 0) {
                         LOGGER.info("Wake up thread，current waiting thread num:" + (waitCrawHtmlThreadCount - 1));
                         waitCrawHtmlThreadCount--;
                         signal.notify();
@@ -196,86 +277,6 @@ public abstract class LawSpider extends Spider {
         for (String xpath : this.xpathList) {
             crawOneSoureceUrlField(xpath);
         }
-    }
-
-    public static String cleanHtml(String html) {
-        String result = html;
-        String regEx_return = "\t|\r|\n";//定义空格回车换行符
-        Pattern p_return = Pattern.compile(regEx_return, Pattern.CASE_INSENSITIVE);
-        Matcher m_return = p_return.matcher(result);
-        result = m_return.replaceAll("").replaceAll("　", " "); // 过滤空格回车标签
-
-        String regEx_html = "<br>|<br />|<br/>|</p>|</div>|</li>"; // 定义HTML标签的正则表达式
-        Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
-        Matcher m_html = p_html.matcher(result);
-        result = m_html.replaceAll("\n"); // 过滤html标签
-
-        String regEx2_html = "<[^>]+>"; // 定义HTML标签的正则表达式
-        Pattern p2_html = Pattern.compile(regEx2_html, Pattern.CASE_INSENSITIVE);
-        Matcher m2_html = p2_html.matcher(result);
-        result = m2_html.replaceAll(""); // 过滤html标签
-
-        result = result.replaceAll(" +", " ").trim(); // 过滤多个空格为一个
-        result = result.replaceAll(" ", "");
-
-        return result;
-    }
-
-    public static List<LawArticle> getLawArticleAndParagraph(String cleanHtml) {
-        String[] result = cleanHtml.split("\n");
-        String zhang = "第[一二三四五六七八九十百千万]+章";//定义章数
-        String tiao = "第[一二三四五六七八九十百千万]+条";//定义条数
-        String xiang = "（[一二三四五六七八九十百千万]+）";//定义项数
-        boolean tiao_in = false;
-        String current_kuan = "";
-        List<LawArticle> lawArticleList = new ArrayList<LawArticle>();
-        LawArticle currentLaw = new LawArticle();
-        for (int i = 0; i < result.length; i++) {
-            String par = result[i].trim();
-            Pattern regEx_zhang = Pattern.compile(zhang, Pattern.CASE_INSENSITIVE);
-            Matcher m_zhang = regEx_zhang.matcher(par);
-            if(m_zhang.find()){
-                continue;
-            }
-            if (!par.isEmpty()) {
-                Pattern regEx_tiao = Pattern.compile(tiao, Pattern.CASE_INSENSITIVE);
-                Matcher m_tiao = regEx_tiao.matcher(par);
-
-                Pattern regEx_tiao_xiang = Pattern.compile(xiang, Pattern.CASE_INSENSITIVE);
-                Matcher m_tiao_xiang = regEx_tiao_xiang.matcher(par);
-
-                if (m_tiao.find() && m_tiao.start() == 0) {
-                    if (!tiao_in) {
-                        tiao_in = true;
-                    }
-                    if (!current_kuan.isEmpty()) {
-                        currentLaw.getParagraph().add(current_kuan);
-                        lawArticleList.add(currentLaw);
-                    }
-
-                    LawArticle law = new LawArticle();
-                    String name = par.substring(m_tiao.start(), m_tiao.end());
-                    law.setName(name);
-                    current_kuan = par.substring(m_tiao.end(), par.length()).trim();
-                    currentLaw = law;
-                    continue;
-                }
-
-                if (m_tiao_xiang.find() && tiao_in && m_tiao_xiang.start() == 0) {
-                    current_kuan += par;
-                    continue;
-                }
-                if (tiao_in) {
-                    if (!current_kuan.isEmpty()) {
-                        currentLaw.getParagraph().add(current_kuan);
-                    }
-                    current_kuan = par.trim();
-                }
-            }
-        }
-        currentLaw.getParagraph().add(current_kuan);
-        lawArticleList.add(currentLaw);
-        return lawArticleList;
     }
 
     public Document getJsoupConnection(String htmlUrl) throws IOException {

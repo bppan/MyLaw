@@ -9,7 +9,7 @@ package ChinacourtSpider;
  * Modified By:
  */
 public class Clean {
-    public void main(String[] args){
+    public void main(String[] args) {
 
     }
 }

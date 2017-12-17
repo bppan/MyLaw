@@ -28,6 +28,12 @@ public abstract class LawClean {
     private MongoCollection<Document> lawCollecion;
     private MongoCollection<Document> cleanCollection;
 
+    public LawClean(String crawJobCollection, String lawCollection, String cleanCollection) {
+        this.crawJobcollection = mongoDB.getCollection(crawJobCollection);
+        this.lawCollecion = mongoDB.getCollection(lawCollection);
+        this.cleanCollection = mongoDB.getCollection(cleanCollection);
+    }
+
     public MongoCollection<Document> getCrawJobcollection() {
         return crawJobcollection;
     }
@@ -40,147 +46,183 @@ public abstract class LawClean {
         return cleanCollection;
     }
 
-    public LawClean(String crawJobCollection, String lawCollection, String cleanCollection) {
-        this.crawJobcollection = mongoDB.getCollection(crawJobCollection);
-        this.lawCollecion = mongoDB.getCollection(lawCollection);
-        this.cleanCollection = mongoDB.getCollection(cleanCollection);
-    }
-
     public void doClean() {
-        FindIterable<Document> iterables = this.crawJobcollection.find();
+        FindIterable<Document> iterables = getCrawJobcollection().find().noCursorTimeout(true);
         MongoCursor<Document> cursor = iterables.iterator();
         long num = 0;
-        while (cursor.hasNext()) {
-            Document crawjob = cursor.next();
-            String url = crawjob.getString("url");
-            String category = crawjob.getString("title");
-            try {
-                doDocument(url, category);
-                num++;
-            } catch (Exception e) {
-                LOGGER.error("Do document error: " + e.getMessage());
+        try {
+            while (cursor.hasNext()) {
+                Document crawjob = cursor.next();
+                String url = crawjob.getString("url");
+                String category = crawjob.getString("title");
+                try {
+                    doDocument(url, category);
+                    num++;
+                } catch (Exception e) {
+                    LOGGER.error("Do document error: " + e.getMessage());
+                }
+                LOGGER.info("doClean clean num: " + num);
             }
-            LOGGER.info("doClean clean num: " + num);
-        }
-        doCleanRepeat();
-    }
-
-    public void doCleanRepeat() {
-        FindIterable<Document> iterables = this.lawCollecion.find();
-        MongoCursor<Document> cursor = iterables.iterator();
-        long num = 0;
-        while (cursor.hasNext()) {
-            Document law = cursor.next();
-            try {
-                saveToCleanCollection(law);
-                num++;
-            } catch (Exception e) {
-                LOGGER.error("Do document error: " + e.getMessage());
-            }
-            LOGGER.info("doCleanRepeat clean num: " + num);
+            doCleanRepeat();
+        } catch (Exception e) {
+            LOGGER.error("do clean find error: " + e.getMessage());
+        } finally {
+            cursor.close();
         }
     }
 
     public void doDocument(String url, String category) {
-        FindIterable<Document> iterables = this.lawCollecion.find(new Document("url", url));
+        FindIterable<Document> iterables = getLawCollecion().find(new Document("url", url)).noCursorTimeout(true);
         if (iterables.first() == null) {
             LOGGER.warn("No exits in law url:" + url);
-            return;
-        }else {
+        } else {
             MongoCursor<Document> cursor = iterables.iterator();
-            while (cursor.hasNext()) {
-                Document law = cursor.next();
-                cleanContent(law, category);
+            try {
+                while (cursor.hasNext()) {
+                    Document law = cursor.next();
+                    law.put("category", category);
+                    cleanContent(law);
+                }
+            } finally {
+                cursor.close();
             }
         }
     }
-    public void cleanContent(Document law, String category){
-        String html = law.getString("rawHtml");
-        String content = getContentHtmlByselect(html);
-        String cleanHtml = LawSpider.cleanHtml(content);
-        List<LawArticle> articleList = LawSpider.getLawArticleAndParagraph(cleanHtml);
-        List<Document> interlDocuments = LawDocument.getArticleDocument(articleList);
 
-        String updateContent = getCleanContent(cleanHtml);
-        updateDocumentContent(category, updateContent, interlDocuments, law);
+    public void doCleanRepeat() {
+        FindIterable<Document> iterables = getLawCollecion().find().noCursorTimeout(true);
+        MongoCursor<Document> cursor = iterables.iterator();
+        try {
+            long num = 0;
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                try {
+                    saveToCleanCollection(law);
+                    num++;
+                } catch (Exception e) {
+                    LOGGER.error("Do document error: " + e.getMessage());
+                }
+                LOGGER.info("doCleanRepeat clean num: " + num);
+            }
+        } finally {
+            cursor.close();
+        }
     }
 
-    public abstract String getContentHtmlByselect(String html);
+    public void cleanContent(Document law) {
+        String html = law.getString("rawHtml");
+        String content = getContentHtmlBySelect(html);
+        String cleanHtml = LawSpider.cleanHtml(content);
+        String updateContent = getCleanContent(cleanHtml);
 
-    public abstract String getCleanContent(String cleanHtml);
+        List<LawArticle> articleList = LawSpider.getLawArticleAndParagraph(updateContent);
+        List<Document> interlDocuments = LawDocument.getArticleDocument(articleList);
 
-    public abstract void updateDocumentContent(String category, String content, List<Document> interlDocuments, Document law);
+        law.put("article_num", interlDocuments.size());
+        law.put("content", updateContent);
+        law.put("articles", interlDocuments);
+
+        updateDocumentContent(law);
+    }
+
+    public abstract String getContentHtmlBySelect(String html);
+
+    public String getCleanContent(String cleanHtml) {
+        String[] contentList = cleanHtml.split("\n");
+        StringBuilder updateContent = new StringBuilder();
+        for (String contentpar : contentList) {
+            if (contentpar.isEmpty()) {
+                continue;
+            }
+            updateContent.append(contentpar.trim()).append("\n");
+        }
+        return updateContent.toString();
+    }
+
+    public void updateDocumentContent(Document law) {
+        org.bson.types.ObjectId id = law.getObjectId("_id");
+        Document filter = new Document();
+        filter.append("_id", id);
+        law.remove("_id");
+        getLawCollecion().replaceOne(filter, law);
+    }
 
     public void saveToCleanCollection(Document law) {
         String url = law.getString("url");
-        FindIterable<Document> iterables = this.cleanCollection.find(new Document("url", url));
+        FindIterable<Document> iterables = getCleanCollection().find(new Document("url", url)).noCursorTimeout(true);
         deleteAttributeURLRepeat(law, iterables);
 
-        String lawtitle = law.getString("title");
-        FindIterable<Document> iterableTitle = this.cleanCollection.find(new Document("title", lawtitle));
+        String lawTitle = law.getString("title");
+        FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true);
         deleteAttributeTitleRepeat(law, iterableTitle);
 
         String lawContent = law.getString("content");
-        FindIterable<Document> iterableContent = this.cleanCollection.find(new Document("content", lawContent));
+        FindIterable<Document> iterableContent = getCleanCollection().find(new Document("content", lawContent)).noCursorTimeout(true);
         deleteAttributeContentRepeat(law, iterableContent);
 
-        this.cleanCollection.insertOne(law);
+        getCleanCollection().insertOne(law);
     }
 
     public void deleteAttributeURLRepeat(Document law, FindIterable<Document> iterables) {
-        if (iterables.first() == null) {
-            return;
-        } else {
+        if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
-            List<Document> needDelete = new ArrayList<Document>();
-            while (cursor.hasNext()) {
-                Document cleanLaw = cursor.next();
-                String title = law.getString("title");
-                String title2 = cleanLaw.getString("title");
-                String content = law.getString("content");
-                String content2 = cleanLaw.getString("content");
-                if (title.equals(title2)) {
-                    needDelete.add(cleanLaw);
-                } else if (content.equals(content2)) {
-                    needDelete.add(cleanLaw);
+            try {
+                List<Document> needDelete = new ArrayList<Document>();
+                while (cursor.hasNext()) {
+                    Document cleanLaw = cursor.next();
+                    String title = law.getString("title");
+                    String title2 = cleanLaw.getString("title");
+                    String content = law.getString("content");
+                    String content2 = cleanLaw.getString("content");
+                    if (title.equals(title2)) {
+                        needDelete.add(cleanLaw);
+                    } else if (content.equals(content2)) {
+                        needDelete.add(cleanLaw);
+                    }
                 }
+                deleteDocumentById(needDelete);
+                needDelete.clear();
+            } finally {
+                cursor.close();
             }
-            deleteDocumentById(needDelete);
-            needDelete.clear();
         }
     }
 
     public void deleteAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
-        if (iterables.first() == null) {
-            return;
-        } else {
+        if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
-            List<Document> needDelete = new ArrayList<Document>();
-            while (cursor.hasNext()) {
-                Document cleanLaw = cursor.next();
-                String content = law.getString("content");
-                String content2 = cleanLaw.getString("content");
-                if (content.equals(content2)) {
-                    needDelete.add(cleanLaw);
+            try {
+                List<Document> needDelete = new ArrayList<Document>();
+                while (cursor.hasNext()) {
+                    Document cleanLaw = cursor.next();
+                    String content = law.getString("content");
+                    String content2 = cleanLaw.getString("content");
+                    if (content.equals(content2)) {
+                        needDelete.add(cleanLaw);
+                    }
                 }
+                deleteDocumentById(needDelete);
+                needDelete.clear();
+            } finally {
+                cursor.close();
             }
-            deleteDocumentById(needDelete);
-            needDelete.clear();
         }
     }
 
     public void deleteAttributeContentRepeat(Document law, FindIterable<Document> iterables) {
-        if (iterables.first() == null) {
-            return;
-        } else {
+        if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
-            List<Document> needDelete = new ArrayList<Document>();
-            while (cursor.hasNext()) {
-                Document cleanLaw = cursor.next();
-                needDelete.add(cleanLaw);
+            try {
+                List<Document> needDelete = new ArrayList<Document>();
+                while (cursor.hasNext()) {
+                    Document cleanLaw = cursor.next();
+                    needDelete.add(cleanLaw);
+                }
+                deleteDocumentById(needDelete);
+                needDelete.clear();
+            } finally {
+                cursor.close();
             }
-            deleteDocumentById(needDelete);
-            needDelete.clear();
         }
     }
 
@@ -188,7 +230,7 @@ public abstract class LawClean {
         for (Document deleteLaw : needDelete) {
             Document filter = new Document();
             filter.append("_id", deleteLaw.getObjectId("_id"));
-            this.cleanCollection.deleteOne(filter);
+            getCleanCollection().deleteOne(filter);
         }
     }
 }
