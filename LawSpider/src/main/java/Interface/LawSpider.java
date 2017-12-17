@@ -69,8 +69,8 @@ public abstract class LawSpider extends Spider {
 
     public static List<LawArticle> getLawArticleAndParagraph(String cleanHtml) {
         String[] result = cleanHtml.split("\n");
-        String zhang = "第[一二三四五六七八九十百千万]+章";//定义章数
-        String tiao = "第[一二三四五六七八九十百千万]+条";//定义条数
+        String zhang = "第[零一二三四五六七八九十百千万]+章";//定义章数
+        String tiao = "第[零一二三四五六七八九十百千万]+条";//定义条数
         String xiang = "（[一二三四五六七八九十百千万]+）";//定义项数
         boolean tiao_in = false;
         String current_kuan = "";
