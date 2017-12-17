@@ -47,7 +47,8 @@ public abstract class LawClean {
     }
 
     public void doClean() {
-        FindIterable<Document> iterables = getCrawJobcollection().find().noCursorTimeout(true);
+        LOGGER.info("Begin do clean...");
+        FindIterable<Document> iterables = getCrawJobcollection().find().noCursorTimeout(true).batchSize(10000);
         MongoCursor<Document> cursor = iterables.iterator();
         long num = 0;
         try {
@@ -72,7 +73,7 @@ public abstract class LawClean {
     }
 
     public void doDocument(String url, String category) {
-        FindIterable<Document> iterables = getLawCollecion().find(new Document("url", url)).noCursorTimeout(true);
+        FindIterable<Document> iterables = getLawCollecion().find(new Document("url", url)).noCursorTimeout(true).batchSize(10000);
         if (iterables.first() == null) {
             LOGGER.warn("No exits in law url:" + url);
         } else {
@@ -90,7 +91,7 @@ public abstract class LawClean {
     }
 
     public void doCleanRepeat() {
-        FindIterable<Document> iterables = getLawCollecion().find().noCursorTimeout(true);
+        FindIterable<Document> iterables = getLawCollecion().find().noCursorTimeout(true).batchSize(10000);
         MongoCursor<Document> cursor = iterables.iterator();
         try {
             long num = 0;
@@ -149,15 +150,15 @@ public abstract class LawClean {
 
     public void saveToCleanCollection(Document law) {
         String url = law.getString("url");
-        FindIterable<Document> iterables = getCleanCollection().find(new Document("url", url)).noCursorTimeout(true);
+        FindIterable<Document> iterables = getCleanCollection().find(new Document("url", url)).noCursorTimeout(true).batchSize(10000);
         deleteAttributeURLRepeat(law, iterables);
 
         String lawTitle = law.getString("title");
-        FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true);
+        FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true).batchSize(10000);
         deleteAttributeTitleRepeat(law, iterableTitle);
 
         String lawContent = law.getString("content");
-        FindIterable<Document> iterableContent = getCleanCollection().find(new Document("content", lawContent)).noCursorTimeout(true);
+        FindIterable<Document> iterableContent = getCleanCollection().find(new Document("content", lawContent)).noCursorTimeout(true).batchSize(10000);
         deleteAttributeContentRepeat(law, iterableContent);
 
         getCleanCollection().insertOne(law);

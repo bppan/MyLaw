@@ -1,4 +1,4 @@
-package ChinalaweduSpider;
+package FayiSpider;
 
 /**
  * Description：
@@ -8,9 +8,9 @@ package ChinalaweduSpider;
  * Version: 0.0.1
  * Modified By:
  */
-public class Mainclean {
+public class MainFayiClean {
     public static void main(String[] args) {
-        Clean clean = new Clean("chinaLawedu_crawJob", "chinaLawedu_law", "chinaLawedu_clean");
+        Clean clean = new Clean("fayi_crawJob", "fayi_law", "fayi_clean");
         clean.doClean();
     }
 }
