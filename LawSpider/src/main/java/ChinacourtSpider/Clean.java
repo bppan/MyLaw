@@ -32,29 +32,13 @@ public class Clean extends LawClean {
     }
 
     public void cleanContent(Document law) {
-        if (isValid(law)) {
-            law.put("level", "法律法规");
-            law.put("category", "");
-            law.put("timeless", "现行有效");
-            super.cleanContent(law);
-        }else {
-            LOGGER.info("this law is unvaild...");
-        }
-    }
-
-    public void saveToCleanCollection(Document law) {
-        if (isValid(law)) {
-            super.saveToCleanCollection(law);
-        } else {
-            LOGGER.info("this law is unvaild...");
-        }
-    }
-
-    public boolean isValid(Document law) {
         String category = law.getString("category");
-        if (category.trim().equals("国家法律法规") || category.trim().equals("地方法规")) {
-            return true;
+        law.put("level", "法律法规");
+        law.put("timeless", "现行有效");
+        if(category.equals("司法解释")){
+            law.put("level", "司法解释");
         }
-        return false;
+        super.cleanContent(law);
     }
+
 }
