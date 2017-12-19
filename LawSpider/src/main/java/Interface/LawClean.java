@@ -133,7 +133,7 @@ public abstract class LawClean {
         String[] contentList = cleanHtml.split("\n");
         StringBuilder updateContent = new StringBuilder();
         for (String contentpar : contentList) {
-            if (contentpar.isEmpty()) {
+            if (contentpar.trim().isEmpty()) {
                 continue;
             }
             updateContent.append(contentpar.trim()).append("\n");
