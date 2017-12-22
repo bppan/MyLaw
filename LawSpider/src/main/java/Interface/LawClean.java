@@ -208,7 +208,7 @@ public abstract class LawClean {
                         needDelete.add(cleanLaw);
                     }
                 }
-                deleteDocumentById(needDelete);
+                deleteDocumentMonyById(getCleanCollection(), needDelete);
                 needDelete.clear();
             } finally {
                 cursor.close();
@@ -229,7 +229,7 @@ public abstract class LawClean {
                         needDelete.add(cleanLaw);
                     }
                 }
-                deleteDocumentById(needDelete);
+                deleteDocumentMonyById(getCleanCollection(), needDelete);
                 needDelete.clear();
             } finally {
                 cursor.close();
@@ -246,7 +246,7 @@ public abstract class LawClean {
                     Document cleanLaw = cursor.next();
                     needDelete.add(cleanLaw);
                 }
-                deleteDocumentById(needDelete);
+                deleteDocumentMonyById(getCleanCollection(), needDelete);
                 needDelete.clear();
             } finally {
                 cursor.close();
@@ -254,11 +254,16 @@ public abstract class LawClean {
         }
     }
 
-    private void deleteDocumentById(List<Document> needDelete) {
+    public void deleteDocumentMonyById(MongoCollection<Document> collection, List<Document> needDelete) {
         for (Document deleteLaw : needDelete) {
             Document filter = new Document();
             filter.append("_id", deleteLaw.getObjectId("_id"));
-            getCleanCollection().deleteOne(filter);
+            collection.deleteOne(filter);
         }
+    }
+    public void deleteDocumentOneById(MongoCollection<Document> collection, Document needDelete) {
+        Document filter = new Document();
+        filter.append("_id", needDelete.getObjectId("_id"));
+        collection.deleteOne(filter);
     }
 }

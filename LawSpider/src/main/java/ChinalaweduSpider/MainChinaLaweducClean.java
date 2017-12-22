@@ -10,7 +10,7 @@ package ChinalaweduSpider;
  */
 public class MainChinaLaweducClean {
     public static void main(String[] args) {
-        Clean clean = new Clean("chinaLawedu_crawJob", "chinaLawedu_law", "chinaLawedu_clean");
+        Clean clean = new Clean("chinaLawedu_crawJob", "chinaLawedu_law", "");
         clean.doClean();
     }
 }
