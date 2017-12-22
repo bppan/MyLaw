@@ -41,10 +41,6 @@ public class PkulawClean extends LawClean {
 
     public void cleanContent(Document law) {
         String html = law.getString("rawHtml");
-        String level = law.getString("category");
-        System.out.println(level);
-        int index = level.indexOf('(');
-        law.put("level", level.substring(0, index));
         org.jsoup.nodes.Document doc = Jsoup.parse(html);
         Element elementTbody = doc.select("#tbl_content_main > tbody").first();
         Elements elements = elementTbody.getElementsByTag("tr");
@@ -76,6 +72,10 @@ public class PkulawClean extends LawClean {
             if (isRightAttribute(nodes, "【法规类别】")) {
                 String category = getContentAttribute(nodes, "【法规类别】");
                 law.put("category", category);
+            }
+            if (isRightAttribute(nodes, "【效力级别】")) {
+                String level = getContentAttribute(nodes, "【效力级别】");
+                law.put("level", level);
             }
         }
         super.cleanContent(law);
