@@ -33,6 +33,7 @@ public class PkulawClean extends LawClean {
         try {
             org.jsoup.nodes.Document doc = Jsoup.parse(html);
             doc.select("#div_content > font").first().remove();
+            doc.select(".TiaoYinV2").remove();
             return doc.select("#div_content").first().html();
         } catch (Exception e) {
             return "";
