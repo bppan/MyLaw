@@ -71,6 +71,7 @@ public abstract class LawClean {
         } finally {
             cursor.close();
         }
+        doCleanRepeat();
     }
 
     public void doDocument(String url, String category) {

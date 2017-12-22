@@ -9,8 +9,7 @@ package ChinacourtSpider;
  */
 public class MainChinacourtClean {
     public static void main(String[] args) {
-        Clean clean = new Clean("chinacourt_crawJob", "chinacourt_law", "");
+        Clean clean = new Clean("chinacourt_crawJob", "chinacourt_law", "chinacourt_clean");
         clean.doClean();
-//        clean.doCleanRepeat();
     }
 }

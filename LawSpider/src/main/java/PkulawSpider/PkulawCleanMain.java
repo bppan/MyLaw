@@ -10,7 +10,7 @@ package PkulawSpider;
  */
 public class PkulawCleanMain {
     public static void main(String[] args) {
-        PkulawClean pkulawClean = new PkulawClean("crawJob", "law", "");
+        PkulawClean pkulawClean = new PkulawClean("crawJob", "law", "pkulaw_clean");
         pkulawClean.doClean();
     }
 }

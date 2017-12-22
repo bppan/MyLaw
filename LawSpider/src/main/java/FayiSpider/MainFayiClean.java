@@ -10,7 +10,7 @@ package FayiSpider;
  */
 public class MainFayiClean {
     public static void main(String[] args) {
-        Clean clean = new Clean("fayi_crawJob", "fayi_law", "");
+        Clean clean = new Clean("fayi_crawJob", "fayi_law", "fayi_clean");
         clean.doClean();
     }
 }

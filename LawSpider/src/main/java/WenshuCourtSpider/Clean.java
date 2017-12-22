@@ -5,6 +5,7 @@ import Interface.LawSpider;
 import Log.LawLogger;
 import Mongo.LawArticle;
 import Mongo.LawDocument;
+import SimHash.SimHash;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.jsoup.Jsoup;
@@ -85,6 +86,13 @@ public class Clean extends LawClean {
         law.put("article_num", interlDocuments.size());
         law.put("content", updateContent);
         law.put("articles", interlDocuments);
+
+        SimHash simHash = new SimHash(updateContent);
+        law.append("simHash", simHash.getStrSimHash());
+        law.append("simHashPart1", simHash.getStrSimHash().substring(0, 16));
+        law.append("simHashPart2", simHash.getStrSimHash().substring(16, 32));
+        law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
+        law.append("simHashPart4", simHash.getStrSimHash().substring(48, 64));
 
         updateDocumentContent(law);
     }

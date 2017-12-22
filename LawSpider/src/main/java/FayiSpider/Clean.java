@@ -6,6 +6,8 @@ import Log.LawLogger;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  * Description：
@@ -36,9 +38,25 @@ public class Clean extends LawClean {
             law.put("category", "");
             law.put("timeless", "现行有效");
             law.put("level", "法律法规");
+            String html = law.getString("rawHtml");
+            org.jsoup.nodes.Document doc = Jsoup.parse(html);
+            Elements elements = doc.select("#fontzoom > p.bh");
+            for (Element ele : elements) {
+                try {
+                    String tag = ele.childNode(0).childNode(0).toString();
+                    if (tag.trim().equals("生效日期")) {
+                        String implement_date = ele.childNode(1).toString().replace("：", "");
+                        law.put("implement_date", implement_date);
+                        break;
+                    }
+                } catch (NullPointerException e) {
+                    LOGGER.warn("No this tag..." + e.getMessage());
+                }
+            }
             super.cleanContent(law);
         }else {
-            LOGGER.info("this law is unvaild...");
+            super.deleteDocumentOneById(getLawCollecion(), law);
+            LOGGER.info("this law is unvaild deleted...");
         }
     }
 
@@ -46,7 +64,7 @@ public class Clean extends LawClean {
         if (isValid(law)) {
             super.saveToCleanCollection(law);
         }else {
-            LOGGER.info("this law is unvaild...");
+            LOGGER.info("this law is unvaild not save to clean collection...");
         }
     }
 
