@@ -4,6 +4,7 @@ import Log.LawLogger;
 import Mongo.LawArticle;
 import Mongo.LawDocument;
 import Mongo.MongoDB;
+import SimHash.SimHash;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -65,7 +66,6 @@ public abstract class LawClean {
                 }
                 LOGGER.info("doClean clean num: " + num);
             }
-            doCleanRepeat();
         } catch (Exception e) {
             LOGGER.error("do clean find error: " + e.getMessage());
         } finally {
@@ -123,6 +123,13 @@ public abstract class LawClean {
         law.put("article_num", interlDocuments.size());
         law.put("content", updateContent);
         law.put("articles", interlDocuments);
+        SimHash simHash = new SimHash(updateContent);
+        law.append("simHash", simHash.getStrSimHash());
+
+        law.append("simHashPart1", simHash.getStrSimHash().substring(0, 16));
+        law.append("simHashPart2", simHash.getStrSimHash().substring(16, 32));
+        law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
+        law.append("simHashPart4", simHash.getStrSimHash().substring(48, 64));
 
         updateDocumentContent(law);
     }
@@ -158,11 +165,30 @@ public abstract class LawClean {
         FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true).batchSize(10000);
         deleteAttributeTitleRepeat(law, iterableTitle);
 
-        String lawContent = law.getString("content");
-        FindIterable<Document> iterableContent = getCleanCollection().find(new Document("content", lawContent)).noCursorTimeout(true).batchSize(10000);
-        deleteAttributeContentRepeat(law, iterableContent);
+        String simHashPart1 = law.getString("simHashPart1");
+        String simHashPart2 = law.getString("simHashPart2");
+        String simHashPart3 = law.getString("simHashPart3");
+        String simHashPart4 = law.getString("simHashPart4");
+
+        FindIterable<Document> iterableContent1 = getCleanCollection().find(new Document("simHashPart1", simHashPart1)).noCursorTimeout(true).batchSize(10000);
+        deleteAttributeContentRepeat(law, iterableContent1);
+
+        FindIterable<Document> iterableContent2 = getCleanCollection().find(new Document("simHashPart2", simHashPart2)).noCursorTimeout(true).batchSize(10000);
+        deleteAttributeContentRepeat(law, iterableContent2);
+
+        FindIterable<Document> iterableContent3 = getCleanCollection().find(new Document("simHashPart3", simHashPart3)).noCursorTimeout(true).batchSize(10000);
+        deleteAttributeContentRepeat(law, iterableContent3);
+
+        FindIterable<Document> iterableContent4 = getCleanCollection().find(new Document("simHashPart4", simHashPart4)).noCursorTimeout(true).batchSize(10000);
+        deleteAttributeContentRepeat(law, iterableContent4);
 
         getCleanCollection().insertOne(law);
+    }
+
+    public boolean isSimilityContent(String c1, String c2){
+        SimHash simHash1 = new SimHash(c1);
+        SimHash simHash2 = new SimHash(c2);
+        return simHash1.hammingDistance(simHash2) <= 3;
     }
 
     public void deleteAttributeURLRepeat(Document law, FindIterable<Document> iterables) {
@@ -178,7 +204,7 @@ public abstract class LawClean {
                     String content2 = cleanLaw.getString("content");
                     if (title.equals(title2)) {
                         needDelete.add(cleanLaw);
-                    } else if (content.equals(content2)) {
+                    } else if (isSimilityContent(content, content2)) {
                         needDelete.add(cleanLaw);
                     }
                 }
@@ -199,7 +225,7 @@ public abstract class LawClean {
                     Document cleanLaw = cursor.next();
                     String content = law.getString("content");
                     String content2 = cleanLaw.getString("content");
-                    if (content.equals(content2)) {
+                    if (isSimilityContent(content, content2)) {
                         needDelete.add(cleanLaw);
                     }
                 }
