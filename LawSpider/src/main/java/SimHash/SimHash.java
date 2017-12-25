@@ -36,6 +36,16 @@ public class SimHash {
         this.intSimHash = this.simHash();
     }
 
+    public static int hammingDistance(BigInteger intSimHash1, BigInteger intSimHash2) {
+        BigInteger x = intSimHash1.xor(intSimHash2);
+        int tot = 0;
+        while (x.signum() != 0) {
+            tot += 1;
+            x = x.and(x.subtract(new BigInteger("1")));
+        }
+        return tot;
+    }
+
     /**
      * 清除html标签
      */
@@ -147,13 +157,7 @@ public class SimHash {
      * 计算海明距离,海明距离越小说明越相似;
      */
     public int hammingDistance(SimHash other) {
-        BigInteger x = this.intSimHash.xor(other.intSimHash);
-        int tot = 0;
-        while (x.signum() != 0) {
-            tot += 1;
-            x = x.and(x.subtract(new BigInteger("1")));
-        }
-        return tot;
+        return hammingDistance(this.intSimHash, other.intSimHash);
     }
 
     public double getSemblance(SimHash s2) {

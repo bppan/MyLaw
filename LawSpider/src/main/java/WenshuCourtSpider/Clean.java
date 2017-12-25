@@ -88,7 +88,7 @@ public class Clean extends LawClean {
         law.put("articles", interlDocuments);
 
         SimHash simHash = new SimHash(updateContent);
-        law.append("simHash", simHash.getStrSimHash());
+        law.append("simHash", simHash.getIntSimHash().toString());
         law.append("simHashPart1", simHash.getStrSimHash().substring(0, 16));
         law.append("simHashPart2", simHash.getStrSimHash().substring(16, 32));
         law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
@@ -97,8 +97,8 @@ public class Clean extends LawClean {
         updateDocumentContent(law);
     }
 
-    public void saveToCleanCollection(Document law) {
-        super.saveToCleanCollection(law);
+    public boolean saveToCleanCollection(Document law) {
+        return super.saveToCleanCollection(law);
     }
 
 }

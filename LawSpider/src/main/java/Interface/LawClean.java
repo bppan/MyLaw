@@ -10,9 +10,13 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description：
@@ -100,7 +104,11 @@ public abstract class LawClean {
             while (cursor.hasNext()) {
                 Document law = cursor.next();
                 try {
-                    saveToCleanCollection(law);
+                    if (saveToCleanCollection(law)){
+                        LOGGER.info("save success law :" + law.getObjectId("_id"));
+                    }else {
+                        LOGGER.info("exists law :" + law.getObjectId("_id"));
+                    }
                     num++;
                 } catch (Exception e) {
                     LOGGER.error("Do document error: " + e.getMessage());
@@ -125,8 +133,7 @@ public abstract class LawClean {
         law.put("content", updateContent);
         law.put("articles", interlDocuments);
         SimHash simHash = new SimHash(updateContent);
-        law.append("simHash", simHash.getStrSimHash());
-
+        law.append("simHash", simHash.getIntSimHash().toString());
         law.append("simHashPart1", simHash.getStrSimHash().substring(0, 16));
         law.append("simHashPart2", simHash.getStrSimHash().substring(16, 32));
         law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
@@ -157,98 +164,108 @@ public abstract class LawClean {
         getLawCollecion().replaceOne(filter, law);
     }
 
-    public void saveToCleanCollection(Document law) {
+    public boolean saveToCleanCollection(Document law) {
         String url = law.getString("url");
         FindIterable<Document> iterables = getCleanCollection().find(new Document("url", url)).noCursorTimeout(true).batchSize(10000);
-        deleteAttributeURLRepeat(law, iterables);
+        if(haveAttributeURLRepeat(law, iterables)){
+            LOGGER.info("Url repeat :" + url);
+            return false;
+        }
 
         String lawTitle = law.getString("title");
         FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true).batchSize(10000);
-        deleteAttributeTitleRepeat(law, iterableTitle);
+        if(haveAttributeTitleRepeat(law, iterableTitle)){
+            LOGGER.info("lawTitle repeat :" + lawTitle);
+            return false;
+        }
 
         String simHashPart1 = law.getString("simHashPart1");
         String simHashPart2 = law.getString("simHashPart2");
         String simHashPart3 = law.getString("simHashPart3");
         String simHashPart4 = law.getString("simHashPart4");
 
+        Map<ObjectId, Document> haveSimilarity = new HashMap<ObjectId, Document>();
         FindIterable<Document> iterableContent1 = getCleanCollection().find(new Document("simHashPart1", simHashPart1)).noCursorTimeout(true).batchSize(10000);
-        deleteAttributeContentRepeat(law, iterableContent1);
+        haveAttributeContentRepeat(haveSimilarity, iterableContent1);
 
         FindIterable<Document> iterableContent2 = getCleanCollection().find(new Document("simHashPart2", simHashPart2)).noCursorTimeout(true).batchSize(10000);
-        deleteAttributeContentRepeat(law, iterableContent2);
+        haveAttributeContentRepeat(haveSimilarity, iterableContent2);
 
         FindIterable<Document> iterableContent3 = getCleanCollection().find(new Document("simHashPart3", simHashPart3)).noCursorTimeout(true).batchSize(10000);
-        deleteAttributeContentRepeat(law, iterableContent3);
+        haveAttributeContentRepeat(haveSimilarity, iterableContent3);
 
         FindIterable<Document> iterableContent4 = getCleanCollection().find(new Document("simHashPart4", simHashPart4)).noCursorTimeout(true).batchSize(10000);
-        deleteAttributeContentRepeat(law, iterableContent4);
+        haveAttributeContentRepeat(haveSimilarity, iterableContent4);
+
+        String simhash1 = law.getString("simHash");
+        for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
+            String simhash2 = entry.getValue().getString("simHash");
+            if(isSimilarityContent(simhash1, simhash2)){
+                LOGGER.info("content repeat :" + simhash1);
+                return false;
+            }
+        }
 
         getCleanCollection().insertOne(law);
+        return true;
     }
 
-    public boolean isSimilityContent(String c1, String c2){
-        SimHash simHash1 = new SimHash(c1);
-        SimHash simHash2 = new SimHash(c2);
-        return simHash1.hammingDistance(simHash2) <= 3;
+    public boolean isSimilarityContent(String strSimhash1, String strSimhash2){
+        BigInteger intSimhash1 = new BigInteger(strSimhash1);
+        BigInteger intSimhash2 = new BigInteger(strSimhash2);
+        return SimHash.hammingDistance(intSimhash1, intSimhash2) <= 3;
     }
 
-    public void deleteAttributeURLRepeat(Document law, FindIterable<Document> iterables) {
+    public boolean haveAttributeURLRepeat(Document law, FindIterable<Document> iterables) {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                List<Document> needDelete = new ArrayList<Document>();
+                String simhash1 = law.getString("simHash");
+                String title = law.getString("title");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
-                    String title = law.getString("title");
                     String title2 = cleanLaw.getString("title");
-                    String content = law.getString("content");
-                    String content2 = cleanLaw.getString("content");
+                    String simhash2 = cleanLaw.getString("simHash");
                     if (title.equals(title2)) {
-                        needDelete.add(cleanLaw);
-                    } else if (isSimilityContent(content, content2)) {
-                        needDelete.add(cleanLaw);
+                        return true;
+                    } else if (isSimilarityContent(simhash1, simhash2)) {
+                        return true;
                     }
                 }
-                deleteDocumentMonyById(getCleanCollection(), needDelete);
-                needDelete.clear();
             } finally {
                 cursor.close();
             }
         }
+        return false;
     }
 
-    public void deleteAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
+    public boolean haveAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                List<Document> needDelete = new ArrayList<Document>();
+                String simhash1 =  law.getString("simHash");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
-                    String content = law.getString("content");
-                    String content2 = cleanLaw.getString("content");
-                    if (isSimilityContent(content, content2)) {
-                        needDelete.add(cleanLaw);
+                    String simhash2 = cleanLaw.getString("simHash");
+                    if (isSimilarityContent(simhash1, simhash2)) {
+                        return true;
                     }
                 }
-                deleteDocumentMonyById(getCleanCollection(), needDelete);
-                needDelete.clear();
             } finally {
                 cursor.close();
             }
         }
+        return false;
     }
 
-    public void deleteAttributeContentRepeat(Document law, FindIterable<Document> iterables) {
+    public void haveAttributeContentRepeat(Map<ObjectId, Document> havesimilarity, FindIterable<Document> iterables) {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                List<Document> needDelete = new ArrayList<Document>();
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
-                    needDelete.add(cleanLaw);
+                    havesimilarity.put(cleanLaw.getObjectId("_id"), cleanLaw);
                 }
-                deleteDocumentMonyById(getCleanCollection(), needDelete);
-                needDelete.clear();
             } finally {
                 cursor.close();
             }
@@ -262,6 +279,7 @@ public abstract class LawClean {
             collection.deleteOne(filter);
         }
     }
+
     public void deleteDocumentOneById(MongoCollection<Document> collection, Document needDelete) {
         Document filter = new Document();
         filter.append("_id", needDelete.getObjectId("_id"));

@@ -60,11 +60,12 @@ public class Clean extends LawClean {
         }
     }
 
-    public void saveToCleanCollection(Document law) {
+    public boolean saveToCleanCollection(Document law) {
         if (isValid(law)) {
-            super.saveToCleanCollection(law);
+            return super.saveToCleanCollection(law);
         }else {
             LOGGER.info("this law is unvaild not save to clean collection...");
+            return false;
         }
     }
 
@@ -88,9 +89,21 @@ public class Clean extends LawClean {
         org.jsoup.nodes.Document doc = Jsoup.parse(html);
         String content = getContentHtmlBySelect(html);
         String cleanHtml = LawSpider.cleanHtml(content);
-        if (!cleanHtml.contains("此文章仅供VIP会员浏览") && !FayiSpider.hasNextpage(doc)) {
+        if (!cleanHtml.contains("此文章仅供VIP会员浏览") && !hasNextpage(doc)) {
             return true;
         }
         return false;
+    }
+
+    public boolean hasNextpage(org.jsoup.nodes.Document doc) {
+        try {
+            if (doc.select("#pe100_page_contentpage").first().childNodes().size() == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
 }
