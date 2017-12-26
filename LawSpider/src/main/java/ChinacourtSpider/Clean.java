@@ -42,7 +42,7 @@ public class Clean extends LawClean {
         String title =  law.getString("title");
         if(title == null){
             String content = law.getString("content");
-            String[] contentlist = content.split("/n");
+            String[] contentlist = content.split("\n");
             boolean find = false;
             for (String par:contentlist) {
                 if(!find && content.contains("【文件来源】")){
@@ -55,7 +55,7 @@ public class Clean extends LawClean {
                 }
             }
         }
-        
+
         super.cleanContent(law);
     }
 
