@@ -8,11 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="LawSpider" />
+        <module name="Solr" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="LawSpider" target="1.8" />
       <module name="MyLaw" target="1.8" />
+      <module name="Solr" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
