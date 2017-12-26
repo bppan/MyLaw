@@ -45,7 +45,7 @@ public class Clean extends LawClean {
             String[] contentlist = content.split("\n");
             boolean find = false;
             for (String par:contentlist) {
-                if(!find && content.contains("【文件来源】")){
+                if(!find && par.contains("【文件来源】")){
                     find = true;
                     continue;
                 }
