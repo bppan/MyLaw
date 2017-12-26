@@ -50,8 +50,8 @@ public class Clean extends LawClean {
         if (title == null) {
             String html = law.getString("rawHtml");
             org.jsoup.nodes.Document doc = Jsoup.parse(html);
-            String theTitle = doc.select("body > div:nth-child(14) > div.top-left.left > div.index-content > h1").first().childNode(0).toString();
-            law.put("title", theTitle);
+            String theTitle = doc.title();
+            law.put("title", theTitle.replace("-法律教育网", ""));
         }
         super.cleanContent(law);
     }
