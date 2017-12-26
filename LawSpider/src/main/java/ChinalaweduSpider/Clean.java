@@ -37,9 +37,23 @@ public class Clean extends LawClean {
             if (contentpar.trim().contains("责任编辑：")) {
                 continue;
             }
+            if (contentpar.trim().contains("转发分享：")) {
+                continue;
+            }
             updateContent.append(contentpar.trim()).append("\n");
         }
         return updateContent.toString();
+    }
+
+    public void cleanContent(Document law) {
+        String title = law.getString("title");
+        if (title == null) {
+            String html = law.getString("rawHtml");
+            org.jsoup.nodes.Document doc = Jsoup.parse(html);
+            String theTitle = doc.select("body > div:nth-child(14) > div.top-left.left > div.index-content > h1").first().childNode(0).toString();
+            law.put("title", theTitle);
+        }
+        super.cleanContent(law);
     }
 
     public void updateDocumentContent(Document law) {
