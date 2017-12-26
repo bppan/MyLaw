@@ -103,13 +103,13 @@ public abstract class LawClean {
             long num = 0;
             while (cursor.hasNext()) {
                 Document law = cursor.next();
+                num++;
                 try {
                     if (saveToCleanCollection(law)){
                         LOGGER.info("save success law :" + law.getObjectId("_id"));
                     }else {
                         LOGGER.info("exists law :" + law.getObjectId("_id"));
                     }
-                    num++;
                 } catch (Exception e) {
                     LOGGER.error("Do document error: " + e.getMessage());
                 }
