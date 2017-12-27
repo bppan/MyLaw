@@ -200,8 +200,9 @@ public abstract class LawClean {
         String simhash1 = law.getString("simHash");
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
             String simhash2 = entry.getValue().getString("simHash");
-            if(isSimilarityContent(simhash1, simhash2)){
-                LOGGER.info("content repeat :" + simhash1);
+            String theTitle = entry.getValue().getString("title");
+            if(isSimilarityContent(simhash1, simhash2) && lawTitle.equals(theTitle)){
+                LOGGER.info("content and title repeat :" + simhash1 + " : " + simhash2);
                 return false;
             }
         }
