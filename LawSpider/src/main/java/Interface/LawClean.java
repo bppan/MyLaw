@@ -247,8 +247,7 @@ public abstract class LawClean {
         return false;
     }
 
-    public boolean
-    haveAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
+    public boolean haveAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
