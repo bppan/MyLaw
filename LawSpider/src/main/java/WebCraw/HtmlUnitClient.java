@@ -20,9 +20,7 @@ public class HtmlUnitClient {
 
     private HtmlUnitClient() {
         LogFactory.getFactory().setAttribute("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
-        LOGGER.info("load htmlUnitClient begin...");
         this.webClient = getNewHtmlUnitClient(0);
-        LOGGER.info("load htmlUnitClient success...");
     }
 
     public static WebClient getSingletonHtmlUntiClent() {
@@ -30,6 +28,7 @@ public class HtmlUnitClient {
     }
 
     public static WebClient getNewHtmlUnitClient(int webClient) {
+        LOGGER.info("load htmlUnitClient begin...");
         WebClient newClient;
         if (webClient == 0) {
             newClient = new WebClient(BrowserVersion.CHROME);
@@ -47,6 +46,7 @@ public class HtmlUnitClient {
         newClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
         newClient.getOptions().setThrowExceptionOnScriptError(false); // js运行错误时，是否抛出异常
         newClient.getOptions().setTimeout(50000); // 设置连接超时时间 ，这里是50S。如果为0，则无限期等待
+        LOGGER.info("load htmlUnitClient success...");
         return newClient;
     }
 
