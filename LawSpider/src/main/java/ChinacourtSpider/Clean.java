@@ -59,20 +59,10 @@ public class Clean extends LawClean {
         }
 
         String title = law.getString("title");
-        if (title == null) {
-            String content = law.getString("content");
-            String[] contentlist = content.split("\n");
-            boolean find = false;
-            for (String par : contentlist) {
-                if (!find && par.contains("【文件来源】")) {
-                    find = true;
-                    continue;
-                }
-                if (find && !par.trim().isEmpty()) {
-                    law.put("title", par);
-                    break;
-                }
-            }
+        String content = law.getString("content");
+        if (title == null || content.equals(title)) {
+            LOGGER.info("find one url:" + law.getString("url"));
+            resetTitle(law, content);
         }
 
         super.cleanContent(law);
@@ -103,6 +93,47 @@ public class Clean extends LawClean {
                 Matcher m2_html = p2_html.matcher(title);
                 title = m2_html.replaceAll("").replaceAll(" ", "").trim(); // 过滤html标签
                 law.put("title", title);
+                updateDocumentContent(law);
+                LOGGER.info("current num: " + num);
+            }
+        } catch (Exception e) {
+            LOGGER.error("do clean title error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public void resetTitle(Document law, String content) {
+        String[] contentlist = content.split("\n");
+        boolean find = false;
+        for (String par : contentlist) {
+            if (!find && par.contains("【文件来源】")) {
+                find = true;
+                continue;
+            }
+            if (find && !par.trim().isEmpty()) {
+                law.put("title", par);
+                break;
+            }
+        }
+    }
+
+    public void CleanTitleAgain(String collection) {
+        MongoDB mongoDB = MongoDB.getMongoDB();
+        MongoCollection<Document> cleanLawColletion = mongoDB.getCollection(collection);
+        FindIterable<Document> iterables = cleanLawColletion.find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                num++;
+                String title = law.getString("title");
+                String content = law.getString("content");
+                if (title == null || title.length() > 300) {
+                    LOGGER.info("find one url:" + law.getString("url"));
+                    resetTitle(law, content);
+                }
                 updateDocumentContent(law);
                 LOGGER.info("current num: " + num);
             }
