@@ -38,6 +38,11 @@ public abstract class LawClean {
         this.cleanCollection = mongoDB.getCollection(cleanCollection);
     }
 
+    public LawClean(String lawCollection, String cleanCollection) {
+        this.lawCollecion = mongoDB.getCollection(lawCollection);
+        this.cleanCollection = mongoDB.getCollection(cleanCollection);
+    }
+
     public MongoCollection<Document> getCrawJobcollection() {
         return crawJobcollection;
     }
