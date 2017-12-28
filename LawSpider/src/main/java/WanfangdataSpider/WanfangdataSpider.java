@@ -1,6 +1,5 @@
 package WanfangdataSpider;
 
-import CrawJob.CrawJob;
 import Interface.LawSpider;
 import Log.LawLogger;
 import Mongo.LawArticle;
@@ -13,9 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Description：
@@ -29,9 +26,13 @@ import java.util.List;
 public class WanfangdataSpider extends LawSpider {
     private static Logger LOGGER = LawLogger.getLawLogger(WanfangdataSpider.class);
     private static WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
+    private Hashtable clientSet = new Hashtable();
 
     public WanfangdataSpider(String indexUrl, int crawHtmlthreadCount, String pkulawSpider_crawJobCollection, String pkulawSpider_lawCollection) {
         super(indexUrl, crawHtmlthreadCount, pkulawSpider_crawJobCollection, pkulawSpider_lawCollection);
+        clientSet.put(HtmlUnitClient.getNewHtmlUnitClient(0), false);
+        clientSet.put(HtmlUnitClient.getNewHtmlUnitClient(1), false);
+        clientSet.put(HtmlUnitClient.getNewHtmlUnitClient(2), false);
     }
 
     public void crawUrl(String categoryName, HtmlElement content) {
@@ -49,29 +50,52 @@ public class WanfangdataSpider extends LawSpider {
         return page;
     }
 
-    public void crawOneSoureceUrlField(String xpath) {
-        WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
-        try {
-            List<HtmlElement> anchoresNodes = getSoureceUrlField(client, xpath);
-            LOGGER.info("Get source filed url count:" + anchoresNodes.size());
-            for (int m = 6; m < anchoresNodes.size(); m++) {
-                try {
-                    HtmlAnchor anchor = (HtmlAnchor) anchoresNodes.get(m);
-                    if (anchor.asText().trim().contains("合同范本")){
-                        continue;
-                    }
-                    if (anchor.asText().trim().contains("法律文书样式")){
-                        continue;
-                    }
-                    HtmlPage clickPage = anchor.click();
-                    Thread.sleep(3000);
-                    HtmlDivision content = getContentPage(clickPage);
-                    this.crawUrl(anchor.asText(), content);
-                } catch (Exception e) {
-                    LOGGER.error("Get content error:" + e.getMessage());
-                }
+    public WebClient getUnusedClient() {
+        Iterator iter = clientSet.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            if (!(boolean) entry.getValue()) {
+                clientSet.put((WebClient) entry.getKey(), true);
+                return (WebClient) entry.getKey();
             }
-        }finally {
+        }
+        return null;
+    }
+
+    public void closeClient(WebClient currentClient) {
+        currentClient.close();
+        this.clientSet.put(currentClient, false);
+    }
+
+    public void crawOneSoureceUrlField(String xpath) {
+        try {
+            HtmlPage page = client.getPage("http://s.wanfangdata.com.cn/Claw.aspx?f=claw.Cateogory&q=DBID%3aDFFG&p=17919");
+            Thread.sleep(3000);
+            HtmlDivision content = getContentPage(page);
+            this.crawUrl("地方法规规章", content);
+
+//            List<HtmlElement> anchoresNodes = getSoureceUrlField(client, xpath);
+//            LOGGER.info("Get source filed url count:" + anchoresNodes.size());
+//            for (int m = 6; m < anchoresNodes.size(); m++) {
+//                try {
+//                    HtmlAnchor anchor = (HtmlAnchor) anchoresNodes.get(m);
+//                    if (anchor.asText().trim().contains("合同范本")){
+//                        continue;
+//                    }
+//                    if (anchor.asText().trim().contains("法律文书样式")){
+//                        continue;
+//                    }
+//                    HtmlPage clickPage = anchor.click();
+//                    Thread.sleep(3000);
+//                    HtmlDivision content = getContentPage(clickPage);
+//                    this.crawUrl(anchor.asText(), content);
+//                } catch (Exception e) {
+//                    LOGGER.error("Get content error:" + e.getMessage());
+//                }
+//            }
+        } catch (Exception e) {
+            LOGGER.error("get page error: " + e.getMessage());
+        } finally {
             client.close();
         }
     }
@@ -112,31 +136,32 @@ public class WanfangdataSpider extends LawSpider {
     //从获取主页上分类的url
     public LawDocument parseLawHtml(String htmlUrl) {
         HtmlPage page = null;
+        WebClient currentClient = getUnusedClient();
         try {
-            page = client.getPage(htmlUrl);
-            Thread.sleep(1000);
+            page = currentClient.getPage(htmlUrl);
+            Thread.sleep(1500);
         } catch (Exception e) {
             LOGGER.error("Get SoureUrlPage error: " + e.getMessage());
-            client.close();
+            closeClient(currentClient);
             return null;
         }
         try {
-            if(page == null){
-                Thread.sleep(1000);
+            if (page == null) {
+                Thread.sleep(1500);
             }
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             LOGGER.error("wait thread interrupt error: " + e.getMessage());
         }
         LawDocument doc = parseLawHtmlGetDocument(page);
         HtmlAnchor contentAnchor = null;
         try {
             contentAnchor = (HtmlAnchor) page.getByXPath("/html/body/div[3]/div/div[1]/a[2]").get(0);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             LOGGER.error("Not find content anchor");
-            if(page != null){
+            if (page != null) {
                 page.cleanUp();
             }
-            client.close();
+            closeClient(currentClient);
             return doc;
         }
         if (contentAnchor != null) {
@@ -152,15 +177,15 @@ public class WanfangdataSpider extends LawSpider {
                 doc.setArticle(articleList);
             } catch (Exception e) {
                 LOGGER.error("pase html content error: " + e.getMessage());
-            }finally {
-                if(contentPage != null){
+            } finally {
+                if (contentPage != null) {
                     contentPage.cleanUp();
                 }
                 page.cleanUp();
-                client.close();
+                closeClient(currentClient);
             }
-        }else {
-            client.close();
+        } else {
+            closeClient(currentClient);
         }
         return doc;
     }
@@ -215,36 +240,36 @@ public class WanfangdataSpider extends LawSpider {
             LOGGER.warn("No tile of content");
         }
         List<Node> nodes = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div").first().childNodes();
-        for (Node node:nodes) {
-            if(node.childNodes().size() != 5){
+        for (Node node : nodes) {
+            if (node.childNodes().size() != 5) {
                 continue;
             }
             String name = node.childNode(1).toString();
-            if(name.contains("发文文号")){
+            if (name.contains("发文文号")) {
                 String release_number = node.childNode(3).childNode(0).toString();
                 lawDocument.setRelease_number(release_number);
             }
-            if (name.contains("颁布部门")){
+            if (name.contains("颁布部门")) {
                 String department = node.childNode(3).childNode(0).toString();
                 lawDocument.setDepartment(department);
             }
-            if (name.contains("效力级别")){
+            if (name.contains("效力级别")) {
                 String level = node.childNode(3).childNode(0).toString();
                 lawDocument.setLevel(level);
             }
-            if (name.contains("时效性")){
+            if (name.contains("时效性")) {
                 String timeless = node.childNode(3).childNode(0).toString();
                 lawDocument.setTimeless(timeless);
             }
-            if (name.contains("颁布日期")){
+            if (name.contains("颁布日期")) {
                 String release_data = node.childNode(3).childNode(0).toString();
                 lawDocument.setRelease_data(release_data);
             }
-            if (name.contains("实施日期")){
+            if (name.contains("实施日期")) {
                 String implement_data = node.childNode(3).childNode(0).toString();
                 lawDocument.setImplement_date(implement_data);
             }
-            if (name.contains("内容分类")){
+            if (name.contains("内容分类")) {
                 String category = node.childNode(3).childNode(0).toString();
                 lawDocument.setCategory(category);
             }
@@ -256,7 +281,7 @@ public class WanfangdataSpider extends LawSpider {
         String clickPageHtml = "";
         DomNodeList<HtmlElement> currentClickAnchorNodes = clickAnchorNodes;
         int count = 0;
-        int page = 0;
+        int page = 17919;
         //遍历当前页
         do {
             HtmlAnchor nextPageAnchor = null;
@@ -284,25 +309,25 @@ public class WanfangdataSpider extends LawSpider {
                     nextClickPage = nextPageAnchor.click();
                     Thread.sleep(1300);
                     HtmlDivision content = getContentPage(nextClickPage);
-                    if(content == null){
+                    if (content == null) {
                         Thread.sleep(2000);
                         content = getContentPage(nextClickPage);
                     }
-                    if(content != null){
+                    if (content != null) {
                         if (content.asXml().equals(clickPageHtml)) {
                             break;
                         }
                         clickPageHtml = content.asXml();
                         currentClickAnchorNodes = content.getElementsByTagName("a");
-                    }else {
+                    } else {
                         LOGGER.error("Connect server wait 4 seconds no response content!");
                         break;
                     }
                 } catch (Exception e) {
                     LOGGER.error("Deep craw content error: " + e.getMessage());
                     break;
-                }finally {
-                    if(nextClickPage != null){
+                } finally {
+                    if (nextClickPage != null) {
                         nextClickPage.cleanUp();
                     }
                 }
