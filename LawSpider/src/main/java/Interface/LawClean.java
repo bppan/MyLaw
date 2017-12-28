@@ -13,7 +13,6 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,9 +104,9 @@ public abstract class LawClean {
                 Document law = cursor.next();
                 num++;
                 try {
-                    if (saveToCleanCollection(law)){
+                    if (saveToCleanCollection(law)) {
                         LOGGER.info("save success law :" + law.getObjectId("_id"));
-                    }else {
+                    } else {
                         LOGGER.info("exists law :" + law.getObjectId("_id"));
                     }
                 } catch (Exception e) {
@@ -167,14 +166,14 @@ public abstract class LawClean {
     public boolean saveToCleanCollection(Document law) {
         String url = law.getString("url");
         FindIterable<Document> iterables = getCleanCollection().find(new Document("url", url)).noCursorTimeout(true).batchSize(10000);
-        if(haveAttributeURLRepeat(law, iterables)){
+        if (haveAttributeURLRepeat(law, iterables)) {
             LOGGER.info("Url repeat :" + url);
             return false;
         }
 
         String lawTitle = law.getString("title");
         FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true).batchSize(10000);
-        if(haveAttributeTitleRepeat(law, iterableTitle)){
+        if (haveAttributeTitleRepeat(law, iterableTitle)) {
             LOGGER.info("lawTitle repeat :" + lawTitle);
             return false;
         }
@@ -198,10 +197,18 @@ public abstract class LawClean {
         haveAttributeContentRepeat(haveSimilarity, iterableContent4);
 
         String simhash1 = law.getString("simHash");
+        String release_number = law.getString("release_number");
+        if (release_number == null) {
+            release_number = "";
+        }
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
             String simhash2 = entry.getValue().getString("simHash");
             String theTitle = entry.getValue().getString("title");
-            if(isSimilarityContent(simhash1, simhash2) && lawTitle.equals(theTitle)){
+            String the_release_number = entry.getValue().getString("release_number");
+            if (the_release_number == null) {
+                the_release_number = "";
+            }
+            if (isSimilarityContent(simhash1, simhash2) && lawTitle.equals(theTitle) && release_number.equals(the_release_number)) {
                 LOGGER.info("content and title repeat :" + simhash1 + " : " + simhash2);
                 return false;
             }
@@ -211,7 +218,7 @@ public abstract class LawClean {
         return true;
     }
 
-    public boolean isSimilarityContent(String strSimhash1, String strSimhash2){
+    public boolean isSimilarityContent(String strSimhash1, String strSimhash2) {
         BigInteger intSimhash1 = new BigInteger(strSimhash1);
         BigInteger intSimhash2 = new BigInteger(strSimhash2);
         return SimHash.hammingDistance(intSimhash1, intSimhash2) <= 3;
@@ -221,15 +228,15 @@ public abstract class LawClean {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                String simhash1 = law.getString("simHash");
+                String content = law.getString("content");
                 String title = law.getString("title");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
                     String title2 = cleanLaw.getString("title");
-                    String simhash2 = cleanLaw.getString("simHash");
+                    String theContent = cleanLaw.getString("content");
                     if (title.equals(title2)) {
                         return true;
-                    } else if (isSimilarityContent(simhash1, simhash2)) {
+                    } else if (content.equals(theContent)) {
                         return true;
                     }
                 }
@@ -240,15 +247,16 @@ public abstract class LawClean {
         return false;
     }
 
-    public boolean haveAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
+    public boolean
+    haveAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                String simhash1 =  law.getString("simHash");
+                String content = law.getString("content");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
-                    String simhash2 = cleanLaw.getString("simHash");
-                    if (isSimilarityContent(simhash1, simhash2)) {
+                    String theContent = cleanLaw.getString("content");
+                    if (content.equals(theContent)) {
                         return true;
                     }
                 }
