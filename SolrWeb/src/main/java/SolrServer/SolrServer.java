@@ -1,3 +1,5 @@
+package SolrServer;
+
 import com.alibaba.fastjson.JSON;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
