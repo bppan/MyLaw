@@ -206,12 +206,18 @@ public abstract class LawClean {
         if (release_number == null) {
             release_number = "";
         }
+        String content = law.getString("content");
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
             String simhash2 = entry.getValue().getString("simHash");
             String theTitle = entry.getValue().getString("title");
             String the_release_number = entry.getValue().getString("release_number");
+            String theContent = entry.getValue().getString("content");
             if (the_release_number == null) {
                 the_release_number = "";
+            }
+            if(content.equals(theContent)){
+                LOGGER.info("simHash equal:" + simhash1 + " : " + simhash2);
+                return false;
             }
             if (isSimilarityContent(simhash1, simhash2) && lawTitle.equals(theTitle) && release_number.equals(the_release_number)) {
                 LOGGER.info("content and title repeat :" + simhash1 + " : " + simhash2);
