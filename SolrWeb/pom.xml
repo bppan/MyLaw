@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>Solr</artifactId>
+    <artifactId>SolrWeb</artifactId>
 
     <build>
         <plugins>

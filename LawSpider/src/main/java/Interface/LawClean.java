@@ -206,12 +206,12 @@ public abstract class LawClean {
         if (release_number == null) {
             release_number = "";
         }
-        String content = law.getString("content");
+        String content = law.getString("content").replaceAll("\n", "");
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
             String simhash2 = entry.getValue().getString("simHash");
             String theTitle = entry.getValue().getString("title");
             String the_release_number = entry.getValue().getString("release_number");
-            String theContent = entry.getValue().getString("content");
+            String theContent = entry.getValue().getString("content").replaceAll("\n", "");
             if (the_release_number == null) {
                 the_release_number = "";
             }
@@ -239,12 +239,12 @@ public abstract class LawClean {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                String content = law.getString("content");
+                String content = law.getString("content").replaceAll("\n", "");
                 String title = law.getString("title");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
                     String title2 = cleanLaw.getString("title");
-                    String theContent = cleanLaw.getString("content");
+                    String theContent = cleanLaw.getString("content").replaceAll("\n", "");
                     if (title.equals(title2)) {
                         return true;
                     } else if (content.equals(theContent)) {
@@ -262,10 +262,10 @@ public abstract class LawClean {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                String content = law.getString("content");
+                String content = law.getString("content").replaceAll("\n", "");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
-                    String theContent = cleanLaw.getString("content");
+                    String theContent = cleanLaw.getString("content").replaceAll("\n", "");
                     if (content.equals(theContent)) {
                         return true;
                     }

@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LawSpider/LawSpider.iml" filepath="$PROJECT_DIR$/LawSpider/LawSpider.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyLaw.iml" filepath="$PROJECT_DIR$/MyLaw.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Solr/Solr.iml" filepath="$PROJECT_DIR$/Solr/Solr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SolrWeb/SolrWeb.iml" filepath="$PROJECT_DIR$/SolrWeb/SolrWeb.iml" />
     </modules>
   </component>
 </project>

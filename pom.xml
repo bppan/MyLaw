@@ -11,6 +11,7 @@
     <modules>
         <module>LawSpider</module>
         <module>Solr</module>
+        <module>SolrWeb</module>
     </modules>
 
     <build>
