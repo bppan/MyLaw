@@ -10,6 +10,8 @@ import com.gargoylesoftware.htmlunit.html.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -133,61 +135,86 @@ public class PkulawSpider extends LawSpider {
         } catch (NullPointerException e) {
             LOGGER.warn("no tile of law");
         }
-        try {
-            String department = doc.select("#tbl_content_main > tbody > tr:nth-child(2) > td:nth-child(1) > a").first().childNode(0).toString();
-            lawDocument.setDepartment(department);
-        } catch (NullPointerException e) {
-            LOGGER.warn("no department of law");
+        Element elementTbody = doc.select("#tbl_content_main > tbody").first();
+        Elements elements = elementTbody.getElementsByTag("tr");
+        for (Element element : elements) {
+            List<Node> nodes = element.childNodes();
+            if (nodes.size() == 0) {
+                continue;
+            }
+            if (isRightAttribute(nodes, "【发布部门】")) {
+                String department = getContentAttribute(nodes, "【发布部门】");
+                lawDocument.setDepartment(department);
+            }
+            if (isRightAttribute(nodes, "【发文字号】")) {
+                String release_number = getContentAttribute(nodes, "【发文字号】");
+                lawDocument.setRelease_number(release_number);
+            }
+            if (isRightAttribute(nodes, "【发布日期】")) {
+                String release_date = getContentAttribute(nodes, "【发布日期】");
+                lawDocument.setRelease_data(release_date);
+            }
+            if (isRightAttribute(nodes, "【实施日期】")) {
+                String implement_date = getContentAttribute(nodes, "【实施日期】");
+                lawDocument.setImplement_date(implement_date);
+            }
+            if (isRightAttribute(nodes, "【时效性】")) {
+                String timeless = getContentAttribute(nodes, "【时效性】");
+                lawDocument.setTimeless(timeless);
+            }
+            if (isRightAttribute(nodes, "【法规类别】")) {
+                String category = getContentAttribute(nodes, "【法规类别】");
+                lawDocument.setCategory(category);
+            }
+            if (isRightAttribute(nodes, "【效力级别】")) {
+                String level = getContentAttribute(nodes, "【效力级别】");
+                lawDocument.setLevel(level);
+            }
         }
         try {
-            String implement_date = doc.select("#tbl_content_main > tbody > tr:nth-child(3) > td:nth-child(2)").first().childNode(1).toString();
-            lawDocument.setImplement_date(implement_date);
-        } catch (NullPointerException e) {
-            LOGGER.warn("no implement_date of law");
-        }
-        try {
-            String relase_date = doc.select("#tbl_content_main > tbody > tr:nth-child(3) > td:nth-child(1)").first().childNode(1).toString();
-            lawDocument.setRelease_data(relase_date);
-        } catch (NullPointerException e) {
-            LOGGER.warn("no relase_date of law");
-        }
-        try {
-            String level = doc.select("#tbl_content_main > tbody > tr:nth-child(5) > td").first().text();
-            lawDocument.setLevel(level);
-        } catch (NullPointerException e) {
-            LOGGER.warn("no level of law");
-        }
-        try {
-            String timeless = doc.select("#tbl_content_main > tbody > tr:nth-child(4) > td:nth-child(1) > a").first().childNode(0).toString();
-            lawDocument.setTimeless(timeless);
-        } catch (NullPointerException e) {
-            LOGGER.warn("no timeless of law");
-        }
-        try {
-            String category = doc.select("#tbl_content_main > tbody > tr:nth-child(5) > td > a").first().childNode(0).toString();
-            lawDocument.setCategory(category);
-        } catch (NullPointerException e) {
-            LOGGER.warn("no category of law");
-        }
-        try {
-            Elements eles = doc.getElementsByClass("TiaoNoA");
-            lawDocument.setTiaoNum(eles.toArray().length);
-        } catch (NullPointerException e) {
-            lawDocument.setTiaoNum(0);
-            LOGGER.warn("no TiaoNoA of law");
-        }
-        try {
+            doc.select("#div_content > font").first().remove();
             doc.select(".TiaoYinV2").remove();
+            doc.select(".TiaoYin").remove();
             String html = doc.select("#div_content").first().html();
             String cleanHtmlContent = cleanHtml(html);
             lawDocument.setCleanHtml(cleanHtmlContent);
             List<LawArticle> articleList = getLawArticleAndParagraph(cleanHtmlContent);
             lawDocument.setArticle(articleList);
+            lawDocument.setTiaoNum(articleList.size());
         } catch (Exception e) {
             LOGGER.error("Get article error...");
             LOGGER.error(e);
         }
+        try {
+            Thread.sleep(getRandomWaitTime(1000, 2000));
+        }catch (InterruptedException e){
+            LOGGER.error("wait thread error: " + e.getMessage());
+        }
         return lawDocument;
+    }
+
+    private boolean isRightAttribute(List<Node> nodes, String tag) {
+        for (Node node : nodes) {
+            String result = node.toString();
+            if (result.contains(tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String getContentAttribute(List<Node> nodes, String tag) {
+        for (Node node : nodes) {
+            String result = node.toString();
+            String regEx2_html = "<[^>]+>"; // 定义HTML标签的正则表达式
+            Pattern p2_html = Pattern.compile(regEx2_html, Pattern.CASE_INSENSITIVE);
+            Matcher m2_html = p2_html.matcher(result);
+            result = m2_html.replaceAll("").replaceAll(" ", "").trim(); // 过滤html标签
+            if (result.contains(tag)) {
+                return result.replace(tag, "").trim();
+            }
+        }
+        return "";
     }
 
     public void deepCrawContentUrl(String categoryName, DomNodeList<HtmlElement> clickAnchorNodes) {
@@ -247,7 +274,7 @@ public class PkulawSpider extends LawSpider {
                 .header("Connection", "keep-alive")
                 .header("Cache-Control", "max-age=0")
                 .header("Referer", htmlUrl)
-                .header("Cookie", "FWinCookie=1; ASP.NET_SessionId=ftakk3dzfwcyahsda4h2pp2s; Hm_lvt_58c470ff9657d300e66c7f33590e53a8=1512918694,1513069994,1513261308,1513579931; CookieId=ftakk3dzfwcyahsda4h2pp2s; CheckIPAuto=0; CheckIPDate=2017-12-18 14:38:28; ftakk3dzfwcyahsda4h2pp2s3isIPlogin=1; User_User=%d6%d0%b9%fa%c8%cb%c3%f1%b4%f3%d1%a7; Hm_lpvt_58c470ff9657d300e66c7f33590e53a8=1513582238")
+                .header("Cookie", "FWinCookie=1; ASP.NET_SessionId=4ac2zisbbniegmcv3bdjvgla; Hm_lvt_58c470ff9657d300e66c7f33590e53a8=1513927410,1513952533,1514297277,1514384451; click0=2017/12/30 15:02:24; CookieId=4ac2zisbbniegmcv3bdjvgla; CheckIPAuto=0; CheckIPDate=2017-12-30 15:02:07; 4ac2zisbbniegmcv3bdjvgla3isIPlogin=1; User_User=%d6%d0%b9%fa%c8%cb%c3%f1%b4%f3%d1%a7; Hm_lpvt_58c470ff9657d300e66c7f33590e53a8=1514618165")
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36")
                 .timeout(50000)
                 .get();
