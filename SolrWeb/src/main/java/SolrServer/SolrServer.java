@@ -1,6 +1,9 @@
 package SolrServer;
 
+import Log.LawLogger;
 import com.alibaba.fastjson.JSON;
+import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -22,22 +25,22 @@ import java.util.Collection;
  * Modified By:
  */
 public class SolrServer {
-    private static String baseURL = "http://localhost:8080/solr/law";
-    private static HttpSolrClient solrServer = new HttpSolrClient(baseURL);
 
-    public static HttpSolrClient getHttpSolrClient() {
-        return new HttpSolrClient(baseURL);
+    private static Logger LOGGER = LawLogger.getLawLogger(SolrServer.class);
+    private HttpSolrClient solrClient;
+
+    public HttpSolrClient getHttpSolrClient() {
+        return this.solrClient;
     }
 
-    public static void main(String[] args) {
-        SolrServer solrServer = new SolrServer();
+    public SolrServer(String baseURL){
+        LOGGER.info("Begin connect solr server....");
         try {
-            solrServer.get("");
-        } catch (Exception e) {
-            e.printStackTrace();
+            this.solrClient = new HttpSolrClient.Builder(baseURL).build();
+        }catch (Exception e){
+            LOGGER.error("Connect solr server failure: " + e.getMessage());
         }
-
-
+        LOGGER.info("Connect solr server successfully....");
     }
 
     public void get(String name) throws IOException, SolrServerException {
@@ -55,6 +58,7 @@ public class SolrServer {
     }
 
     public void getOne() throws IOException, SolrServerException {
+        HttpSolrClient solrServer = getHttpSolrClient();
         solrServer.setSoTimeout(5000);
         SolrQuery prams = new SolrQuery();
         prams.set("q", "*:*");
@@ -71,6 +75,7 @@ public class SolrServer {
     }
 
     public void add(String id, String name) throws IOException, SolrServerException {
+        HttpSolrClient solrServer = getHttpSolrClient();
         SolrInputDocument doc = new SolrInputDocument();
         doc.setField("id", id);
         doc.setField("title", name);
@@ -80,6 +85,7 @@ public class SolrServer {
     }
 
     public void update(String id, String name) throws IOException, SolrServerException {
+        HttpSolrClient solrServer = getHttpSolrClient();
         SolrInputDocument doc = new SolrInputDocument();
         doc.setField("id", id);
         doc.setField("name", name);
@@ -89,11 +95,13 @@ public class SolrServer {
     }
 
     public void delete(String id) throws IOException, SolrServerException {
+        HttpSolrClient solrServer = getHttpSolrClient();
         solrServer.deleteById(id);
         solrServer.commit();
     }
 
     public void deleteAll() throws IOException, SolrServerException {
+        HttpSolrClient solrServer = getHttpSolrClient();
         solrServer.deleteByQuery("*:*");
         solrServer.commit();
     }
