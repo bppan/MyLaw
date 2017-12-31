@@ -12,7 +12,7 @@ import Interface.LawClean;
  */
 public class CleanRedundancy extends LawClean {
     public CleanRedundancy(String lawCollection, String cleanCollection) {
-        super("", lawCollection, cleanCollection);
+        super(lawCollection, cleanCollection);
     }
 
     public static void main(String[] args) {
