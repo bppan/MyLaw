@@ -10,6 +10,7 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
 import org.bson.Document;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,30 +40,33 @@ public class ImportDataToSolr {
     }
 
     public void doImport(){
-        String baseURL = "http://localhost:8080/solr/law";
-        SolrServer solrServer = new SolrServer(baseURL);
-        HttpSolrClient solrClient = solrServer.getHttpSolrClient();
-
         LOGGER.info("Begin do import data to solr...");
-        FindIterable<Document> iterables = getCollection().find(new Document("url", "")).noCursorTimeout(true).batchSize(10000);
+        FindIterable<Document> iterables = getCollection().find().noCursorTimeout(true).batchSize(10000);
         MongoCursor<Document> cursor = iterables.iterator();
         long num = 0;
         try {
             while (cursor.hasNext()) {
                 Document law = cursor.next();
-                try {
-//                    doDocument(url, category);
-                    num++;
-                } catch (Exception e) {
-                    LOGGER.error("Do document error: " + e.getMessage());
+                addDocumentToCache(law);
+                if(this.cacheList.size() >= CACHESIZE){
+                    commitDataToSolr();
+                    this.cacheList.clear();
+                    Thread.sleep(1500);
                 }
-                LOGGER.info("doClean clean num: " + num);
+                num++;
+                LOGGER.info("Import data num: " + num);
             }
+            if(this.cacheList.size() != 0){
+                commitDataToSolr();
+                this.cacheList.clear();
+            }
+            this.solrServer.getHttpSolrClient().close();
         } catch (Exception e) {
-            LOGGER.error("do clean find error: " + e.getMessage());
+            LOGGER.error("Do import data to solr server error: " + e.getMessage());
         } finally {
             cursor.close();
         }
+        LOGGER.info("Done do import data to solr...");
     }
 
     public ImportDataToSolr(String solrServerURL, String MongodbCollection){
@@ -71,48 +75,57 @@ public class ImportDataToSolr {
         this.cacheList = new ArrayList<>();
     }
 
+    public void commitDataToSolr(){
+        for (SolrInputDocument doc:this.cacheList) {
+            try {
+                this.solrServer.getHttpSolrClient().add(doc);
+            }catch (Exception e){
+                LOGGER.error("Add data to solr server error: " + e.getMessage());
+            }
+        }
+        try {
+            this.solrServer.getHttpSolrClient().commit();
+        }catch (Exception e){
+            LOGGER.error("Commit data to solr server error: " + e.getMessage());
+        }
+    }
+
     public void addDocumentToCache(Document law){
         SolrInputDocument doc = new SolrInputDocument();
 
-        doc.setField("id", law.getObjectId("_id").toString());
+        doc.addField("id", law.getObjectId("_id").toString());
 
         String title = getAttributeOfDocument(law, "title");
-        doc.setField("title", title);
+        doc.addField("title", title);
 
         String department = getAttributeOfDocument(law, "department");
-        doc.setField("department", department);
+        doc.addField("department", department);
 
         String release_date = getAttributeOfDocument(law, "release_date");
-        doc.setField("release_date", release_date);
+        doc.addField("release_date", release_date);
 
         String release_number = getAttributeOfDocument(law, "release_number");
-        doc.setField("release_number", release_number);
+        doc.addField("release_number", release_number);
 
         String implement_date = getAttributeOfDocument(law, "implement_date");
-        doc.setField("implement_date", implement_date);
+        doc.addField("implement_date", implement_date);
 
         String category = getAttributeOfDocument(law, "category");
-        doc.setField("category", category);
+        doc.addField("category", category);
 
         String level = getAttributeOfDocument(law, "level");
-        doc.setField("content", level);
+        doc.addField("content", level);
 
         String timeless = getAttributeOfDocument(law, "timeless");
-        doc.setField("timeless", timeless);
+        doc.addField("timeless", timeless);
 
         String content = getAttributeOfDocument(law, "content");
-        doc.setField("content", content);
+        doc.addField("content", content);
 
         String url = getAttributeOfDocument(law, "url");
-        doc.setField("url", url);
-        try {
-            solrServer.getHttpSolrClient().add(doc);
-            solrServer.getHttpSolrClient().commit();
-        }catch (Exception e){
-            LOGGER.error("error: " + e.getMessage());
-        }
+        doc.addField("url", url);
 
-
+        this.cacheList.add(doc);
     }
 
     public String getAttributeOfDocument(Document law, String name){
