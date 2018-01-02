@@ -133,6 +133,6 @@ public class ImportDataToSolr {
         if(attribute == null){
             attribute = "";
         }
-        return attribute;
+        return attribute.trim();
     }
 }
