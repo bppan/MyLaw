@@ -114,7 +114,7 @@ public class ImportDataToSolr {
         doc.addField("category", category);
 
         String level = getAttributeOfDocument(law, "level");
-        doc.addField("content", level);
+        doc.addField("level", level);
 
         String timeless = getAttributeOfDocument(law, "timeless");
         doc.addField("timeless", timeless);
