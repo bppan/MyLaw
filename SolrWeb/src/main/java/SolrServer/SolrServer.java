@@ -3,7 +3,6 @@ package SolrServer;
 import Log.LawLogger;
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -29,18 +28,18 @@ public class SolrServer {
     private static Logger LOGGER = LawLogger.getLawLogger(SolrServer.class);
     private HttpSolrClient solrClient;
 
-    public HttpSolrClient getHttpSolrClient() {
-        return this.solrClient;
-    }
-
-    public SolrServer(String baseURL){
+    public SolrServer(String baseURL) {
         LOGGER.info("Begin connect solr server....");
         try {
             this.solrClient = new HttpSolrClient.Builder(baseURL).build();
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("Connect solr server failure: " + e.getMessage());
         }
         LOGGER.info("Connect solr server successfully....");
+    }
+
+    public HttpSolrClient getHttpSolrClient() {
+        return this.solrClient;
     }
 
     public void get(String name) throws IOException, SolrServerException {

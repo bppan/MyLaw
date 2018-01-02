@@ -6,11 +6,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.apache.log4j.Logger;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
 import org.bson.Document;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +22,18 @@ import java.util.List;
  */
 public class ImportDataToSolr {
 
+    private static final int CACHESIZE = 2500;
     private static Logger LOGGER = LawLogger.getLawLogger(ImportDataToSolr.class);
     private static MongoDB mongoDB = MongoDB.getMongoDB();
     private MongoCollection<Document> collection;
     private SolrServer solrServer;
     private List<SolrInputDocument> cacheList;
-    private static final int CACHESIZE = 2500;
+
+    public ImportDataToSolr(String solrServerURL, String MongodbCollection) {
+        this.solrServer = new SolrServer(solrServerURL);
+        this.collection = mongoDB.getCollection(MongodbCollection);
+        this.cacheList = new ArrayList<>();
+    }
 
     public MongoCollection<Document> getCollection() {
         return this.collection;
@@ -39,7 +43,7 @@ public class ImportDataToSolr {
         return this.solrServer;
     }
 
-    public void doImport(){
+    public void doImport() {
         LOGGER.info("Begin do import data to solr...");
         FindIterable<Document> iterables = getCollection().find().noCursorTimeout(true).batchSize(10000);
         MongoCursor<Document> cursor = iterables.iterator();
@@ -48,7 +52,7 @@ public class ImportDataToSolr {
             while (cursor.hasNext()) {
                 Document law = cursor.next();
                 addDocumentToCache(law);
-                if(this.cacheList.size() >= CACHESIZE){
+                if (this.cacheList.size() >= CACHESIZE) {
                     commitDataToSolr();
                     this.cacheList.clear();
                     Thread.sleep(1500);
@@ -56,7 +60,7 @@ public class ImportDataToSolr {
                 num++;
                 LOGGER.info("Import data num: " + num);
             }
-            if(this.cacheList.size() != 0){
+            if (this.cacheList.size() != 0) {
                 commitDataToSolr();
                 this.cacheList.clear();
             }
@@ -69,28 +73,22 @@ public class ImportDataToSolr {
         LOGGER.info("Done do import data to solr...");
     }
 
-    public ImportDataToSolr(String solrServerURL, String MongodbCollection){
-        this.solrServer = new SolrServer(solrServerURL);
-        this.collection = mongoDB.getCollection(MongodbCollection);
-        this.cacheList = new ArrayList<>();
-    }
-
-    public void commitDataToSolr(){
-        for (SolrInputDocument doc:this.cacheList) {
+    public void commitDataToSolr() {
+        for (SolrInputDocument doc : this.cacheList) {
             try {
                 this.solrServer.getHttpSolrClient().add(doc);
-            }catch (Exception e){
+            } catch (Exception e) {
                 LOGGER.error("Add data to solr server error: " + e.getMessage());
             }
         }
         try {
             this.solrServer.getHttpSolrClient().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("Commit data to solr server error: " + e.getMessage());
         }
     }
 
-    public void addDocumentToCache(Document law){
+    public void addDocumentToCache(Document law) {
         SolrInputDocument doc = new SolrInputDocument();
 
         doc.addField("id", law.getObjectId("_id").toString());
@@ -128,9 +126,9 @@ public class ImportDataToSolr {
         this.cacheList.add(doc);
     }
 
-    public String getAttributeOfDocument(Document law, String name){
+    public String getAttributeOfDocument(Document law, String name) {
         String attribute = law.getString(name);
-        if(attribute == null){
+        if (attribute == null) {
             attribute = "";
         }
         return attribute.trim();
