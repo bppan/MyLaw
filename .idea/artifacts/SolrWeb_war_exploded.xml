@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="SolrWeb:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/SolrWeb_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="SolrWeb" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Spring-4.3.13.RELEASE" />
+          <element id="library" level="project" name="Spring MVC-4.3.13.RELEASE" />
+          <element id="library" level="project" name="jackson-annotations-2.8.0" />
+          <element id="library" level="project" name="jackson-core-2.8.9" />
+          <element id="library" level="project" name="jackson-databind-2.8.9" />
+          <element id="library" level="project" name="jstl" />
+          <element id="library" level="project" name="log4j-1.2.17" />
+          <element id="library" level="project" name="standard" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="SolrWeb/web/Web" />
+    </root>
+  </artifact>
+</component>
