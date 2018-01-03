@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jackson-core-2.8.9">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SolrWeb/web/WEB-INF/lib/jackson-core-2.8.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

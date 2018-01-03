@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="IKAnalyzer2012">
+  <library name="jstl">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/IKAnalyzer2012.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SolrWeb/web/WEB-INF/lib/jstl.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

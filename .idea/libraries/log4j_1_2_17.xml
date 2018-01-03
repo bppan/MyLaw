@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="IKAnalyzer2012">
+  <library name="log4j-1.2.17">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/IKAnalyzer2012.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SolrWeb/web/WEB-INF/lib/log4j-1.2.17.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
