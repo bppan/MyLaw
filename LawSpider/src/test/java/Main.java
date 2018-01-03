@@ -1,4 +1,3 @@
-
 import Log.LawLogger;
 import Mongo.DBProperties;
 import Mongo.MongoDB;

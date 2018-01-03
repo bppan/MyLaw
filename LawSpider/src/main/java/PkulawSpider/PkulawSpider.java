@@ -120,8 +120,8 @@ public class PkulawSpider extends LawSpider {
         Document doc = null;
         try {
             doc = this.getJsoupConnection(htmlUrl);
-        }catch (IOException e){
-            LOGGER.warn("Jsoup get html error"+ e.getMessage());
+        } catch (IOException e) {
+            LOGGER.warn("Jsoup get html error" + e.getMessage());
         }
         LawDocument lawDocument = new LawDocument();
         try {
@@ -187,7 +187,7 @@ public class PkulawSpider extends LawSpider {
         }
         try {
             Thread.sleep(getRandomWaitTime(1000, 2000));
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             LOGGER.error("wait thread error: " + e.getMessage());
         }
         return lawDocument;

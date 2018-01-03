@@ -7,12 +7,13 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * @Author : Administrator
@@ -47,17 +48,17 @@ public class MongoDB extends DB {
         }
     }
 
-    public synchronized MongoCollection<Document> getCollection(String collectionName){
+    public static MongoDB getMongoDB() {
+        return mongoDB;
+    }
+
+    public synchronized MongoCollection<Document> getCollection(String collectionName) {
         try {
             return mongoDB.mongoDatabase.getCollection(collectionName);
         } catch (Exception e) {
             LOGGER.error(e);
             return null;
         }
-    }
-
-    public static MongoDB getMongoDB() {
-        return mongoDB;
     }
 
     //保存法律法规文档
@@ -88,28 +89,29 @@ public class MongoDB extends DB {
             while (mongoCursor.hasNext()) {
                 result.add(mongoCursor.next());
             }
-        }finally {
+        } finally {
             mongoCursor.close();
         }
 
         return result;
     }
 
-    public synchronized boolean updateCrawJob(MongoCollection<Document> crawJobcollection, Document oldJob, Document newJob){
+    public synchronized boolean updateCrawJob(MongoCollection<Document> crawJobcollection, Document oldJob, Document newJob) {
         try {
             crawJobcollection.replaceOne(oldJob, newJob);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("Update craw job error:" + e.getMessage());
         }
         return false;
     }
-    public Document getJobUseUrl(MongoCollection<Document> crawJobcollection, String url){
+
+    public Document getJobUseUrl(MongoCollection<Document> crawJobcollection, String url) {
         FindIterable<Document> findIterable = crawJobcollection.find(new Document("url", url)).limit(1).noCursorTimeout(true);
         return findIterable.first();
     }
 
-    public Document getCrawJob(MongoCollection<Document> crawJobcollection){
+    public Document getCrawJob(MongoCollection<Document> crawJobcollection) {
         FindIterable<Document> findIterable = crawJobcollection.find(new Document("isCraw", false)).sort(new Document("getTime", 1)).limit(1).noCursorTimeout(true);
         return findIterable.first();
     }

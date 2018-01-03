@@ -1,6 +1,5 @@
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
@@ -12,7 +11,7 @@ import java.io.IOException;
  * @Description :
  */
 public class main3 {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         WebClient webClient = new WebClient(BrowserVersion.CHROME);
         // 这里是配置一下不加载css和javaScript,配置起来很简单，是不是
         webClient.getOptions().setJavaScriptEnabled(true); // 启用JS解释器，默认为true
@@ -39,13 +38,13 @@ public class main3 {
 //            HtmlPage page = anchor.click();
 //            Thread.sleep(8000);
 //            System.out.println(page.asXml());
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("nnnn");
             e.printStackTrace();
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             System.out.println("mmmm");
             e.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("zzzz");
             e.printStackTrace();
         }
