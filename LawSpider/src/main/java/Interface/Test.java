@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Modified By:
  */
 public class Test {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         String html = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<html>\n" +
                 "  <head/>\n" +
@@ -174,6 +174,7 @@ public class Test {
         System.out.println(cleanHtml(html));
 
     }
+
     public static String cleanHtml(String html) {
         String result = html;
         String regEx_return = "\t|\r|\n";//定义空格回车换行符

@@ -20,6 +20,7 @@ import org.jsoup.select.Elements;
 public class Clean extends LawClean {
 
     private static Logger LOGGER = LawLogger.getLawLogger(Clean.class);
+
     public Clean(String crawJobCollection, String lawCollection, String cleanCollection) {
         super(crawJobCollection, lawCollection, cleanCollection);
     }
@@ -54,7 +55,7 @@ public class Clean extends LawClean {
                 }
             }
             super.cleanContent(law);
-        }else {
+        } else {
             super.deleteDocumentOneById(getLawCollecion(), law);
             LOGGER.info("this law is unvaild deleted...");
         }
@@ -63,7 +64,7 @@ public class Clean extends LawClean {
     public boolean saveToCleanCollection(Document law) {
         if (isValid(law)) {
             return super.saveToCleanCollection(law);
-        }else {
+        } else {
             LOGGER.info("this law is unvaild not save to clean collection...");
             return false;
         }

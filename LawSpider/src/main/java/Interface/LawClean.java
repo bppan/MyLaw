@@ -215,7 +215,7 @@ public abstract class LawClean {
             if (the_release_number == null) {
                 the_release_number = "";
             }
-            if(content.equals(theContent)){
+            if (content.equals(theContent)) {
                 LOGGER.info("simHash equal:" + simhash1 + " : " + simhash2);
                 return false;
             }

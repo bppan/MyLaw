@@ -1,7 +1,5 @@
 package Mongo;
 
-import Mongo.LawArticle;
-import Mongo.MongoDB;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
@@ -30,10 +28,48 @@ public class LawDocument {
     private int tiaoNum;
     private MongoCollection<Document> lawcollection;
 
-    public LawDocument(){}
+    public LawDocument() {
+    }
 
-    public LawDocument(String lawDocumentName){
+    public LawDocument(String lawDocumentName) {
         lawcollection = mongoDB.getCollection(lawDocumentName);
+    }
+
+    public static boolean isExits(MongoCollection<Document> lawcollection, String url) {
+        return mongoDB.isLawDocumentExits(lawcollection, url);
+    }
+
+    public static boolean saveToDB(LawDocument lawDocument) {
+        MongoDB mongoDB = MongoDB.getMongoDB();
+        List<Document> interlDocuments = new ArrayList<Document>();
+        for (int i = 0; i < lawDocument.article.size(); i++) {
+            Document par = new Document("name", lawDocument.article.get(i).getName()).append("paragraph", lawDocument.article.get(i).getParagraph());
+            interlDocuments.add(par);
+        }
+        Document document = new Document("title", lawDocument.getTitle()).
+                append("department", lawDocument.getDepartment()).
+                append("release_date", lawDocument.getRelease_data()).
+                append("release_number", lawDocument.getRelease_number()).
+                append("implement_date", lawDocument.getImplement_date()).
+                append("category", lawDocument.getCategory()).
+                append("level", lawDocument.getLevel()).
+                append("timeless", lawDocument.getTimeless()).
+                append("articles", interlDocuments).
+                append("url", lawDocument.getUrl()).
+                append("rawHtml", lawDocument.getRawHtml()).
+                append("content", lawDocument.getCleanHtml()).
+                append("article_num", lawDocument.getTiaoNum());
+
+        return mongoDB.saveLawDocument(lawDocument.getLawcollection(), document);
+    }
+
+    public static List<Document> getArticleDocument(List<LawArticle> articleList) {
+        List<Document> interlDocuments = new ArrayList<Document>();
+        for (int i = 0; i < articleList.size(); i++) {
+            Document par = new Document("name", articleList.get(i).getName()).append("paragraph", articleList.get(i).getParagraph());
+            interlDocuments.add(par);
+        }
+        return interlDocuments;
     }
 
     public String getRelease_number() {
@@ -44,16 +80,12 @@ public class LawDocument {
         this.release_number = release_number;
     }
 
-    public void setCollection(MongoCollection<Document> collection){
+    public void setCollection(MongoCollection<Document> collection) {
         lawcollection = collection;
     }
 
-    public MongoCollection<Document> getLawcollection(){
+    public MongoCollection<Document> getLawcollection() {
         return lawcollection;
-    }
-
-    public static boolean isExits(MongoCollection<Document> lawcollection, String url) {
-        return mongoDB.isLawDocumentExits(lawcollection, url);
     }
 
     public String getCleanHtml() {
@@ -150,38 +182,6 @@ public class LawDocument {
 
     public void setRelease_data(String release_data) {
         this.release_data = release_data;
-    }
-
-    public static boolean saveToDB(LawDocument lawDocument) {
-        MongoDB mongoDB = MongoDB.getMongoDB();
-        List<Document> interlDocuments = new ArrayList<Document>();
-        for (int i = 0; i < lawDocument.article.size(); i++) {
-            Document par = new Document("name", lawDocument.article.get(i).getName()).append("paragraph", lawDocument.article.get(i).getParagraph());
-            interlDocuments.add(par);
-        }
-        Document document = new Document("title", lawDocument.getTitle()).
-                append("department", lawDocument.getDepartment()).
-                append("release_date", lawDocument.getRelease_data()).
-                append("release_number", lawDocument.getRelease_number()).
-                append("implement_date", lawDocument.getImplement_date()).
-                append("category", lawDocument.getCategory()).
-                append("level", lawDocument.getLevel()).
-                append("timeless", lawDocument.getTimeless()).
-                append("articles", interlDocuments).
-                append("url", lawDocument.getUrl()).
-                append("rawHtml", lawDocument.getRawHtml()).
-                append("content", lawDocument.getCleanHtml()).
-                append("article_num", lawDocument.getTiaoNum());
-
-        return mongoDB.saveLawDocument(lawDocument.getLawcollection(), document);
-    }
-    public static List<Document> getArticleDocument(List<LawArticle> articleList){
-        List<Document> interlDocuments = new ArrayList<Document>();
-        for (int i = 0; i < articleList.size(); i++) {
-            Document par = new Document("name", articleList.get(i).getName()).append("paragraph", articleList.get(i).getParagraph());
-            interlDocuments.add(par);
-        }
-        return interlDocuments;
     }
 }
 
