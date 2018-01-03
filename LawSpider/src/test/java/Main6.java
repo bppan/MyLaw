@@ -4,6 +4,13 @@
  * @Description :
  */
 public class Main6 {
+    public static void main(String[] args) {
+        Main6 s = new Main6();
+        s.getFwp(1, 2);
+        s.getFwp(1, 2, "sdfsadf");
+//        s.getFwp(1, 2, "sdfsadf1", "sfasdf");
+    }
+
     public void getFwp(int i, int j, String... m) {
         if (m.length != 0) {
             System.out.println(m.length);
@@ -12,11 +19,5 @@ public class Main6 {
         }
         System.out.println(i);
         System.out.println(j);
-    }
-    public static void main(String[] args) {
-        Main6 s = new Main6();
-        s.getFwp(1, 2);
-        s.getFwp(1, 2, "sdfsadf");
-//        s.getFwp(1, 2, "sdfsadf1", "sfasdf");
     }
 }

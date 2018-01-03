@@ -11,7 +11,8 @@ import org.apache.log4j.Logger;
  */
 public class Main7 {
     private static Logger LOGGER = LawLogger.getLawLogger(Main7.class);
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         LOGGER.debug("debug");
         LOGGER.error("error");
         LOGGER.info("infor");

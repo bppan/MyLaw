@@ -10,9 +10,10 @@ import java.io.IOException;
  * @Description :
  */
 public class Main4 {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         crawSoureceUrlField("//*[@id=\"div_fid_0_0\"]");
     }
+
     public static void crawSoureceUrlField(String xpath) {
         WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
         try {

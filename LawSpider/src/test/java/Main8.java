@@ -1,8 +1,6 @@
 import WebCraw.HtmlUnitClient;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 /**
  * Description：
@@ -13,7 +11,7 @@ import org.jsoup.nodes.Document;
  * Modified By:
  */
 public class Main8 {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
         HtmlPage page = null;
         try {
