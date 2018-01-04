@@ -45,7 +45,16 @@ public class Clean extends LawClean {
             if (contentpar.trim().isEmpty() || contentpar.trim().equals("/**/")) {
                 continue;
             }
-            updateContent.append(contentpar.trim()).append("\n");
+            if(contentpar.trim().equals("文书内容")){
+                continue;
+            }
+            if(contentpar.trim().equals("﹤pre﹥")){
+                continue;
+            }
+            if(contentpar.trim().equals("{C}")){
+                continue;
+            }
+            updateContent.append(contentpar.trim().replaceAll("﹤／pre﹥","")).append("\n");
         }
         return updateContent.toString();
     }
@@ -59,25 +68,36 @@ public class Clean extends LawClean {
         String updateContent = getCleanContent(cleanHtml);
         String[] contentList = cleanHtml.split("\n");
 
-        try {
-            String category = contentList[1];
-            law.put("category", category.trim().replaceAll(" ", ""));
-        } catch (NullPointerException e) {
-            LOGGER.warn("No category of content");
+        boolean isfind = false;
+        for (String par:contentList) {
+            if(par.length() > 1 && par.substring(par.length() - 1).equals("书")){
+                law.put("category", par.trim().replaceAll(" ", ""));
+                isfind = true;
+                break;
+            }
+        }
+        if(!isfind){
+            law.put("category", "");
+        }
+        isfind = false;
+        for (String par:contentList) {
+            if(par.length() > 1 && par.substring(par.length() - 1).equals("号")){
+                law.put("release_number", par.trim().replaceAll(" ", ""));
+                isfind = true;
+                break;
+            }
+        }
+        if(!isfind){
+            law.put("release_number", "");
         }
 
+        System.out.println(law.getString("category"));
+        System.out.println(law.getString("release_number"));
+
         try {
-            String department = contentList[0];
-            law.put("department", department.trim());
+            law.put("department", "中华人民共和国最高人民法院");
         } catch (NullPointerException e) {
             LOGGER.warn("No department of content");
-        }
-
-        try {
-            String release_number = contentList[2];
-            law.put("release_number", release_number.trim());
-        } catch (NullPointerException e) {
-            LOGGER.warn("No release_number of content");
         }
 
         List<LawArticle> articleList = new ArrayList<LawArticle>();
