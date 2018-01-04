@@ -23,7 +23,7 @@ import java.util.*;
  * Modified By:
  */
 
-public class WanfangdataSpider extends LawSpider {
+public class  WanfangdataSpider extends LawSpider {
     private static Logger LOGGER = LawLogger.getLawLogger(WanfangdataSpider.class);
     private static WebClient client = HtmlUnitClient.getSingletonHtmlUntiClent();
     private Hashtable clientSet = new Hashtable();
