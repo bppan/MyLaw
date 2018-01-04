@@ -11,7 +11,7 @@ import java.util.List;
 public class MainPkulawSpider {
     public static void main(String[] args) {
         String indexUrl = "http://www.pkulaw.cn";
-        PkulawSpider spider = new PkulawSpider(indexUrl, 1, "crawJob", "law");
+        PkulawSpider spider = new PkulawSpider(indexUrl, 1, "pkulaw_crawJob", "pkulaw_law");
         List<String> urlFieldXpath = new ArrayList<String>();
         urlFieldXpath.add("//*[@id=\"0\"]/td");
         urlFieldXpath.add("//*[@id=\"1\"]/td");
