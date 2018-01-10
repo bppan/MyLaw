@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="mongodb-driver-core-3.5.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SolrWeb/web/WEB-INF/lib/mongodb-driver-core-3.5.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

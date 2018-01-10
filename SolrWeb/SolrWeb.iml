@@ -16,7 +16,7 @@
       <configuration />
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -35,5 +35,18 @@
     <orderEntry type="library" name="jstl" level="project" />
     <orderEntry type="library" name="log4j-1.2.17" level="project" />
     <orderEntry type="library" name="standard" level="project" />
+    <orderEntry type="library" name="solr-solrj-6.6.2" level="project" />
+    <orderEntry type="library" name="bson-3.5.0" level="project" />
+    <orderEntry type="library" name="mongo-java-driver-3.5.0" level="project" />
+    <orderEntry type="library" name="mongodb-driver-core-3.5.0" level="project" />
+    <orderEntry type="library" name="httpcore-4.4.1" level="project" />
+    <orderEntry type="library" name="httpmime-4.4.1" level="project" />
+    <orderEntry type="library" name="httpclient-4.4.1" level="project" />
+    <orderEntry type="library" name="slf4j-log4j12-1.7.6" level="project" />
+    <orderEntry type="library" name="slf4j-api-1.7.7" level="project" />
+    <orderEntry type="library" name="jcl-over-slf4j-1.7.7" level="project" />
+    <orderEntry type="library" name="commons-codec-1.9" level="project" />
+    <orderEntry type="library" exported="" name="commons-logging-1.2" level="project" />
+    <orderEntry type="library" name="noggit-0.5" level="project" />
   </component>
 </module>

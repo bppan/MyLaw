@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="bson-3.5.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SolrWeb/web/WEB-INF/lib/bson-3.5.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

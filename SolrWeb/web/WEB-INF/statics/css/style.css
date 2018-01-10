@@ -1,0 +1,126 @@
+ #wrapper {
+     position: relative;
+     width: 1222px;
+     min-height: 100%;
+     margin: 0 auto;
+}
+
+#submitinfo {
+    margin: 0 auto;
+    font-size: 16px;
+}
+#wrapper2 {
+    position: relative;
+    width: 1111px;
+    top: 20px;
+    margin: 0 auto;
+}
+.center {
+    text-align: center;
+}
+.blue {
+    color: blue;
+}
+#ptitle {
+    width: 90%;
+}
+
+#ps_is_ac {
+    width: 5%;
+}
+
+#ps_pid {
+    width: 12%;
+}
+
+#ps_title {
+    width: 67%;
+}
+
+#ps_ac {
+    width: 8%;
+}
+
+#ps_submit {
+    width: 8%;
+}
+
+#problem {
+    font-family: Arial, Helvetica, monospace;
+}
+
+#problem h2 {
+    color: blue;
+}
+
+#problem table {
+    margin: 0 auto;
+}
+#problem div {
+    background: #E4F0F8;
+    font-size: 16px;
+    line-height: 24px;
+    height: auto;
+    padding: 0px 20px;
+}
+a:link {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration:blink;
+}
+a{
+    text-decoration: none;
+}
+a:link, .w, #prs a:visited, #prs a:active, .q:active, .q:visited, .kl:active, .tbotu {
+    color: #1a0dab;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.error{
+    color: red;
+}
+
+a:visited {color: #609;}
+
+#left {
+    width: 111px;
+    text-align: center;
+    font-weight: bold;
+    color: blue;
+}
+
+#left a:hover {
+    color: red;
+}
+#right a {
+    color: white;
+}
+#right a:hover {
+    color: red;
+}
+
+#submitlist {
+     width: 1000px;
+}
+
+.blue {
+    color: blue;
+}
+.green {
+    color: green;
+}
+.red {
+    color: red;
+}
+
+.foot{
+    position: relative;
+    clear:both;
+}
+
+
