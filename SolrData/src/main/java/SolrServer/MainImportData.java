@@ -10,16 +10,22 @@ package SolrServer;
  */
 public class MainImportData {
     public static void main(String[] args) {
-        String baseURL = "http://localhost:8080/solr/law";
+        String baseURL = "http://183.174.228.23:8080/solr/law";
         String collection = "wanfangdata_law";
         ImportData importDataToSolr = new ImportData(baseURL, collection);
-        SolrServer solrServer = importDataToSolr.getSolrServer();
+//        SolrServer solrServer = importDataToSolr.getSolrServer();
+//        try {
+//            solrServer.deleteAll();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        importDataToSolr.doImport();
         try {
-            solrServer.deleteAll();
-        } catch (Exception e) {
+            importDataToSolr.getSolrServer().get("");
+        }catch (Exception e){
             e.printStackTrace();
         }
 
-        importDataToSolr.doImport();
     }
 }

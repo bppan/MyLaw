@@ -52,7 +52,7 @@ public class SolrServer {
         QueryResponse response = solrServer.query(query, SolrRequest.METHOD.POST);
         SolrDocumentList list = response.getResults();
         System.err.println(list.getNumFound());   //总页数
-        System.err.println(JSON.toJSONString(list));
+//        System.err.println(JSON.toJSONString(list));
     }
 
     public void getOne() throws IOException, SolrServerException {
