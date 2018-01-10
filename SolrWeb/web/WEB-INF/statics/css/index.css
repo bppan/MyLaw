@@ -1,0 +1,14 @@
+.input-private-lg {
+    height: 36px;
+    font: 14px/16px arial;
+    line-height: 22px;
+    border: 1px solid #b6b6b6;
+    outline: 0;
+    -webkit-appearance: none;
+}
+.btn-private-lg {
+    height: 36px;
+    font: 14px arial;
+    padding-top: 6px;
+    letter-spacing: 1px;
+}
