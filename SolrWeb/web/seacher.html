@@ -1,100 +1,96 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <title>Seacher</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="css/suggestion.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/signin.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-    <style type="text/css">
-        a {text-decoration: none;}
-        a:hover {text-decoration: underline;}
-    </style>
-</head>
-<body>
-<script src="js/jquery-2.2.0.min.js"></script>
-<script src="js/typeahead.bundle.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/seacher.js" charset="utf-8" ></script>
-<!-- Head -->
-<div class="container-fluid" style="background:#F1F1F1">
-    <div class="row" style="margin-top: 20px; background:#F1F1F1">
-        <div class="col-md-1" style="background:#F1F1F1">
-            <a href="/"><img src="img/seacher_logo_small.png"></a>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <div class="input-group">
-                    <input id = "user_input" type="text" class="typeahead form-control input-private-lg" autocomplete="off" name="query" value maxlength="255">
-                    <span class="input-group-btn">
-                        <span class="btn btn-primary" id = "search_button" style="letter-spacing: 1px;">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
-                        </span>
-					</span>
+    <head>
+        <title>Seacher</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="css/suggestion.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/signin.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+    </head>
+    <body>
+        <script src="js/jquery-2.2.0.min.js"></script>
+        <script src="js/typeahead.bundle.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/seacher.js" charset="utf-8" ></script>
+        <!-- Head -->
+        <div class="container-fluid" style="background:#F1F1F1">
+            <div class="row" style="margin-top: 20px; background:#F1F1F1">
+                <div class="col-md-1" style="background:#F1F1F1">
+                    <a href="/"><img src="img/seacher_logo_small.png"></a>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input id = "user_input" type="text" class="typeahead form-control input-private-lg" autocomplete="off" name="query" value maxlength="255">
+                            <span class="input-group-btn">
+                                <span class="btn btn-primary" id = "search_button" style="letter-spacing: 1px;">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                                </span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- SearchContent -->
-<div class="container" style = "width:100%;min-width:1024px">
-    <div class="row">
-        <div class="col-md-1"></div><!--/left-->
-        <!--center-->
-        <div class="col-md-6">
-            <div class="row" id = "seach_suggest">  </div>
-            <div class="row" style = "margin-top:10px; color: #808080;" id = "seach_message"></div>
+        <!-- SearchContent -->
+        <div class="container" style = "width:100%;min-width:1024px">
+            <div class="row">
+                <div class="col-md-1"></div><!--/left-->
+                <!--center-->
+                <div class="col-md-6">
+                    <div class="row" id = "seach_suggest">  </div>
+                    <div class="row" style = "margin-top:10px; color: #808080;" id = "seach_message"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div><!--/left-->
+                <div class="col-md-6">
+                    <div id = "seach_content" style ="min-height:768px"></div>
+                    <div id = "nav" style ="margin-bottom:42px"></div>
+                </div>
+                <!--right-->
+                <div class="col-md-3" id = "adv"></div>
+                <!--/right-->
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1"></div><!--/left-->
-        <div class="col-md-6">
-            <div id = "seach_content" style ="min-height:768px"></div>
-            <div id = "nav" style ="margin-bottom:42px"></div>
+        <!--/container-fluid-->
+        <!-- 遮罩层 -->
+        <div id = "fade_mask" class="fade_mask" style="display: none"></div>
+        <!-- 底部版权 -->
+        <div class="container foot" style = "background-color: #F1F1F1; width:100% ;font-size: 12px; min-width:1024px; height: 50px; margin-bottom: 0px">
+            <span>
+                <p class="text-center" style = " vertical-align:middle;margin: 0;line-height: 50px;">
+                    This Search  is developed by BDAI.Copyright © 2018 Renmin University of China.
+                </p>
+            </span>
         </div>
-        <!--right-->
-        <div class="col-md-3" id = "adv"></div>
-        <!--/right-->
-    </div>
-    <!--/center-->
-</div>
-<!--/container-fluid-->
-<!-- 遮罩层 -->
-<div id = "fade_mask" class="fade_mask" style="display: none"></div>
-<div class="container foot" style = "background-color: #F1F1F1; width:100% ;font-size: 12px; min-width:1024px; height: 50px; margin-bottom: 0px">
-    <span>
-        <p class="text-center" style = " vertical-align:middle;margin: 0;line-height: 50px;">
-            This Search  is developed by BDAI.Copyright © 2018 Renmin University of China.
-        </p>
-    </span>
-</div>
-</body>
-<script>
-    //below is auto-complete for twitter
-    var bestSuggestes = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.nonword('value'),
-        queryTokenizer: Bloodhound.tokenizers.nonword,
-        limit: 8,
-        remote: '/solr/suggest?keyword=%QUERY',
-    });
-    bestSuggestes.initialize();
-    $('.typeahead').typeahead({
-        hint: true,
-        highlight: true,
-        minLength: 1
-    }, {
-        name: null,
-        displayKey: 'value',
-        source: bestSuggestes.ttAdapter(),
-    }).on('typeahead:selected', function ($e, datum) {
-        Transcripts.getResultList(datum.value, 0, 10);
-    });
-</script>
+        <script>
+            //below is auto-complete for twitter
+            var bestSuggestes = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.nonword('value'),
+                queryTokenizer: Bloodhound.tokenizers.nonword,
+                limit: 8,
+                remote: '/solr/suggest?keyword=%QUERY',
+            });
+            bestSuggestes.initialize();
+            $('.typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                name: null,
+                displayKey: 'value',
+                source: bestSuggestes.ttAdapter(),
+            }).on('typeahead:selected', function ($e, datum) {
+                Transcripts.getResultList(datum.value, 0, 10);
+            });
+        </script>
+    </body>
 </html>
