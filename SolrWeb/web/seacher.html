@@ -1,292 +1,100 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Seacher</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="css/suggestion.css">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <link rel="stylesheet" type="text/css" href="css/signin.css">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <style type="text/css">
-            a {text-decoration: none;}
-            a:hover {text-decoration: underline;}
-        </style>
-    </head>
-    <body>
-        <script src="js/jquery-2.2.0.min.js"></script>
-        <script src="js/typeahead.bundle.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery.cookie.js"></script>
-        <script type="text/javascript" src="js/seacher.js" charset="utf-8" ></script>
-	<!-- Head -->
-	 <div class="container-fluid" style="background:#F1F1F1">
-		<div class="row" style="height: 20px; background:#F1F1F1"></div>
-	 	<div class="col-md-1" style="background:#F1F1F1">
+<head>
+    <title>Seacher</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/suggestion.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/signin.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <style type="text/css">
+        a {text-decoration: none;}
+        a:hover {text-decoration: underline;}
+    </style>
+</head>
+<body>
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/typeahead.bundle.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/seacher.js" charset="utf-8" ></script>
+<!-- Head -->
+<div class="container-fluid" style="background:#F1F1F1">
+    <div class="row" style="margin-top: 20px; background:#F1F1F1">
+        <div class="col-md-1" style="background:#F1F1F1">
             <a href="/"><img src="img/seacher_logo_small.png"></a>
-		</div>
-	    <div class="col-md-6" >
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 <div class="input-group">
                     <input id = "user_input" type="text" class="typeahead form-control input-private-lg" autocomplete="off" name="query" value maxlength="255">
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" id = "search_btn" style="letter-spacing: 1px;">
+                        <span class="btn btn-primary" id = "search_button" style="letter-spacing: 1px;">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
-                        </button>
-                    </span>
+                        </span>
+					</span>
                 </div>
             </div>
-		</div>
-	</div>
-	<!-- SearchContent -->
-    <div class="container-fluid">
-    	<div class="col-md-1"></div><!--/left-->
+        </div>
+    </div>
+</div>
+<!-- SearchContent -->
+<div class="container" style = "width:100%;min-width:1024px">
+    <div class="row">
+        <div class="col-md-1"></div><!--/left-->
         <!--center-->
         <div class="col-md-6">
-            <div class="row" id = "seach_suggest">
-				<br>
-                <div class="col-md-12"><B>您是不是要找：<a style="color: red" href="/result?searchType=Trec09&amp;page=1&amp;query=coolers foul tv">coolers foul tv</a></B></div>
-            </div>
-            <div class="row" style = "margin-top:10px; color: #808080;" id = "seach_message">
-                <div class="col-md-12">找到约 2,790,000,000 条结果 （用时 0.53 秒）</div>
-				<hr>
-            </div>
-
-			<div id = "seach_content" style ="min-height:768px">
-            <div class="row">
-                <div class="col-md-12">
-                    <h4><a href=http://www.rei.com/product/764178><font color="#1a0dab">REI <b>Ti</b> Ware Nonstick Titanium Cookset at REI.com</font></a></h4>
-                    <p> Titanium Pots and Pans > REI <font color="red">Ti</font> Ware Nonstick Titanium Cookset (Item # 764178) zoom var zoomLink_TB = 'http. ; document.getElementById('zoomLink3').href = zoomLink_TB REI <font color="red">Ti</font> Ware Nonstick Titanium CooksetItem # 764178$109.95 if.  kitchen cleanup to a minimum with the REI <font color="red">Ti</font> Ware" nonstick titanium cookset.Lighter than steel and...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://www.rei.com/product/764178><font color="#006621">http://www.rei.com/product/764178</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0010-30-25681&amp;url=http://www.rei.com/product/764178"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0010-30-25681</span>
-                            <span class="label label-default show_pr">PR: 0.15</span>
-                        </p>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://www.rei.com/product/764186><font color="#1a0dab">REI <b>Ti</b> Ware Double-Wall Mug at REI.com</font></a></h4>
-                    <p> Mugs > REI <font color="red">Ti</font> Ware Double-Wall Mug (Item # 764186) zoom var zoomLink_TB = 'http://www.rei.com/features. ').href = zoomLink_TB REI <font color="red">Ti</font> Ware Double-Wall MugItem # 764186$38.95 if<font color="red">Ti</font> Ware" Double-Wall mug will keep your drink warm and your pack light.Titanium...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://www.rei.com/product/764186><font color="#006621">http://www.rei.com/product/764186</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0010-30-25682&amp;url=http://www.rei.com/product/764186"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0010-30-25682</span>
-                            <span class="label label-default show_pr">PR: 0.15</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://www.kysorpanel.com/shelfs-carts-racks.htm><font color="#1a0dab">KYSOR Walk-in Cooler/Freezer: Shelves, Racks and Carts</font></a></h4>
-                    <p>; border-width:0px; padding:4px 5px 4px 12px; } /* [hover] - Floral <font color="red">Coolers</font> - These settings must be.  in <font color="red">Coolers</font> These settings must be duplicated for IE comptatibility.*/ #imenus0 ul li:hover>a. -bottom:2px; } Home Kysor Walk-in <font color="red">Coolers</font> Kysor Environmental Catalogs Woodframe Insulframe Series 1...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://www.kysorpanel.com/shelfs-carts-racks.htm><font color="#006621">http://www.kysorpanel.com/shelfs-carts-racks.htm</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0009-63-12222&amp;url=http://www.kysorpanel.com/shelfs-carts-racks.htm"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0009-63-12222</span>
-                            <span class="label label-default show_pr">PR: 0.16</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://www.rei.com/product/773536><font color="#1a0dab">Salomon X-Wing Tornado Skis / Z12 <b>Ti</b> Bindings at REI.com</font></a></h4>
-                    <p> Skis / Z12 <font color="red">Ti</font> Bindings (Item # 773536) zoom var zoomLink_TB = 'http://www.rei.com/features/zoom.html. ; document.getElementById('zoomLink3').href = zoomLink_TB Salomon X-Wing Tornado Skis / Z12 <font color="red">Ti</font> BindingsItem # 773536$999.00.  heightened ski responsivenessZ12 <font color="red">Ti</font> bindings automatically adjust height and width at critical boot contact...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://www.rei.com/product/773536><font color="#006621">http://www.rei.com/product/773536</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0010-30-26126&amp;url=http://www.rei.com/product/773536"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0010-30-26126</span>
-                            <span class="label label-default show_pr">PR: 0.15</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://www.svc.com/zm-vf700cu-75.html><font color="#1a0dab">Zalman VF700-Cu VGA Cooler (Out of Stock)</font></a></h4>
-                    <p> technology, used for their successful line of CPU <font color="red">coolers</font>, to the VGA card cooler. The circular copper fin. ) NVIDIA Geforce4 <font color="red">Ti</font> 4*** Series NVIDIA Geforce FX 5700(Ultra) Series NVIDIA Geforce FX 5800 Series NVIDIA. ) Two Nipple A 5) Two Nipple B 6) <font color="red">Four</font> Bolt A 7) <font color="red">Four</font> Bolt B 8) Six Rubber Rings 9) Thermal Grease 10...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://www.svc.com/zm-vf700cu-75.html><font color="#006621">http://www.svc.com/zm-vf700cu-75.html</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0011-12-41878&amp;url=http://www.svc.com/zm-vf700cu-75.html"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0011-12-41878</span>
-                            <span class="label label-default show_pr">PR: 0.15</span>
-                            <span class="label label-default show_spam">spam</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://catalogue.horse21.it/st%2E+lucia+hotels/castries+hotels/almond+morgan+bay><font color="#1a0dab">Prenota l`Almond Morgan Bay 4*, prezzo della camera da 183 EUR, (1 Choc Bay Gros Islet Gros Islet), prenota la camera all` Almond Morgan Bay (Castries, St. Lucia)</font></a></h4>
-                    <p> alcuni parametri non <font color="red">ti</font> convengono, puoi lasciare una richiesta previa e un nostro operatore <font color="red">ti</font>.  Morgan Bay" (Castries, Santa Lucia) Informazioni sull'hotel : Escape from reality at the <font color="red">four</font>-star Almond.  training are available in the fitness center. Guests can play tennis on any of <font color="red">four</font> lighted courts or enjoy...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://catalogue.horse21.it/st%2E+lucia+hotels/castries+hotels/almond+morgan+bay><font color="#006621">http://catalogue.horse21.it/st%2E+lucia+hotels/castries+hotels/almond+morgan+bay</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0001-36-06940&amp;url=http://catalogue.horse21.it/st%2E+lucia+hotels/castries+hotels/almond+morgan+bay"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0001-36-06940</span>
-                            <span class="label label-default show_pr">PR: 0.15</span>
-                            <span class="label label-default show_spam">spam</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://www.bmw2002.co.uk/History/alpina.html><font color="#1a0dab">bmw2002.co.uk</font></a></h4>
-                    <p>. Over the moon with his 1500 Series <font color="red">four</font> door-derived 1600-2 two-door coupe, he agreed with his.  his workshop in Kaufbeuren, he developed further the ideas for the 1500cc BMW straight <font color="red">four</font> he had. , and if the customer wished, the <font color="red">four</font>-speed manual gearbox could be replaced with the close-ratio five...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://www.bmw2002.co.uk/History/alpina.html><font color="#006621">http://www.bmw2002.co.uk/History/alpina.html</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0005-89-17461&amp;url=http://www.bmw2002.co.uk/History/alpina.html"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0005-89-17461</span>
-                            <span class="label label-default show_pr">PR: 0.28</span>
-                            <span class="label label-default show_spam">spam</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://www.rei.com/product/738183><font color="#1a0dab">Gerber EVO Titanium-Coated Serrated Knife at REI.com</font></a></h4>
-                    <p> Serrated Locking Knife$17.95Buck Nobleman <font color="red">Ti</font> CF Folding Knife$29.95Gerber EVO Titanium-Coated Serrated.  Locking Knife $17.95Buck Nobleman <font color="red">Ti</font> CF Folding Knife $29.95Join REI and Enjoy the BenefitsMembers are.  address:Friend's email address:Enter up to <font color="red">four</font> e-mail addresses, separated by commas.Message:Text limit 500...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://www.rei.com/product/738183><font color="#006621">http://www.rei.com/product/738183</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0010-30-25073&amp;url=http://www.rei.com/product/738183"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0010-30-25073</span>
-                            <span class="label label-default show_pr">PR: 0.15</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4><a href=http://teamindiana.softballone.com/news.html><font color="#1a0dab">Team Indiana Travel Softball Club, Competitive Fastpitch Softball, Indiana College-Prep Softball Program, Cara Johnson-Hirsch, SoftballOne, Inc</font></a></h4>
-                    <p> tourney. “We’re sleeping <font color="red">four</font> kids to a room and are eating out of our <font color="red">coolers</font>, but we were able to.  rest long, and helped Johnson-Hirsch put in day one of a <font color="red">four</font>-day local camp for 35 girls, all but a.  weekend ladies! The hard work is paying off! <font color="red">TI</font> vs Indy Diamond Chix: 7-0 <font color="red">TI</font> vs Munster Mudddawgs: 6-4 <font color="red">TI</font>...</p>
-                    <ul class="list-inline">
-                        <li><a href=http://teamindiana.softballone.com/news.html><font color="#006621">http://teamindiana.softballone.com/news.html</font></a></li>
-                        <li><a href="/cache?id=clueweb09-en0003-64-22603&amp;url=http://teamindiana.softballone.com/news.html"><font color="#666"><u>Cached Page</u></font></a></li>
-
-                        <p class="pull-right">
-                            <span class="label label-default show_id">clueweb09-en0003-64-22603</span>
-                            <span class="label label-default show_pr">PR: 0.27</span>
-                            <span class="label label-default show_spam">spam</span>
-                        </p>
-                    </ul>
-
-                </div>
-            </div>
-			</div>
-
-            <div id = "nav">
-				<hr>
-                <nav>
-                    <ul class="pagination">
-                        <li class="active"><a href="/result?searchType=Trec09&amp;page=1&amp;query=coolers four ti">1</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=2&amp;query=coolers four ti">2</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=3&amp;query=coolers four ti">3</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=4&amp;query=coolers four ti">4</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=5&amp;query=coolers four ti">5</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=6&amp;query=coolers four ti">6</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=7&amp;query=coolers four ti">7</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=8&amp;query=coolers four ti">8</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=9&amp;query=coolers four ti">9</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=10&amp;query=coolers four ti">10</a></li>
-                        <li><a href="/result?searchType=Trec09&amp;page=11&amp;query=coolers four ti">11</a></li>
-                        <li>
-                            <a href="/result?searchType=Trec09&amp;page=2&amp;query=coolers four ti" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div><!--/center-->
+            <div class="row" id = "seach_suggest">  </div>
+            <div class="row" style = "margin-top:10px; color: #808080;" id = "seach_message"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div><!--/left-->
+        <div class="col-md-6">
+            <div id = "seach_content" style ="min-height:768px"></div>
+            <div id = "nav" style ="margin-bottom:42px"></div>
+        </div>
         <!--right-->
-        <div class="col-sm-3" style = "margin-top:70px" id = "adv">
-
-            <div class="panel panel-default" id = "ad1">
-                <div class="panel-heading">Ads</div>
-                <div class="panel-body" style="text-align: left;"> Reflexology Asthma(Traditional Chinese Medicine) Cervical spine disease Children's poor <font color="red">appe</font> Common cold.  children's poor <font color="red">appe</font> Children's Poor AppetitePoor appetite introductioncause of poor. ? >>more Question If you have any question about health or health care for children's poor <font color="red">appe</font> please...</div>
-              <hr>
-            </div>
-
-            <div class="panel panel-default" id = "ad2">
-                <div class="panel-heading">Ads</div>
-                <div class="panel-body" style="text-align: left;"> WHO WE ARE <font color="red">Appe</font> Acetyls Acrylonitrile Alkylamines Amines Aromatics Automotive grade urea Basic acrylic.  Map Glossary Links Home <font color="red">Appe</font> <font color="red">Appe</font> What is it and who belongs to it? The Association of Petrochemicals.  Producers in Europe <font color="red">Appe</font>- is the voice of the European petrochemical industry and brings together about 95...</div>
-           		 <hr>
-            </div>
-
-            <div class="panel panel-default" id = "ev1">
-                <div class="panel-heading">Evaluations</div>
-                <div class="panel-body">Content here..</div>
-                  <hr>
-            </div>
-
-        </div>
-       <!--/right-->
-    </div><!--/container-fluid-->
-    <div class="container foot" style = "background-color: #F1F1F1; width:100% ;font-size: 12px;">
-            <footer>
-                <p class="text-center" style = " vertical-align:middle; "></p>
-                <p class="text-center" style = " vertical-align:middle; "></p>
-                <p class="text-center" style = " vertical-align:middle;">
-                    This Search  is developed by BDAI.Copyright © 2016 Renming University of China.
-                </p>
-                <p class="text-center"></p>
-            </footer>
-        </div>
-    </body>
-
-
-    <script>
-        //below is auto-complete for twitter
-        var bestSuggestes = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.nonword('value'),
-            queryTokenizer: Bloodhound.tokenizers.nonword,
-            limit: 8,
-            remote: '/solr/suggest?keyword=%QUERY',
-        });
-        bestSuggestes.initialize();
-        $('.typeahead').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-        }, {
-            name: null,
-            displayKey: 'value',
-            source: bestSuggestes.ttAdapter(),
-        });
-    </script>
+        <div class="col-md-3" id = "adv"></div>
+        <!--/right-->
+    </div>
+    <!--/center-->
+</div>
+<!--/container-fluid-->
+<!-- 遮罩层 -->
+<div id = "fade_mask" class="fade_mask" style="display: none"></div>
+<div class="container foot" style = "background-color: #F1F1F1; width:100% ;font-size: 12px; min-width:1024px; height: 50px; margin-bottom: 0px">
+    <span>
+        <p class="text-center" style = " vertical-align:middle;margin: 0;line-height: 50px;">
+            This Search  is developed by BDAI.Copyright © 2018 Renmin University of China.
+        </p>
+    </span>
+</div>
+</body>
+<script>
+    //below is auto-complete for twitter
+    var bestSuggestes = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.nonword('value'),
+        queryTokenizer: Bloodhound.tokenizers.nonword,
+        limit: 8,
+        remote: '/solr/suggest?keyword=%QUERY',
+    });
+    bestSuggestes.initialize();
+    $('.typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+    }, {
+        name: null,
+        displayKey: 'value',
+        source: bestSuggestes.ttAdapter(),
+    }).on('typeahead:selected', function ($e, datum) {
+        Transcripts.getResultList(datum.value, 0, 10);
+    });
+</script>
 </html>

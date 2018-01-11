@@ -1,6 +1,5 @@
 var Transcripts = Transcripts || {};
 var content = content || {};
-
 $(function () {
     content._seach_suggest = $('#seach_suggest');
     content._seach_message = $('#seach_message');
@@ -11,26 +10,32 @@ $(function () {
     content._ad2 = $('#ad2');
     content._ev1 = $('#ev1');
 
-    var search_content = $.trim($('#user_input').val());
-    if (search_content) {
-        $.cookie('queryHistary', search_content);
-    }
-
     var queryHistary = $.cookie('queryHistary');
-    $('#user_input').focus();
     if (queryHistary) {
         $('#user_input').val(queryHistary);
-        Transcripts.cleanContent();
+        Transcripts.sendQuest();
+    } else {
         $('#seach_content').html("<p>请按\"回车键\"或点击\"搜索\"按钮进行检索</p>");
     }
-    $("#search_btn").click(function () {
+    $("#search_button").click(function () {
         Transcripts.sendQuest();
     });
     document.onkeydown = function (event) {
         if (event.keyCode == 13) {
             Transcripts.sendQuest();
+            return false;
         }
     }
+    $('#user_input').focus();
+    // $('#user_input').unbind("blur");
+    $("#user_input").bind("blur",function(){
+        if(!$('#user_input').val()){
+            var queryHistary = $.cookie('queryHistary');
+            if (queryHistary) {
+                $('#user_input').val(queryHistary);
+            }
+        }
+    });
 });
 
 Transcripts.cleanContent = function () {
@@ -46,18 +51,19 @@ Transcripts.cleanContent = function () {
 };
 
 Transcripts.sendQuest = function () {
-    var search_content = $.trim($('#user_input').val());
+    var search_content = $('#user_input').val();
     if (search_content) {
-        $.cookie('queryHistary', search_content);
         Transcripts.getResultList(search_content, 0, 10);
     } else {
-        // window.location.href = "/index.html";
+        window.location.href = "/index.html";
     }
 };
 
 Transcripts.getResultList = function (query, start, rows) {
+    $.cookie('queryHistary', query);
+    $('#fade_mask').show();
     var parm = {
-        query_string: query,
+        query_string: $.trim(query),
         start: start,
         rows: rows
     };
@@ -66,30 +72,48 @@ Transcripts.getResultList = function (query, start, rows) {
         dataType: "json",
         data: parm || {},
         success: function (resultInfo) {
-            initBottomIndex(start + 1, resultInfo.numFound);
-            if (resultInfo.numFound > 0) {
-                Transcripts.addviewList(resultInfo);
-            } else {
-                $('#seach_content').empty();
-                $('#seach_content').html("<p>很抱歉没有找到任何结果</p>");
-                $('#adv').empty();
-            }
-            $('#seach_message').empty();
-            var resultNum = resultInfo.numFound;
-            var costTime = resultInfo.QTime;
-            var message_html = ""
-            if (start == 0) {
-                message_html += "<div class='col-md-12' style = 'color: #808080;'>找到约" + resultNum + "条结果（用时" + costTime + "毫秒）</div><hr>";
-            } else {
-                message_html += "<div class='col-md-12' style = 'color: #808080;'>找到约" + resultNum + "条结果，以下是第" + parseInt(start + 1) + "页（用时" + costTime + "毫秒）</div><hr>";
-            }
-            $('#seach_message').html(message_html);
-            $('#seach_suggest').empty();
+            $('#fade_mask').hide();
+            Transcripts.showContent(resultInfo, start, rows);
         },
         error: function (request, textStatus, errorThrown) {
+            $('#fade_mask').hide();
         }
     });
 };
+
+Transcripts.showContent = function (resultInfo, start, rows) {
+    initBottomIndex(start + 1, resultInfo.numFound);
+    if (resultInfo.numFound > 0) {
+        Transcripts.addviewList(resultInfo);
+    } else {
+        $('#seach_content').empty();
+        $('#seach_content').html("<p>很抱歉没有找到任何结果</p>");
+        $('#adv').empty();
+    }
+    $('#seach_message').empty();
+    var resultNum = resultInfo.numFound.toString();
+    var costTime = resultInfo.QTime;
+    var message_html = "";
+    var numString = "";
+    var count = 0;
+    for(var i = resultNum.length - 1; i >=0; i--){
+        count++;
+        if(count == 4){
+            numString = resultNum[i] + ','+ numString;
+            count = 0;
+        }else {
+            numString = resultNum[i] + numString;
+        }
+    }
+
+    if (start == 0) {
+        message_html += "<div class='col-md-12' style = 'color: #808080;'>找到约" + numString + "条结果（用时" + costTime + "毫秒）</div><hr>";
+    } else {
+        message_html += "<div class='col-md-12' style = 'color: #808080;'>找到约" + numString + "条结果，以下是第" + parseInt(start + 1) + "页（用时" + costTime + "毫秒）</div><hr>";
+    }
+    $('#seach_message').html(message_html);
+    $('#seach_suggest').empty();
+}
 
 Transcripts.addviewList = function (resultInfo) {
     $('#seach_content').empty();
@@ -106,14 +130,14 @@ function refreshAdsAndEvaluation(resultInfo) {
     for (var i = 0; i < rand_num_ads; i++) {
         var rand_index = parseInt(Math.random() * (9 - 0 + 1));
         html_ads += "<div class='panel panel-default'>" +
-            "<div class='panel-heading'>Ads</div>" +
+            "<div class='panel-heading'>图谱关系</div>" +
             "<div class='panel-body' style='text-align: left;'>" +
             "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank'><p><font color='#666'>" + resultInfo.resultList[rand_index].content + "...</font></p></a>" +
             "</div></div>";
     }
 
     html_ads += "<div class='panel panel-default'>" +
-        "<div class='panel-heading'>Recommendation</div>" +
+        "<div class='panel-heading'>推荐阅读</div>" +
         "<div class='panel-body'>";
     for (var i = 0; i < 3; i++) {
         var rand_index = parseInt(Math.random() * (9 - 0 + 1));
@@ -131,18 +155,18 @@ function getContent(resultList) {
             "<p>" + resultList[i].content + "...</p>" +
             "<ul class='list-inline'>" +
             "<li><a href=" + resultList[i].url + " target='_blank' style='color:#006621'>" + resultList[i].url + "</a></li></ul>" +
-            "<p class='pull-left'>"+
-            "<span class='label label-default' style='color:#545454'>[发布文号] " + resultList[i].release_number + "</span>" +
-            "<span class='label label-default' style='color:#545454'>[发布日期] " + resultList[i].release_date + "</span>" +
-            "<span class='label label-default' style='color:#545454'>[实施日期] " + resultList[i].implement_date + "</span>" +
-            "<span class='label label-default' style='color:#545454'>[法规类别] "+resultList[i].category+"</span>"+
-            "<span class='label label-default' style='color:#545454'>[法规级别] "+resultList[i].level+"</span>"+
-            "<span class='label label-default' style='color:#545454'>[时效性] "+resultList[i].timeless+"</span>"+
-            "</p>" +
+            "<div class='pull-left'>" +
+            "<span class='label label-default' style='color:#545454'>[发文字号]" + resultList[i].release_number + "</span>" +
+            "<span class='label label-default' style='color:#545454'>[发布日期]" + resultList[i].release_date + "</span>" +
+            "<span class='label label-default' style='color:#545454'>[实施日期]" + resultList[i].implement_date + "</span>" +
+            "<span class='label label-default' style='color:#545454'>[法规类别]" + resultList[i].category + "</span>" +
+            "<span class='label label-default' style='color:#545454'>[法规级别]" + resultList[i].level + "</span>" +
+            "<span class='label label-default' style='color:#545454'>[时效性]" + resultList[i].timeless + "</span>" +
+            "</div>" +
             "</div></div><hr>";
     }
     return html;
-};
+}
 
 function initBottomIndex(startIndex, rowSize) {
     $('#nav').empty();
@@ -178,7 +202,7 @@ function initBottomIndex(startIndex, rowSize) {
     bindIndexEvent();
     bindNextIndexEvent(rowSize);
     bindPreviousIndexEvent(rowSize);
-};
+}
 
 function bindIndexEvent() {
     $(".index").click(function () {
@@ -221,7 +245,6 @@ function nextActive(rowSize) {
             var search_content = $.cookie('queryHistary');
             $('#user_input').val(search_content);
             if (i + 1 >= index.length) {
-
                 var message_index = parseInt($($(".index")[i]).attr('id'));
                 Transcripts.getResultList(search_content, message_index, 10);
                 break;
@@ -231,9 +254,8 @@ function nextActive(rowSize) {
                 break;
             }
         }
-
     }
-};
+}
 
 function previousActive(rowSize) {
     var index = $(".index");
