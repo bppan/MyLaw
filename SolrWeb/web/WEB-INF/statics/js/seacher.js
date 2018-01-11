@@ -12,24 +12,25 @@ $(function () {
 
     var queryHistary = $.cookie('queryHistary');
     if (queryHistary) {
+        $('.typeahead').typeahead('val', queryHistary);
         $('#user_input').val(queryHistary);
         Transcripts.sendQuest();
     } else {
         $('#seach_content').html("<p>请按\"回车键\"或点击\"搜索\"按钮进行检索</p>");
     }
     $("#search_button").click(function () {
+        $('.typeahead').typeahead('close');
         Transcripts.sendQuest();
     });
     document.onkeydown = function (event) {
         if (event.keyCode == 13) {
+            $('.typeahead').typeahead('close');
             Transcripts.sendQuest();
             return false;
         }
     }
-    $('#user_input').focus();
-    // $('#user_input').unbind("blur");
-    $("#user_input").bind("blur",function(){
-        if(!$('#user_input').val()){
+    $("#user_input").bind("blur", function () {
+        if (!$('#user_input').val()) {
             var queryHistary = $.cookie('queryHistary');
             if (queryHistary) {
                 $('#user_input').val(queryHistary);
@@ -96,12 +97,12 @@ Transcripts.showContent = function (resultInfo, start, rows) {
     var message_html = "";
     var numString = "";
     var count = 0;
-    for(var i = resultNum.length - 1; i >=0; i--){
+    for (var i = resultNum.length - 1; i >= 0; i--) {
         count++;
-        if(count == 4){
-            numString = resultNum[i] + ','+ numString;
+        if (count == 4) {
+            numString = resultNum[i] + ',' + numString;
             count = 0;
-        }else {
+        } else {
             numString = resultNum[i] + numString;
         }
     }
