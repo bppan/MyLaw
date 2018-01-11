@@ -108,9 +108,9 @@ Transcripts.showContent = function (resultInfo, start, rows) {
     }
 
     if (start == 0) {
-        message_html += "<div class='col-md-12' style = 'color: #808080;'>找到约" + numString + "条结果（用时" + costTime + "毫秒）</div><hr>";
+        message_html += "<div class='col-md-12 col-xs-12' style = 'color: #808080;'>找到约" + numString + "条结果（用时" + costTime + "毫秒）</div>";
     } else {
-        message_html += "<div class='col-md-12' style = 'color: #808080;'>找到约" + numString + "条结果，以下是第" + parseInt(start + 1) + "页（用时" + costTime + "毫秒）</div><hr>";
+        message_html += "<div class='col-md-12 col-xs-12' style = 'color: #808080;'>找到约" + numString + "条结果，以下是第" + parseInt(start + 1) + "页（用时" + costTime + "毫秒）</div>";
     }
     $('#seach_message').html(message_html);
     $('#seach_suggest').empty();
@@ -156,14 +156,14 @@ function getContent(resultList) {
             "<p>" + resultList[i].content + "...</p>" +
             "<ul class='list-inline'>" +
             "<li><a href=" + resultList[i].url + " target='_blank' style='color:#006621'>" + resultList[i].url + "</a></li></ul>" +
-            "<div class='pull-left'>" +
+            "<p class='pull-left'>" +
             "<span class='label label-default' style='color:#545454'>[发文字号]" + resultList[i].release_number + "</span>" +
             "<span class='label label-default' style='color:#545454'>[发布日期]" + resultList[i].release_date + "</span>" +
             "<span class='label label-default' style='color:#545454'>[实施日期]" + resultList[i].implement_date + "</span>" +
             "<span class='label label-default' style='color:#545454'>[法规类别]" + resultList[i].category + "</span>" +
             "<span class='label label-default' style='color:#545454'>[法规级别]" + resultList[i].level + "</span>" +
             "<span class='label label-default' style='color:#545454'>[时效性]" + resultList[i].timeless + "</span>" +
-            "</div>" +
+            "</p>" +
             "</div></div><hr>";
     }
     return html;

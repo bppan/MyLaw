@@ -1,6 +1,5 @@
 package model;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import org.apache.solr.common.SolrDocument;
 
 import java.util.List;
@@ -26,6 +25,23 @@ public class Document {
     private String timeless;
     private String url;
     private String content;
+
+    public Document(SolrDocument doc) {
+        this.setId(doc.getFieldValue("id").toString());
+        this.setTitle(doc.getFieldValue("title").toString());
+        this.setDepartment(doc.getFieldValue("department").toString());
+        this.setRelease_date(doc.getFieldValue("release_date").toString());
+        this.setRelease_number(doc.getFieldValue("release_number").toString());
+        this.setImplement_date(doc.getFieldValue("implement_date").toString());
+        this.setCategory(doc.getFieldValue("category").toString());
+        this.setLevel(doc.getFieldValue("level").toString());
+        this.setTimeless(doc.getFieldValue("timeless").toString());
+        this.setUrl(doc.getFieldValue("url").toString());
+        this.setContent(doc.getFieldValue("content").toString());
+    }
+
+    public Document() {
+    }
 
     public String getTitle() {
         return title;
@@ -114,55 +130,46 @@ public class Document {
     public void setContent(String content) {
         this.content = content.replaceAll("\n", " ");
     }
-    public Document(SolrDocument doc){
-        this.setId(doc.getFieldValue("id").toString());
-        this.setTitle(doc.getFieldValue("title").toString());
-        this.setDepartment(doc.getFieldValue("department").toString());
-        this.setRelease_date(doc.getFieldValue("release_date").toString());
-        this.setRelease_number(doc.getFieldValue("release_number").toString());
-        this.setImplement_date(doc.getFieldValue("implement_date").toString());
-        this.setCategory(doc.getFieldValue("category").toString());
-        this.setLevel(doc.getFieldValue("level").toString());
-        this.setTimeless(doc.getFieldValue("timeless").toString());
-        this.setUrl(doc.getFieldValue("url").toString());
-        this.setContent(doc.getFieldValue("content").toString());
-    }
 
-    public void setHighLight(Map<String, Map<String, List<String>>> highlightresult){
+    public void setHighLight(Map<String, Map<String, List<String>>> highlightresult) {
         if (highlightresult.get(this.getId()) != null) {
             Map<String, List<String>> hightMap = highlightresult.get(this.getId());
-            if(hightMap.get("content") != null){
+            if (hightMap.get("content") != null) {
                 String fieldHL = hightMap.get("content").get(0);
                 this.setContent(fieldHL);
-            }else {
-                String subContent = this.getContent().substring(0, 200);
+            } else {
+                String subContent = "";
+                if (this.getContent().length() < 200) {
+                    subContent = this.getContent();
+                } else {
+                    subContent = this.getContent().substring(0, 200);
+                }
                 this.setContent(subContent);
             }
-            if(hightMap.get("title") != null){
+            if (hightMap.get("title") != null) {
                 String fieldHL = hightMap.get("title").get(0);
                 this.setTitle(fieldHL);
             }
-            if(hightMap.get("department") != null){
+            if (hightMap.get("department") != null) {
                 String fieldHL = hightMap.get("department").get(0);
                 this.setDepartment(fieldHL);
             }
-            if(hightMap.get("release_number") != null){
+            if (hightMap.get("release_number") != null) {
                 String fieldHL = hightMap.get("release_number").get(0);
                 this.setRelease_number(fieldHL);
             }
-            if(hightMap.get("category") != null){
+            if (hightMap.get("category") != null) {
                 String fieldHL = hightMap.get("category").get(0);
                 this.setCategory(fieldHL);
             }
-            if(hightMap.get("level") != null){
+            if (hightMap.get("level") != null) {
                 String fieldHL = hightMap.get("category").get(0);
                 this.setCategory(fieldHL);
             }
-            if(hightMap.get("timeless") != null){
+            if (hightMap.get("timeless") != null) {
                 String fieldHL = hightMap.get("category").get(0);
                 this.setCategory(fieldHL);
             }
         }
     }
-    public Document(){ }
 }
