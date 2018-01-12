@@ -132,14 +132,14 @@ function refreshAdsAndEvaluation(resultInfo) {
         var rand_index = parseInt(Math.random() * (9 - 0 + 1));
         html_ads += "<div class='panel panel-default'>" +
             "<div class='panel-heading'>图谱关系</div>" +
-            "<div class='panel-body' style='text-align: left;'>" +
+            "<div class='panel-body' style='text-align: left;overflow :auto'>" +
             "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank'><p><font color='#666'>" + resultInfo.resultList[rand_index].content + "...</font></p></a>" +
             "</div></div>";
     }
 
     html_ads += "<div class='panel panel-default'>" +
         "<div class='panel-heading'>推荐阅读</div>" +
-        "<div class='panel-body'>";
+        "<div class='panel-body' style='overflow :auto'>";
     for (var i = 0; i < 3; i++) {
         var rand_index = parseInt(Math.random() * (9 - 0 + 1));
         html_ads += "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank'><p>" + resultInfo.resultList[rand_index].title + "</p></a>";
@@ -151,20 +151,20 @@ function refreshAdsAndEvaluation(resultInfo) {
 function getContent(resultList) {
     var html = "";
     for (var i = 0; i < resultList.length; i++) {
-        html += "<div class='row'><div class='col-md-12'>" +
-            "<h4><a href=" + resultList[i].url + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
-            "<p>" + resultList[i].content + "...</p>" +
-            "<ul class='list-inline'>" +
-            "<li><a href=" + resultList[i].url + " target='_blank' style='color:#006621'>" + resultList[i].url + "</a></li></ul>" +
-            "<p class='pull-left'>" +
-            "<span class='label label-default' style='color:#545454'>[发文字号]" + resultList[i].release_number + "</span>" +
+        html += "<div class='row' style='margin-bottom: 15px'><div class='col-md-12'>" +
+            "<h4 style='margin-bottom: 5px; font-family: arial;'><a href=" + resultList[i].url + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
+            "<p style='font-size: 13px; font-family: arial;line-height: 1.4;word-wrap: break-word;word-break: break-word; margin-top: 0;margin-bottom: 5px;'>" + resultList[i].content + "...</p>" +
+            "<p class='pull-left' style='margin-top: 0;margin-bottom: 5px; font-family: arial;'>" +
+            "<span class='label label-default' style='color:#545454; padding-left: 0;'>[发文字号]" + resultList[i].release_number + "</span>" +
             "<span class='label label-default' style='color:#545454'>[发布日期]" + resultList[i].release_date + "</span>" +
             "<span class='label label-default' style='color:#545454'>[实施日期]" + resultList[i].implement_date + "</span>" +
             "<span class='label label-default' style='color:#545454'>[法规类别]" + resultList[i].category + "</span>" +
             "<span class='label label-default' style='color:#545454'>[法规级别]" + resultList[i].level + "</span>" +
             "<span class='label label-default' style='color:#545454'>[时效性]" + resultList[i].timeless + "</span>" +
             "</p>" +
-            "</div></div><hr>";
+            "<ul class='list-inline' style='margin: 0;'>" +
+            "<li style='padding-left: 0;'><a href=" + resultList[i].url + " target='_blank' style='color:#006621'>" + resultList[i].url + "</a></li></ul>" +
+            "</div></div>";
     }
     return html;
 }
