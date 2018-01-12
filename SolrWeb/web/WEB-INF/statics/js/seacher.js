@@ -28,7 +28,7 @@ $(function () {
             Transcripts.sendQuest();
             return false;
         }
-    }
+    };
     $("#user_input").bind("blur", function () {
         if (!$('#user_input').val()) {
             var queryHistary = $.cookie('queryHistary');
@@ -87,11 +87,9 @@ Transcripts.showContent = function (resultInfo, start, rows) {
     if (resultInfo.numFound > 0) {
         Transcripts.addviewList(resultInfo);
     } else {
-        $('#seach_content').empty();
         $('#seach_content').html("<p>很抱歉没有找到任何结果</p>");
         $('#adv').empty();
     }
-    $('#seach_message').empty();
     var resultNum = resultInfo.numFound.toString();
     var costTime = resultInfo.QTime;
     var message_html = "";
@@ -106,7 +104,6 @@ Transcripts.showContent = function (resultInfo, start, rows) {
             numString = resultNum[i] + numString;
         }
     }
-
     if (start == 0) {
         message_html += "<div class='col-md-12 col-xs-12' style = 'color: #808080;'>找到约" + numString + "条结果（用时" + costTime + "毫秒）</div>";
     } else {
@@ -117,23 +114,21 @@ Transcripts.showContent = function (resultInfo, start, rows) {
 }
 
 Transcripts.addviewList = function (resultInfo) {
-    $('#seach_content').empty();
     var content_html = getContent(resultInfo.resultList);
     $('#seach_content').html(content_html);
-    $('#adv').empty();
     var ads_evaluation_html = refreshAdsAndEvaluation(resultInfo);
     $('#adv').html(ads_evaluation_html);
 };
 
 function refreshAdsAndEvaluation(resultInfo) {
-    var rand_num_ads = parseInt(Math.random() * (2 - 0 + 1));
+    var rand_num_ads = parseInt(Math.random() * 3);
     var html_ads = "";
     for (var i = 0; i < rand_num_ads; i++) {
-        var rand_index = parseInt(Math.random() * (9 - 0 + 1));
+        var rand_index = parseInt(Math.random() * 10);
         html_ads += "<div class='panel panel-default'>" +
             "<div class='panel-heading'>图谱关系</div>" +
             "<div class='panel-body' style='text-align: left;overflow :auto'>" +
-            "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank'><p><font color='#666'>" + resultInfo.resultList[rand_index].content + "...</font></p></a>" +
+            "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank' style='color: #666'><p>" + resultInfo.resultList[rand_index].content + "...</p></a>" +
             "</div></div>";
     }
 
@@ -141,7 +136,7 @@ function refreshAdsAndEvaluation(resultInfo) {
         "<div class='panel-heading'>推荐阅读</div>" +
         "<div class='panel-body' style='overflow :auto'>";
     for (var i = 0; i < 3; i++) {
-        var rand_index = parseInt(Math.random() * (9 - 0 + 1));
+        var rand_index = parseInt(Math.random() * 10);
         html_ads += "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank'><p>" + resultInfo.resultList[rand_index].title + "</p></a>";
     }
     html_ads += "</div></div>";
@@ -170,7 +165,6 @@ function getContent(resultList) {
 }
 
 function initBottomIndex(startIndex, rowSize) {
-    $('#nav').empty();
     if (rowSize == 0) {
         return;
     }
