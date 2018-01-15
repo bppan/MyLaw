@@ -157,7 +157,7 @@ function getContent(resultList) {
             "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[法规级别]" + resultList[i].level + "</span>" +
             "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[时效性]" + resultList[i].timeless + "</span>" +
             "</p>" +
-            "<ul class='list-inline' style='margin: 0;'>" +
+            "<ul class='list-inline' style='margin: 0;padding: 0;'>" +
             "<li style='padding-left: 0;'>" +
             "<a href=" + resultList[i].url + " target='_blank' style='color:#006621;word-break:break-all;'>" + resultList[i].url + "</a></li></ul>" +
             "</div></div>";
