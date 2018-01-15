@@ -177,6 +177,28 @@ public abstract class LawClean {
         }
 
         String lawTitle = law.getString("title");
+        if(lawTitle.contains("-法律教育网")){
+            LOGGER.info("find -法律教育网" + lawTitle);
+            String[] contentList = law.getString("content").split("\n");
+            StringBuilder updateContent = new StringBuilder();
+            for (String contentpar : contentList) {
+                if (contentpar.trim().isEmpty()) {
+                    continue;
+                }
+                if (contentpar.trim().equals("感动同情无聊愤怒搞笑难过高兴路过")) {
+                    break;
+                }
+                updateContent.append(contentpar.trim()).append("\n");
+            }
+            law.put("content", updateContent.toString());
+            SimHash simHash = new SimHash(updateContent.toString());
+            law.put("simHash", simHash.getIntSimHash().toString());
+            law.put("simHashPart1", simHash.getStrSimHash().substring(0, 16));
+            law.put("simHashPart2", simHash.getStrSimHash().substring(16, 32));
+            law.put("simHashPart3", simHash.getStrSimHash().substring(32, 48));
+            law.put("simHashPart4", simHash.getStrSimHash().substring(48, 64));
+            lawTitle = lawTitle.replace("-法律教育网", "");
+        }
         FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true).batchSize(10000);
         if (haveAttributeTitleRepeat(law, iterableTitle)) {
             LOGGER.info("lawTitle repeat :" + lawTitle);
@@ -214,15 +236,13 @@ public abstract class LawClean {
         String content = law.getString("content").replaceAll("\n", "");
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
             String simhash2 = entry.getValue().getString("simHash");
-            String theTitle = entry.getValue().getString("title");
+            String theTitle = entry.getValue().getString("title");;
             String the_release_number = entry.getValue().getString("release_number");
             String theContent = entry.getValue().getString("content").replaceAll("\n", "");
             String the_releaseDate = getFormateStringDate(entry.getValue().getString("release_date"));
             String the_implementDate = getFormateStringDate(entry.getValue().getString("implement_date"));
             if (the_release_number == null) {
                 the_release_number = "";
-            }else {
-                the_release_number = the_release_number.replaceAll("〔", "[").replaceAll("〕", "]");
             }
             if (content.equals(theContent)) {
                 LOGGER.info("simHash similarity content equal:" + simhash1 + " : " + simhash2);
@@ -242,9 +262,19 @@ public abstract class LawClean {
                 }
             }
         }
+        if(content.indexOf("万方数据知识服务平台-法规检索结果【新版入口】") == 0){
+            LOGGER.info("contains 万方数据知识服务平台-法规检索结果:" + lawTitle);
+            return false;
 
+        }
+        if(content.indexOf("万方数据法律数据库") == 0){
+            LOGGER.info("find -万方数据法律数据库 replace that" + lawTitle);
+            law.put("content", law.getString("content").replace("万方数据法律数据库", ""));
+        }
         law.put("release_date", releaseDate);
         law.put("implement_date", implementDate);
+        law.put("title", lawTitle);
+        law.put("release_number", release_number);
         getCleanCollection().insertOne(law);
         return true;
     }
