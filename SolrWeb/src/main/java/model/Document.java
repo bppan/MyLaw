@@ -163,11 +163,11 @@ public class Document {
                 this.setCategory(fieldHL);
             }
             if (hightMap.get("level") != null) {
-                String fieldHL = hightMap.get("category").get(0);
+                String fieldHL = hightMap.get("level").get(0);
                 this.setCategory(fieldHL);
             }
             if (hightMap.get("timeless") != null) {
-                String fieldHL = hightMap.get("category").get(0);
+                String fieldHL = hightMap.get("timeless").get(0);
                 this.setCategory(fieldHL);
             }
         }
