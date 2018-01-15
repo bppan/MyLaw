@@ -205,6 +205,8 @@ public abstract class LawClean {
         String release_number = law.getString("release_number");
         if (release_number == null) {
             release_number = "";
+        }else {
+            release_number = release_number.replaceAll("〔", "[").replaceAll("〕", "]");
         }
         String releaseDate = getFormateStringDate(law.getString("release_date"));
         String implementDate = getFormateStringDate(law.getString("implement_date"));
@@ -219,6 +221,8 @@ public abstract class LawClean {
             String the_implementDate = getFormateStringDate(entry.getValue().getString("implement_date"));
             if (the_release_number == null) {
                 the_release_number = "";
+            }else {
+                the_release_number = the_release_number.replaceAll("〔", "[").replaceAll("〕", "]");
             }
             if (content.equals(theContent)) {
                 LOGGER.info("simHash similarity content equal:" + simhash1 + " : " + simhash2);
