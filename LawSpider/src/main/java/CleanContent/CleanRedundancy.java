@@ -16,7 +16,7 @@ public class CleanRedundancy extends LawClean {
     }
 
     public static void main(String[] args) {
-        CleanRedundancy cleanRedundancy = new CleanRedundancy("chinacourt_clean", "cleanLaw");
+        CleanRedundancy cleanRedundancy = new CleanRedundancy("law", "law2");
         cleanRedundancy.doCleanRepeat();
     }
 

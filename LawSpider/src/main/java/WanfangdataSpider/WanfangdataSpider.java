@@ -253,7 +253,7 @@ public class  WanfangdataSpider extends LawSpider {
             if (name.contains("时效性")) {
                 lawDocument.setTimeless(attribute);
             }
-            if (name.contains("颁布日期")) {
+            if (name.contains("颁布日期") || name.contains("终审日期")) {
                 lawDocument.setRelease_data(attribute);
             }
             if (name.contains("实施日期") || name.contains("终审日期")) {

@@ -215,9 +215,8 @@ public abstract class LawClean {
             String theTitle = entry.getValue().getString("title");
             String the_release_number = entry.getValue().getString("release_number");
             String theContent = entry.getValue().getString("content").replaceAll("\n", "");
-            String the_releaseDate = getFormateStringDate(law.getString("release_date"));
-            String the_implementDate = getFormateStringDate(law.getString("implement_date"));
-
+            String the_releaseDate = getFormateStringDate(entry.getValue().getString("release_date"));
+            String the_implementDate = getFormateStringDate(entry.getValue().getString("implement_date"));
             if (the_release_number == null) {
                 the_release_number = "";
             }
@@ -230,13 +229,12 @@ public abstract class LawClean {
                     LOGGER.info("simHash similarity release_number equal:" + release_number + " : " + the_release_number);
                     return false;
                 }
-                if (release_number.equals(the_release_number) && release_number.isEmpty()) {
+                if (release_number.isEmpty() || the_release_number.isEmpty()) {
                     if (releaseDate.equals(the_releaseDate) && !releaseDate.isEmpty() &&
                             implementDate.equals(the_implementDate) && !implementDate.isEmpty() && lawTitle.equals(theTitle)) {
-                        LOGGER.info("simHash similarity releaseDate、implementDate and title equal:" + lawTitle + " : " + theTitle);
+                        LOGGER.info("simHash similarity releaseDate、the_implementDate and title equal:" + lawTitle + " : " + theTitle);
                         return false;
                     }
-                    return false;
                 }
             }
         }
@@ -354,7 +352,7 @@ public abstract class LawClean {
                 date = format.parse(time);
                 break;
             } catch (ParseException e) {
-                System.out.println("Not right formate...");
+                continue;
             }
         }
         return date;
