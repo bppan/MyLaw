@@ -13,9 +13,9 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Description：
@@ -206,25 +206,43 @@ public abstract class LawClean {
         if (release_number == null) {
             release_number = "";
         }
+        String releaseDate = getFormateStringDate(law.getString("release_date"));
+        String implementDate = getFormateStringDate(law.getString("implement_date"));
+
         String content = law.getString("content").replaceAll("\n", "");
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
             String simhash2 = entry.getValue().getString("simHash");
             String theTitle = entry.getValue().getString("title");
             String the_release_number = entry.getValue().getString("release_number");
             String theContent = entry.getValue().getString("content").replaceAll("\n", "");
+            String the_releaseDate = getFormateStringDate(law.getString("release_date"));
+            String the_implementDate = getFormateStringDate(law.getString("implement_date"));
+
             if (the_release_number == null) {
                 the_release_number = "";
             }
             if (content.equals(theContent)) {
-                LOGGER.info("simHash equal:" + simhash1 + " : " + simhash2);
+                LOGGER.info("simHash similarity content equal:" + simhash1 + " : " + simhash2);
                 return false;
             }
-            if (isSimilarityContent(simhash1, simhash2) && lawTitle.equals(theTitle) && release_number.equals(the_release_number)) {
-                LOGGER.info("content and title repeat :" + simhash1 + " : " + simhash2);
-                return false;
+            if (isSimilarityContent(simhash1, simhash2)) {
+                if (release_number.equals(the_release_number) && !release_number.isEmpty()) {
+                    LOGGER.info("simHash similarity release_number equal:" + release_number + " : " + the_release_number);
+                    return false;
+                }
+                if (release_number.equals(the_release_number) && release_number.isEmpty()) {
+                    if (releaseDate.equals(the_releaseDate) && !releaseDate.isEmpty() &&
+                            implementDate.equals(the_implementDate) && !implementDate.isEmpty() && lawTitle.equals(theTitle)) {
+                        LOGGER.info("simHash similarity releaseDate、implementDate and title equal:" + lawTitle + " : " + theTitle);
+                        return false;
+                    }
+                    return false;
+                }
             }
         }
 
+        law.put("release_date", releaseDate);
+        law.put("implement_date", implementDate);
         getCleanCollection().insertOne(law);
         return true;
     }
@@ -303,5 +321,47 @@ public abstract class LawClean {
         Document filter = new Document();
         filter.append("_id", needDelete.getObjectId("_id"));
         collection.deleteOne(filter);
+    }
+
+    public String getFormateStringDate(String time) {
+        String formateDateString = "";
+        if (time != null && !time.isEmpty()) {
+            Date date = stringToDate(time);
+            if (date != null) {
+                formateDateString = dateToString(date);
+            }
+        }
+        return formateDateString;
+    }
+
+    /**
+     * 字符串转换为java.util.Date<br>
+     *
+     * @param time String 字符串<br>
+     * @return Date 日期<br>
+     */
+    public Date stringToDate(String time) {
+        List<SimpleDateFormat> formatList = new ArrayList<>();
+        formatList.add(new SimpleDateFormat("yyyy-MM-dd"));
+        formatList.add(new SimpleDateFormat("yyyy-M-d"));
+        formatList.add(new SimpleDateFormat("yyyy年M月d日"));
+        formatList.add(new SimpleDateFormat("yyyy年MM月dd日"));
+        formatList.add(new SimpleDateFormat("yyyy.MM.dd"));
+        formatList.add(new SimpleDateFormat("yyyy.M.d"));
+        Date date = null;
+        for (SimpleDateFormat format : formatList) {
+            try {
+                date = format.parse(time);
+                break;
+            } catch (ParseException e) {
+                System.out.println("Not right formate...");
+            }
+        }
+        return date;
+    }
+
+    public String dateToString(Date time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.M.d");
+        return formatter.format(time);
     }
 }

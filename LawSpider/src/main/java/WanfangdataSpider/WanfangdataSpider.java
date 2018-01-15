@@ -63,7 +63,6 @@ public class  WanfangdataSpider extends LawSpider {
     }
 
     public void closeClient(WebClient currentClient) {
-        currentClient.close();
         this.clientSet.put(currentClient, false);
     }
 
@@ -139,28 +138,24 @@ public class  WanfangdataSpider extends LawSpider {
         WebClient currentClient = getUnusedClient();
         try {
             page = currentClient.getPage(htmlUrl);
-            Thread.sleep(1500);
+            Thread.sleep(3000);
         } catch (Exception e) {
-            LOGGER.error("Get SoureUrlPage error: " + e.getMessage());
+            LOGGER.error("Get parseLawHtml page error: " + e.getMessage());
             closeClient(currentClient);
             return null;
         }
         try {
-            if (page == null) {
-                Thread.sleep(1500);
-            }
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             LOGGER.error("wait thread interrupt error: " + e.getMessage());
         }
         LawDocument doc = parseLawHtmlGetDocument(page);
         HtmlAnchor contentAnchor = null;
         try {
-            contentAnchor = (HtmlAnchor) page.getByXPath("/html/body/div[3]/div/div[1]/a[2]").get(0);
+            contentAnchor = (HtmlAnchor) page.getByXPath("//*[@id=\"div_a\"]/div/div[2]/div[1]/div[3]/a[2]").get(0);
         } catch (NullPointerException e) {
             LOGGER.error("Not find content anchor");
-            if (page != null) {
-                page.cleanUp();
-            }
+            page.cleanUp();
             closeClient(currentClient);
             return doc;
         }
@@ -168,7 +163,7 @@ public class  WanfangdataSpider extends LawSpider {
             HtmlPage contentPage = null;
             try {
                 contentPage = contentAnchor.click();
-                Thread.sleep(2300);
+                Thread.sleep(3000);
                 String html = contentPage.asXml();
                 doc.setRawHtml(html);
                 String cleanContent = cleanHtml(html);
@@ -234,44 +229,41 @@ public class  WanfangdataSpider extends LawSpider {
         }
         LawDocument lawDocument = new LawDocument();
         try {
-            String title = doc.select("body > div.fixed-width.baseinfo.clear > div > h1").first().childNode(0).toString();
+            String title = doc.title();
             lawDocument.setTitle(title.trim());
         } catch (Exception e) {
             LOGGER.warn("No tile of content");
         }
-        List<Node> nodes = doc.select("body > div.fixed-width-wrap.fixed-width-wrap-feild > div").first().childNodes();
+        List<Node> nodes = doc.select("#div_a > div > div.left_con > div.left_con_top > ul").first().childNodes();
         for (Node node : nodes) {
             if (node.childNodes().size() != 5) {
                 continue;
             }
             String name = node.childNode(1).toString();
+            String attribute = node.childNode(3).childNode(0).toString().replaceAll("\n", "").trim();
             if (name.contains("发文文号")) {
-                String release_number = node.childNode(3).childNode(0).toString();
-                lawDocument.setRelease_number(release_number);
+                lawDocument.setRelease_number(attribute);
             }
-            if (name.contains("颁布部门")) {
-                String department = node.childNode(3).childNode(0).toString();
-                lawDocument.setDepartment(department);
+            if (name.contains("颁布部门") || name.contains("终审法院")) {
+                lawDocument.setDepartment(attribute);
             }
             if (name.contains("效力级别")) {
-                String level = node.childNode(3).childNode(0).toString();
-                lawDocument.setLevel(level);
+                lawDocument.setLevel(attribute);
             }
             if (name.contains("时效性")) {
-                String timeless = node.childNode(3).childNode(0).toString();
-                lawDocument.setTimeless(timeless);
+                lawDocument.setTimeless(attribute);
             }
             if (name.contains("颁布日期")) {
-                String release_data = node.childNode(3).childNode(0).toString();
-                lawDocument.setRelease_data(release_data);
+                lawDocument.setRelease_data(attribute);
             }
-            if (name.contains("实施日期")) {
-                String implement_data = node.childNode(3).childNode(0).toString();
-                lawDocument.setImplement_date(implement_data);
+            if (name.contains("实施日期") || name.contains("终审日期")) {
+                lawDocument.setImplement_date(attribute);
             }
             if (name.contains("内容分类")) {
-                String category = node.childNode(3).childNode(0).toString();
-                lawDocument.setCategory(category);
+                lawDocument.setCategory(attribute);
+            }
+            if (name.contains("库别名称")) {
+                lawDocument.setLevel(attribute);
             }
         }
         return lawDocument;

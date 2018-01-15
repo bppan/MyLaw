@@ -34,6 +34,7 @@
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4.7" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.39" level="project" />
+    <orderEntry type="library" name="Maven: org.neo4j.driver:neo4j-java-driver:1.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.neo4j:neo4j-cypher:3.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.11.11" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-reflect:2.11.11" level="project" />

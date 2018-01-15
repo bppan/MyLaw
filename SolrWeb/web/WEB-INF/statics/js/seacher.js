@@ -52,7 +52,7 @@ Transcripts.cleanContent = function () {
 };
 
 Transcripts.sendQuest = function () {
-    var search_content = $('#user_input').val();
+    var search_content = $.trim($('#user_input').val());
     if (search_content) {
         Transcripts.getResultList(search_content, 0, 10);
     } else {
