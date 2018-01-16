@@ -130,12 +130,11 @@ Transcripts.addviewList = function (resultInfo, start, rows) {
 
 function refreshAdsAndEvaluation(resultInfo, start, rows) {
     var rand_num_ads = parseInt(Math.random() * 3);
-    var fondNum = parseInt(resultInfo.numFound) ;
+    var fondNum = parseInt(resultInfo.numFound);
     var indexNum = rows;
-    if((start+1)*rows > fondNum){
-        indexNum = fondNum - start*rows;
+    if ((start + 1) * rows > fondNum) {
+        indexNum = fondNum - start * rows;
     }
-
     var html_ads = "";
     for (var i = 0; i < rand_num_ads; i++) {
         var rand_index = parseInt(Math.random() * indexNum);
@@ -204,14 +203,13 @@ function initBottomIndex(startIndex, rowSize) {
             html += "<li class='index ' id = '" + i + "'><a href='#'>" + i + "</a></li>";
         }
     }
-    if(startIndex != totlePage){
+    if (startIndex != totlePage) {
         html += "<li>" +
             "<a href='#' aria-label='Next'><span aria-hidden='true' class ='indexN'>Next</span>" +
             "</a></li></ul></nav>";
     }
-
-    if(totlePage <= 1){
-        html="";
+    if (totlePage <= 1) {
+        html = "";
     }
     $('#nav').html(html);
     bindIndexEvent();
@@ -230,7 +228,6 @@ function bindIndexEvent() {
             var rows = 10;
             Transcripts.getResultList(search_content, start, rows);
         }
-
     });
 }
 
