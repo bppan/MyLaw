@@ -93,7 +93,7 @@ public class Clean extends LawClean {
                 Matcher m2_html = p2_html.matcher(title);
                 title = m2_html.replaceAll("").replaceAll(" ", "").trim(); // 过滤html标签
                 law.put("title", title);
-                updateDocumentContent(law);
+                replaceDocumentContent(law);
                 LOGGER.info("current num: " + num);
             }
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class Clean extends LawClean {
                     LOGGER.info("find one url:" + law.getString("url"));
                     resetTitle(law, content);
                 }
-                updateDocumentContent(law);
+                replaceDocumentContent(law);
                 LOGGER.info("current num: " + num);
             }
         } catch (Exception e) {

@@ -114,7 +114,7 @@ public class Clean extends LawClean {
         law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
         law.append("simHashPart4", simHash.getStrSimHash().substring(48, 64));
 
-        updateDocumentContent(law);
+        replaceDocumentContent(law);
     }
 
     public boolean saveToCleanCollection(Document law) {

@@ -59,7 +59,7 @@ public class Clean extends LawClean {
     public void updateDocumentContent(Document law) {
         law.put("timeless", "现行有效");
         law.put("level", "法律法规");
-        super.updateDocumentContent(law);
+        super.replaceDocumentContent(law);
     }
 
 }

@@ -143,7 +143,7 @@ public abstract class LawClean {
         law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
         law.append("simHashPart4", simHash.getStrSimHash().substring(48, 64));
 
-        updateDocumentContent(law);
+        replaceDocumentContent(law);
     }
 
     public abstract String getContentHtmlBySelect(String html);
@@ -160,7 +160,7 @@ public abstract class LawClean {
         return updateContent.toString();
     }
 
-    public void updateDocumentContent(Document law) {
+    public void replaceDocumentContent(Document law) {
         org.bson.types.ObjectId id = law.getObjectId("_id");
         Document filter = new Document();
         filter.append("_id", id);
