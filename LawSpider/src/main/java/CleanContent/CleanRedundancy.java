@@ -56,7 +56,7 @@ public class CleanRedundancy extends LawClean {
                 if (content.indexOf("万方数据知识服务平台-法规检索结果【新版入口】") == 0) {
                     LOGGER.info("contains 万方数据知识服务平台-法规检索结果:" + lawTitle);
                     this.deleteDocumentOneById(this.getLawCollecion(), law);
-                    return;
+                    continue;
                 }
                 if (lawTitle.contains("-法律教育网")) {
                     LOGGER.info("find -法律教育网" + lawTitle);
