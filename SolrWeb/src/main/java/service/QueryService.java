@@ -53,7 +53,7 @@ public class QueryService {
         solrQuery.addHighlightField("level");
         solrQuery.addHighlightField("release_number");
         solrQuery.addHighlightField("timeless");
-        solrQuery.setHighlightSimplePre("<font color='red'>");
+        solrQuery.setHighlightSimplePre("<font color='#dd4b39'>");
         solrQuery.setHighlightSimplePost("</font>");
         solrQuery.setHighlightSnippets(1);//结果分片数，默认为1
         solrQuery.setHighlightFragsize(200);//每个分片的最大长度，默认为100

@@ -11,6 +11,7 @@
     <modules>
         <module>LawSpider</module>
         <module>SolrData</module>
+        <module>KnowledgeGraph</module>
     </modules>
 
     <build>
@@ -51,18 +52,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.39</version>
         </dependency>
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.neo4j.driver/neo4j-java-driver &ndash;&gt;-->
-        <dependency>
-        <groupId>org.neo4j.driver</groupId>
-        <artifactId>neo4j-java-driver</artifactId>
-        <version>1.4.5</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.neo4j/neo4j-cypher -->
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-cypher</artifactId>
-            <version>3.3.1</version>
-        </dependency>
+
 
     </dependencies>
 

@@ -20,11 +20,13 @@ $(function () {
     }
     $("#search_button").click(function () {
         $('.typeahead').typeahead('close');
+        $.cookie('queryStart', 0);
         Transcripts.sendQuest();
     });
     document.onkeydown = function (event) {
         if (event.keyCode == 13) {
             $('.typeahead').typeahead('close');
+            $.cookie('queryStart', 0);
             Transcripts.sendQuest();
             return false;
         }
@@ -54,13 +56,19 @@ Transcripts.cleanContent = function () {
 Transcripts.sendQuest = function () {
     var search_content = $.trim($('#user_input').val());
     if (search_content) {
-        Transcripts.getResultList(search_content, 0, 10);
+        var queryStart = $.cookie('queryStart');
+        if (queryStart) {
+            Transcripts.getResultList(search_content, parseInt(queryStart), 10);
+        } else {
+            Transcripts.getResultList(search_content, 0, 10);
+        }
     } else {
         window.location.href = "/index.html";
     }
 };
 
 Transcripts.getResultList = function (query, start, rows) {
+    $.cookie('queryStart', start);
     $.cookie('queryHistary', query);
     $('#fade_mask').show();
     var parm = {
@@ -85,7 +93,7 @@ Transcripts.getResultList = function (query, start, rows) {
 Transcripts.showContent = function (resultInfo, start, rows) {
     initBottomIndex(start + 1, resultInfo.numFound);
     if (resultInfo.numFound > 0) {
-        Transcripts.addviewList(resultInfo);
+        Transcripts.addviewList(resultInfo, start, rows);
     } else {
         $('#seach_content').html("<p>很抱歉没有找到任何结果</p>");
         $('#adv').empty();
@@ -113,18 +121,24 @@ Transcripts.showContent = function (resultInfo, start, rows) {
     $('#seach_suggest').empty();
 }
 
-Transcripts.addviewList = function (resultInfo) {
+Transcripts.addviewList = function (resultInfo, start, rows) {
     var content_html = getContent(resultInfo.resultList);
     $('#seach_content').html(content_html);
-    var ads_evaluation_html = refreshAdsAndEvaluation(resultInfo);
+    var ads_evaluation_html = refreshAdsAndEvaluation(resultInfo, start, rows);
     $('#adv').html(ads_evaluation_html);
 };
 
-function refreshAdsAndEvaluation(resultInfo) {
+function refreshAdsAndEvaluation(resultInfo, start, rows) {
     var rand_num_ads = parseInt(Math.random() * 3);
+    var fondNum = parseInt(resultInfo.numFound) ;
+    var indexNum = rows;
+    if((start+1)*rows > fondNum){
+        indexNum = fondNum - start*rows;
+    }
+
     var html_ads = "";
     for (var i = 0; i < rand_num_ads; i++) {
-        var rand_index = parseInt(Math.random() * 10);
+        var rand_index = parseInt(Math.random() * indexNum);
         html_ads += "<div class='panel panel-default'>" +
             "<div class='panel-heading'>图谱关系</div>" +
             "<div class='panel-body' style='text-align: left;overflow :auto'>" +
@@ -136,7 +150,7 @@ function refreshAdsAndEvaluation(resultInfo) {
         "<div class='panel-heading'>推荐阅读</div>" +
         "<div class='panel-body' style='overflow :auto'>";
     for (var i = 0; i < 3; i++) {
-        var rand_index = parseInt(Math.random() * 10);
+        var rand_index = parseInt(Math.random() * indexNum);
         html_ads += "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank'><p>" + resultInfo.resultList[rand_index].title + "</p></a>";
     }
     html_ads += "</div></div>";
@@ -148,17 +162,17 @@ function getContent(resultList) {
     for (var i = 0; i < resultList.length; i++) {
         html += "<div class='row' style='margin-bottom: 15px'><div class='col-md-12'>" +
             "<h4 style='margin-bottom: 5px; font-family: arial;'><a href=" + resultList[i].url + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
-            "<p style='font-size: 13px; font-family: arial;line-height: 1.4; word-wrap: break-word; word-break: break-word; margin-top: 0; margin-bottom: 3px;'>" + resultList[i].content + "...</p>" +
+            "<p style='font-size: 13px; font-family: arial;line-height: 1.4; word-wrap: break-word; word-break: break-word; margin-top: 0; margin-bottom: 3px;color: #545454;'>" + resultList[i].content + "...</p>" +
             "<p class='pull-left' style='margin-top: 0;margin-bottom: 3px; font-family: arial;'>" +
-            "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发文字号]" + resultList[i].release_number + "</span>" +
-            "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发布日期]" + resultList[i].release_date + "</span>" +
-            "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[实施日期]" + resultList[i].implement_date + "</span>" +
-            "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[法规类别]" + resultList[i].category + "</span>" +
-            "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[法规级别]" + resultList[i].level + "</span>" +
-            "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[时效性]" + resultList[i].timeless + "</span>" +
+            "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发文字号]" + resultList[i].release_number + "</span>" +
+            "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发布日期]" + resultList[i].release_date + "</span>" +
+            "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[实施日期]" + resultList[i].implement_date + "</span>" +
+            "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[法规类别]" + resultList[i].category + "</span>" +
+            "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[法规级别]" + resultList[i].level + "</span>" +
+            "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[时效性]" + resultList[i].timeless + "</span>" +
             "</p>" +
             "<p class='pull-left' style='margin: 0;padding: 0;font-size: 14px;line-height: 1.4; '>" +
-            "<a href=" + resultList[i].url + " target='_blank' style='color:green;word-break:break-all;'>" + resultList[i].url + "</a></p>" +
+            "<a href=" + resultList[i].url + " target='_blank' style='color:#006621;word-break:break-all;'>" + resultList[i].url + "</a></p>" +
             "</div></div>";
     }
     return html;
@@ -183,16 +197,22 @@ function initBottomIndex(startIndex, rowSize) {
         html += "<li class='index' id = '" + i + "'><a href='#'>" + i + "</a></li>";
         up_num++;
     }
-    for (var i = startIndex; i < startIndex + 11 - up_num && i < totlePage; i++) {
+    for (var i = startIndex; i < startIndex + 11 - up_num && i <= totlePage; i++) {
         if (i == startIndex) {
             html += "<li class='index active' id = '" + i + "'><a href='#'>" + i + "</a></li>";
         } else {
             html += "<li class='index ' id = '" + i + "'><a href='#'>" + i + "</a></li>";
         }
     }
-    html += "<li>" +
-        "<a href='#' aria-label='Next'><span aria-hidden='true' class ='indexN'>Next</span>" +
-        "</a></li></ul></nav>";
+    if(startIndex != totlePage){
+        html += "<li>" +
+            "<a href='#' aria-label='Next'><span aria-hidden='true' class ='indexN'>Next</span>" +
+            "</a></li></ul></nav>";
+    }
+
+    if(totlePage <= 1){
+        html="";
+    }
     $('#nav').html(html);
     bindIndexEvent();
     bindNextIndexEvent(rowSize);
@@ -210,6 +230,7 @@ function bindIndexEvent() {
             var rows = 10;
             Transcripts.getResultList(search_content, start, rows);
         }
+
     });
 }
 
