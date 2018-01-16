@@ -148,7 +148,7 @@ function getContent(resultList) {
     for (var i = 0; i < resultList.length; i++) {
         html += "<div class='row' style='margin-bottom: 15px'><div class='col-md-12'>" +
             "<h4 style='margin-bottom: 5px; font-family: arial;'><a href=" + resultList[i].url + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
-            "<p style='font-size: 13px; font-family: arial;line-height: 1.4; word-wrap: break-word; word-break: break-word; margin-top: 0; margin-bottom: 5px;'>" + resultList[i].content + "...</p>" +
+            "<p style='font-size: 13px; font-family: arial;line-height: 1.4; word-wrap: break-word; word-break: break-word; margin-top: 0; margin-bottom: 3px;'>" + resultList[i].content + "...</p>" +
             "<p class='pull-left' style='margin-top: 0;margin-bottom: 3px; font-family: arial;'>" +
             "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发文字号]" + resultList[i].release_number + "</span>" +
             "<span class='label label-default' style='color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发布日期]" + resultList[i].release_date + "</span>" +
