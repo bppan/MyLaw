@@ -135,14 +135,14 @@ public class Document {
         if (highlightresult.get(this.getId()) != null) {
             Map<String, List<String>> hightMap = highlightresult.get(this.getId());
             if (hightMap.get("content") != null) {
-                String fieldHL = hightMap.get("content").get(0);
+                String fieldHL = hightMap.get("content").get(0) + "...";
                 this.setContent(fieldHL);
             } else {
                 String subContent = "";
                 if (this.getContent().length() < 200) {
-                    subContent = this.getContent();
+                    subContent = this.getContent() + ".";
                 } else {
-                    subContent = this.getContent().substring(0, 200);
+                    subContent = this.getContent().substring(0, 200) + "...";
                 }
                 this.setContent(subContent);
             }
