@@ -1,10 +1,12 @@
 package mongo;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import log.MyLogger;
 import neo4jDriver.GraphProperties;
 import org.apache.log4j.Logger;
+import org.bson.Document;
 
 /**
  * Description：
@@ -43,5 +45,14 @@ public class MongoServer {
 
     public static MongoServer getMongoDB() {
         return mongoDB;
+    }
+
+    public synchronized MongoCollection<Document> getCollection(String collectionName) {
+        try {
+            return mongoDB.mongoDatabase.getCollection(collectionName);
+        } catch (Exception e) {
+            LOGGER.error(e);
+            return null;
+        }
     }
 }

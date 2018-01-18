@@ -44,12 +44,13 @@ public abstract class LawSpider extends Spider {
 
     public static String cleanHtml(String html) {
         String result = html;
-        String regEx_return = "\t|\r|\n";//定义空格回车换行符
+
+        String regEx_return = "\t|\r|\n";//清除tab换行符
         Pattern p_return = Pattern.compile(regEx_return, Pattern.CASE_INSENSITIVE);
         Matcher m_return = p_return.matcher(result);
         result = m_return.replaceAll("").replaceAll("　", " "); // 过滤空格回车标签
 
-        String regEx_html = "<br>|<br />|<br/>|</p>|</div>|</li>"; // 定义HTML标签的正则表达式
+        String regEx_html = "<p.*?>|</p>|<br>|<br />|<br/>|<div.*?>|</div>|<li.*?>|</li>"; // 定义HTML标签的正则表达式
         Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
         Matcher m_html = p_html.matcher(result);
         result = m_html.replaceAll("\n"); // 过滤html标签
@@ -59,34 +60,57 @@ public abstract class LawSpider extends Spider {
         Matcher m2_html = p2_html.matcher(result);
         result = m2_html.replaceAll(""); // 过滤html标签
 
+        String regEx_script="<script[^>]*?>[\\s\\S]*?<\\/script>"; //定义script的正则表达式
+        Pattern p_script=Pattern.compile(regEx_script,Pattern.CASE_INSENSITIVE);
+        Matcher m_script=p_script.matcher(result);
+        result=m_script.replaceAll(""); //过滤script标签
+
+        String regEx_style="<style[^>]*?>[\\s\\S]*?<\\/style>"; //定义style的正则表达式
+        Pattern p_style=Pattern.compile(regEx_style,Pattern.CASE_INSENSITIVE);
+        Matcher m_style=p_style.matcher(result);
+        result=m_style.replaceAll(""); //过滤style标签
+
         result = result.replaceAll(" +", " ").trim(); // 过滤多个空格为一个
         result = result.replaceAll(" ", "");
 
         result = result.replaceAll("&nbsp;", "");
+        result = result.replaceAll("&gt;", "");
+        String[] resultList = result.split("\n");
+        StringBuilder resultBuilder = new StringBuilder("");
+        for (String segment:resultList) {
+            if(!segment.trim().isEmpty()){
+                resultBuilder.append(segment.trim()).append("\n");
+            }
+        }
 
-        return result;
+        return resultBuilder.toString();
     }
 
     public static List<LawArticle> getLawArticleAndParagraph(String cleanHtml) {
         String[] result = cleanHtml.split("\n");
         String zhang = "第[零一二三四五六七八九十百千万]+章";//定义章数
-        String tiao = "第[零一二三四五六七八九十百千万]+条";//定义条数
+        String tiao = "第[零一二三四五六七八九十百千万]+条(之[一二三四五六七八九十百千万]+)?";//定义条数
+        String jie = "第[零一二三四五六七八九十百千万]+节";//定义条数
         String xiang = "（[一二三四五六七八九十百千万]+）";//定义项数
         boolean tiao_in = false;
         String current_kuan = "";
         List<LawArticle> lawArticleList = new ArrayList<LawArticle>();
         LawArticle currentLaw = new LawArticle();
         for (int i = 0; i < result.length; i++) {
-            String par = result[i].trim();
+            String par = result[i].trim() + "\n";
             Pattern regEx_zhang = Pattern.compile(zhang, Pattern.CASE_INSENSITIVE);
             Matcher m_zhang = regEx_zhang.matcher(par);
-            if (m_zhang.find()) {
+            if (m_zhang.find() && m_zhang.start() == 0 ) {
+                continue;
+            }
+            Pattern regEx_jie = Pattern.compile(jie, Pattern.CASE_INSENSITIVE);
+            Matcher m_jie = regEx_jie.matcher(par);
+            if (m_jie.find() && m_jie.start() == 0 ) {
                 continue;
             }
             if (!par.isEmpty()) {
                 Pattern regEx_tiao = Pattern.compile(tiao, Pattern.CASE_INSENSITIVE);
                 Matcher m_tiao = regEx_tiao.matcher(par);
-
                 Pattern regEx_tiao_xiang = Pattern.compile(xiang, Pattern.CASE_INSENSITIVE);
                 Matcher m_tiao_xiang = regEx_tiao_xiang.matcher(par);
 
@@ -98,15 +122,13 @@ public abstract class LawSpider extends Spider {
                         currentLaw.getParagraph().add(current_kuan);
                         lawArticleList.add(currentLaw);
                     }
-
                     LawArticle law = new LawArticle();
                     String name = par.substring(m_tiao.start(), m_tiao.end());
                     law.setName(name);
-                    current_kuan = par.substring(m_tiao.end(), par.length()).trim();
+                    current_kuan = par.substring(m_tiao.end(), par.length());
                     currentLaw = law;
                     continue;
                 }
-
                 if (m_tiao_xiang.find() && tiao_in && m_tiao_xiang.start() == 0) {
                     current_kuan += par;
                     continue;
@@ -115,7 +137,7 @@ public abstract class LawSpider extends Spider {
                     if (!current_kuan.isEmpty()) {
                         currentLaw.getParagraph().add(current_kuan);
                     }
-                    current_kuan = par.trim();
+                    current_kuan = par;
                 }
             }
         }

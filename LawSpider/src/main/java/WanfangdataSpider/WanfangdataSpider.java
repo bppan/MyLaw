@@ -63,6 +63,7 @@ public class  WanfangdataSpider extends LawSpider {
     }
 
     public void closeClient(WebClient currentClient) {
+        currentClient.close();
         this.clientSet.put(currentClient, false);
     }
 
