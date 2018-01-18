@@ -113,9 +113,9 @@ Transcripts.showContent = function (resultInfo, start, rows) {
         }
     }
     if (start == 0) {
-        message_html += "<div class='col-md-12 col-xs-12' style = 'color: #808080;'>找到约" + numString + "条结果（用时" + costTime + "毫秒）</div>";
+        message_html += "<div class='col-md-12 col-xs-12' style = 'color: #808080;font-size: 13px;font-family: arial;'>找到约" + numString + "条结果（用时" + costTime + "毫秒）</div>";
     } else {
-        message_html += "<div class='col-md-12 col-xs-12' style = 'color: #808080;'>找到约" + numString + "条结果，以下是第" + parseInt(start + 1) + "页（用时" + costTime + "毫秒）</div>";
+        message_html += "<div class='col-md-12 col-xs-12' style = 'color: #808080;font-size: 13px;font-family: arial;'>找到约" + numString + "条结果，以下是第" + parseInt(start + 1) + "页（用时" + costTime + "毫秒）</div>";
     }
     $('#seach_message').html(message_html);
     $('#seach_suggest').empty();
@@ -185,7 +185,7 @@ function initBottomIndex(startIndex, rowSize) {
     var html = "<nav><ul class='pagination'>";
     if (startIndex != 1) {
         html += "<li><a href='#' aria-label='Previous'>" +
-            "<span aria-hidden='true' class='indexP'>Previous</span></a></li>";
+            "<span aria-hidden='true' class='indexP'>上一页</span></a></li>";
     }
     var up_num = 0;
     var begin = startIndex - 5;
@@ -205,7 +205,7 @@ function initBottomIndex(startIndex, rowSize) {
     }
     if (startIndex != totlePage) {
         html += "<li>" +
-            "<a href='#' aria-label='Next'><span aria-hidden='true' class ='indexN'>Next</span>" +
+            "<a href='#' aria-label='Next'><span aria-hidden='true' class ='indexN'>下一页</span>" +
             "</a></li></ul></nav>";
     }
     if (totlePage <= 1) {
