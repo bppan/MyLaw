@@ -1,6 +1,7 @@
 package ChinalaweduSpider;
 
 import Interface.LawClean;
+import Mongo.MongoDB;
 import org.bson.Document;
 import org.jsoup.Jsoup;
 
@@ -13,7 +14,7 @@ import org.jsoup.Jsoup;
  * Modified By:
  */
 public class Clean extends LawClean {
-
+    private static MongoDB mongoDB = MongoDB.getMongoDB();
     public Clean(String crawJobCollection, String lawCollection, String cleanCollection) {
         super(crawJobCollection, lawCollection, cleanCollection);
     }
@@ -59,7 +60,7 @@ public class Clean extends LawClean {
     public void updateDocumentContent(Document law) {
         law.put("timeless", "现行有效");
         law.put("level", "法律法规");
-        super.replaceDocumentContent(law);
+        mongoDB.replaceDocument(getLawCollecion(), law);
     }
 
 }

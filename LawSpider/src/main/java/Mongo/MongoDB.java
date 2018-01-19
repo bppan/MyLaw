@@ -7,6 +7,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 
@@ -122,6 +123,26 @@ public class MongoDB extends DB {
             return false;
         }
         return true;
+    }
+
+    public synchronized void replaceDocument(MongoCollection<Document> collection, Document law) {
+        org.bson.types.ObjectId id = law.getObjectId("_id");
+        Document filter = new Document();
+        filter.append("_id", id);
+        law.remove("_id");
+        UpdateResult result = collection.replaceOne(filter, law);
+        LOGGER.info(collection.getNamespace().getCollectionName() + " replaceDocument num: " + result.getModifiedCount());
+    }
+
+    public synchronized void updateDocument(MongoCollection<Document> collection, Document law) {
+        org.bson.types.ObjectId id = law.getObjectId("_id");
+        Document filter = new Document();
+        filter.append("_id", id);
+        law.remove("_id");
+        Document update = new Document();
+        update.append("$set", law);
+        UpdateResult result = collection.updateOne(filter, update);
+        LOGGER.info(collection.getNamespace().getCollectionName() + " replaceDocument num: " + result.getModifiedCount());
     }
 }
 

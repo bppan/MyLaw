@@ -8,6 +8,7 @@ import SimHash.SimHash;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -143,7 +144,7 @@ public abstract class LawClean {
         law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
         law.append("simHashPart4", simHash.getStrSimHash().substring(48, 64));
 
-        replaceDocumentContent(law);
+        mongoDB.replaceDocument(getLawCollecion(), law);
     }
 
     public abstract String getContentHtmlBySelect(String html);
@@ -158,14 +159,6 @@ public abstract class LawClean {
             updateContent.append(contentpar.trim()).append("\n");
         }
         return updateContent.toString();
-    }
-
-    public void replaceDocumentContent(Document law) {
-        org.bson.types.ObjectId id = law.getObjectId("_id");
-        Document filter = new Document();
-        filter.append("_id", id);
-        law.remove("_id");
-        getLawCollecion().replaceOne(filter, law);
     }
 
     public boolean saveToCleanCollection(Document law) {

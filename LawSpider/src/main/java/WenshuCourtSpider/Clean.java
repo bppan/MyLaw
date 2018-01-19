@@ -5,6 +5,7 @@ import Interface.LawSpider;
 import Log.LawLogger;
 import Mongo.LawArticle;
 import Mongo.LawDocument;
+import Mongo.MongoDB;
 import SimHash.SimHash;
 import org.apache.log4j.Logger;
 import org.bson.Document;
@@ -22,7 +23,7 @@ import java.util.List;
  * Modified By:
  */
 public class Clean extends LawClean {
-
+    private static MongoDB mongoDB = MongoDB.getMongoDB();
     private static Logger LOGGER = LawLogger.getLawLogger(Clean.class);
 
     public Clean(String crawJobCollection, String lawCollection, String cleanCollection) {
@@ -114,7 +115,7 @@ public class Clean extends LawClean {
         law.append("simHashPart3", simHash.getStrSimHash().substring(32, 48));
         law.append("simHashPart4", simHash.getStrSimHash().substring(48, 64));
 
-        replaceDocumentContent(law);
+        mongoDB.replaceDocument(getLawCollecion(), law);
     }
 
     public boolean saveToCleanCollection(Document law) {
