@@ -25,9 +25,12 @@ $(function () {
     });
     document.onkeydown = function (event) {
         if (event.keyCode == 13) {
-            $('.typeahead').typeahead('close');
-            $.cookie('queryStart', 0);
-            Transcripts.sendQuest();
+            var isFocus=$("#user_input").is(":focus");
+            if(true==isFocus){
+                $('.typeahead').typeahead('close');
+                $.cookie('queryStart', 0);
+                Transcripts.sendQuest();
+            }
             return false;
         }
     };
