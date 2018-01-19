@@ -142,7 +142,7 @@ public class MongoDB extends DB {
         Document update = new Document();
         update.append("$set", law);
         UpdateResult result = collection.updateOne(filter, update);
-        LOGGER.info(collection.getNamespace().getCollectionName() + " replaceDocument num: " + result.getModifiedCount());
+        LOGGER.info(collection.getNamespace().getCollectionName() + " updateDocument num: " + result.getModifiedCount());
     }
 }
 

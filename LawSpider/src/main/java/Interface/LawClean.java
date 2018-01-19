@@ -213,7 +213,7 @@ public abstract class LawClean {
                 LOGGER.info("simHash similarity content equal:" + lawTitle + " : " + theTitle);
                 return false;
             }
-            if(isLawContentEqual(law, entry.getValue())){
+            if(isLawContentEqual(law, entry.getValue()) && release_number.equals(the_release_number)){
                 LOGGER.info("law content equal:" + lawTitle + " : " + theTitle);
                 return false;
             }
