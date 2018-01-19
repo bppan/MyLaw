@@ -177,28 +177,6 @@ public abstract class LawClean {
         }
 
         String lawTitle = law.getString("title");
-        if(lawTitle.contains("-法律教育网")){
-            LOGGER.info("find -法律教育网" + lawTitle);
-            String[] contentList = law.getString("content").split("\n");
-            StringBuilder updateContent = new StringBuilder();
-            for (String contentpar : contentList) {
-                if (contentpar.trim().isEmpty()) {
-                    continue;
-                }
-                if (contentpar.trim().equals("感动同情无聊愤怒搞笑难过高兴路过")) {
-                    break;
-                }
-                updateContent.append(contentpar.trim()).append("\n");
-            }
-            law.put("content", updateContent.toString());
-            SimHash simHash = new SimHash(updateContent.toString());
-            law.put("simHash", simHash.getIntSimHash().toString());
-            law.put("simHashPart1", simHash.getStrSimHash().substring(0, 16));
-            law.put("simHashPart2", simHash.getStrSimHash().substring(16, 32));
-            law.put("simHashPart3", simHash.getStrSimHash().substring(32, 48));
-            law.put("simHashPart4", simHash.getStrSimHash().substring(48, 64));
-            lawTitle = lawTitle.replace("-法律教育网", "");
-        }
         FindIterable<Document> iterableTitle = getCleanCollection().find(new Document("title", lawTitle)).noCursorTimeout(true).batchSize(10000);
         if (haveAttributeTitleRepeat(law, iterableTitle)) {
             LOGGER.info("lawTitle repeat :" + lawTitle);
@@ -227,11 +205,7 @@ public abstract class LawClean {
         String release_number = law.getString("release_number");
         if (release_number == null) {
             release_number = "";
-        }else {
-            release_number = release_number.replaceAll("〔", "[").replaceAll("〕", "]");
         }
-        String releaseDate = getFormateStringDate(law.getString("release_date"));
-        String implementDate = getFormateStringDate(law.getString("implement_date"));
 
         String content = law.getString("content").replaceAll("\n", "");
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
@@ -239,43 +213,56 @@ public abstract class LawClean {
             String theTitle = entry.getValue().getString("title");;
             String the_release_number = entry.getValue().getString("release_number");
             String theContent = entry.getValue().getString("content").replaceAll("\n", "");
-            String the_releaseDate = getFormateStringDate(entry.getValue().getString("release_date"));
-            String the_implementDate = getFormateStringDate(entry.getValue().getString("implement_date"));
             if (the_release_number == null) {
                 the_release_number = "";
             }
             if (content.equals(theContent)) {
-                LOGGER.info("simHash similarity content equal:" + simhash1 + " : " + simhash2);
+                LOGGER.info("simHash similarity content equal:" + lawTitle + " : " + theTitle);
                 return false;
             }
-            if (isSimilarityContent(simhash1, simhash2)) {
-                if (release_number.equals(the_release_number) && !release_number.isEmpty()) {
-                    LOGGER.info("simHash similarity release_number equal:" + release_number + " : " + the_release_number);
+            if(isLawContentEqual(law, entry.getValue())){
+                LOGGER.info("law content equal:" + lawTitle + " : " + theTitle);
+                return false;
+            }
+            if (isSimilarityContent(simhash1, simhash2) && lawTitle.equals(theTitle) && release_number.equals(the_release_number)) {
+                LOGGER.info("content equal:" + lawTitle + " : " + theTitle);
+                return false;
+            }
+        }
+        getCleanCollection().insertOne(law);
+        return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public boolean isLawContentEqual(Document law1, Document law2){
+        List<Document> articleList1 = (List<Document>)law1.get("articles");
+        List<Document> articleList2 = (List<Document>)law2.get("articles");
+        String content1 = law1.getString("content").replaceAll("\n", "");
+        String content2 = law2.getString("content").replaceAll("\n", "");
+        if(articleList1.size() != articleList2.size()){
+            return false;
+        }
+        if(articleList1.size() == 1){
+            Document lawArticle1 = articleList1.get(0);
+            Document lawArticle2 = articleList2.get(0);
+            if(lawArticle1.getString("name").trim().isEmpty() && lawArticle2.getString("name").trim().isEmpty()){
+                return content1.equals(content2);
+            }
+        }
+        for(int i = 0; i < articleList1.size(); i++){
+            Document lawArticle1 = articleList1.get(i);
+            Document lawArticle2 = articleList2.get(i);
+            List<String> paragraphList1 = (List<String>)lawArticle1.get("paragraph");
+            List<String> paragraphList2 = (List<String>)lawArticle2.get("paragraph");
+            if(paragraphList1.size() != paragraphList2.size()){
+                return false;
+            }
+            for(int j = 0; j < paragraphList1.size(); j++){
+                if(!paragraphList1.get(j).trim().equals(paragraphList2.get(j).trim())){
                     return false;
-                }
-                if (release_number.isEmpty() || the_release_number.isEmpty()) {
-                    if (releaseDate.equals(the_releaseDate) && !releaseDate.isEmpty() &&
-                            implementDate.equals(the_implementDate) && !implementDate.isEmpty() && lawTitle.equals(theTitle)) {
-                        LOGGER.info("simHash similarity releaseDate、the_implementDate and title equal:" + lawTitle + " : " + theTitle);
-                        return false;
-                    }
                 }
             }
         }
-        if(content.indexOf("万方数据知识服务平台-法规检索结果【新版入口】") == 0){
-            LOGGER.info("contains 万方数据知识服务平台-法规检索结果:" + lawTitle);
-            return false;
-
-        }
-        if(content.indexOf("万方数据法律数据库") == 0){
-            LOGGER.info("find -万方数据法律数据库 replace that" + lawTitle);
-            law.put("content", law.getString("content").replace("万方数据法律数据库", ""));
-        }
-        law.put("release_date", releaseDate);
-        law.put("implement_date", implementDate);
-        law.put("title", lawTitle);
-        law.put("release_number", release_number);
-        getCleanCollection().insertOne(law);
         return true;
     }
 
@@ -289,15 +276,13 @@ public abstract class LawClean {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                String content = law.getString("content").replaceAll("\n", "");
                 String title = law.getString("title");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
                     String title2 = cleanLaw.getString("title");
-                    String theContent = cleanLaw.getString("content").replaceAll("\n", "");
                     if (title.equals(title2)) {
                         return true;
-                    } else if (content.equals(theContent)) {
+                    } else if (isLawContentEqual(law, cleanLaw)) {
                         return true;
                     }
                 }
@@ -312,11 +297,9 @@ public abstract class LawClean {
         if (iterables.first() != null) {
             MongoCursor<Document> cursor = iterables.iterator();
             try {
-                String content = law.getString("content").replaceAll("\n", "");
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
-                    String theContent = cleanLaw.getString("content").replaceAll("\n", "");
-                    if (content.equals(theContent)) {
+                    if (isLawContentEqual(law, cleanLaw)) {
                         return true;
                     }
                 }

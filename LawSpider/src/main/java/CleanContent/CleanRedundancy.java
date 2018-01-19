@@ -12,8 +12,11 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description：
@@ -33,8 +36,8 @@ public class CleanRedundancy extends LawClean {
 
     public static void main(String[] args) {
         CleanRedundancy cleanRedundancy = new CleanRedundancy("law", "law2");
-//        cleanRedundancy.doCleanRepeat();
-        cleanRedundancy.redoRemoveAndAlterLaw();
+        cleanRedundancy.doCleanRepeat();
+//        cleanRedundancy.redoRemoveAndAlterLaw();
     }
 
     public String getContentHtmlBySelect(String html) {
@@ -119,4 +122,5 @@ public class CleanRedundancy extends LawClean {
         UpdateResult result = this.getLawCollecion().updateOne(filter, update);
         LOGGER.info("update num :" + result.getModifiedCount());
     }
+
 }
