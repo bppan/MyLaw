@@ -44,7 +44,8 @@ public class QueryService {
     public List<Document> getQueryResult(String queryString, int start, int rows) {
         this.documentList = new ArrayList<>();
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQuery(queryString);
+        String weightQueryString = generateWeightQueryString(queryString);
+        solrQuery.setQuery(weightQueryString);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("content");
         solrQuery.addHighlightField("title");
@@ -74,16 +75,18 @@ public class QueryService {
         this.QTime = rsp.getQTime();
 
         Map<String, Map<String, List<String>>> highlightResult = rsp.getHighlighting();
-        Map<String, Document> result = new HashMap<>();
         for (SolrDocument doc : docs) {
-            String id = doc.getFieldValue("id").toString();
             Document document = new Document(doc);
             document.setHighLight(highlightResult);
-            result.put(id, document);
-        }
-        for (Map.Entry<String, Document> entry : result.entrySet()) {
-            this.documentList.add(entry.getValue());
+            this.documentList.add(document);
         }
         return this.documentList;
+    }
+    public String generateWeightQueryString(String queryString){
+        StringBuilder weightQueryString = new StringBuilder("");
+        weightQueryString.append("(title:").append(queryString).append(")^3");
+        weightQueryString.append(" OR ");
+        weightQueryString.append("(content:").append(queryString).append(")");
+        return weightQueryString.toString();
     }
 }

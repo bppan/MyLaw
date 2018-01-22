@@ -185,7 +185,7 @@ function initBottomIndex(startIndex, rowSize) {
     if (rowSize == 0) {
         return;
     }
-    var totlePage = parseInt(rowSize / 10) + 1;
+    var totlePage = Math.ceil(rowSize/10);
     var html = "<nav><ul class='pagination'>";
     if (startIndex != 1) {
         html += "<li><a href='#' aria-label='Previous'>" +
