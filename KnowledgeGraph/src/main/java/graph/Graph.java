@@ -30,11 +30,6 @@ public class Graph {
         this.driver = Neo4jDriver.getInstance().getDriver();
     }
 
-    public static void main(String[] args) {
-        Graph graph = new Graph();
-        graph.importDataToGraph("law");
-    }
-
     public boolean createNode(Document law) {
         Session session = driver.session();
         try {
@@ -80,6 +75,7 @@ public class Graph {
     @SuppressWarnings("unchecked")
     public boolean createChildNode(Document law) {
         Session session = driver.session();
+        String lawName = law.getString("title");
         try {
             List<Document> documentList = (List<Document>) law.get("articles");
             if (documentList.size() == 0) {
@@ -93,24 +89,29 @@ public class Graph {
 
             for (int i = 0; i < documentList.size(); i++) {
                 //创建法条
-                String name = documentList.get(i).getString("name");
+                String articleName = lawName + documentList.get(i).getString("name");
                 String childId = law.getObjectId("_id").toString() + "-" + i;
                 StringBuilder createNodecyphe = new StringBuilder("MERGE (n:article {");
-                createNodecyphe.append("name:'").append(name).append("'");
+                createNodecyphe.append("name:'").append(articleName).append("'");
                 createNodecyphe.append(", id:'").append(childId).append("'");
-                createNodecyphe.append("})");
-                session.run(createNodecyphe.toString());
                 //创建法条款项
                 List<String> para = (List<String>) documentList.get(i).get("paragraph");
-                if (para.size() <= 1) {
+                if (para.size() == 1) {
+                    createNodecyphe.append(", content:'").append(para.get(0)).append("'");
+                    createNodecyphe.append("})");
+                    session.run(createNodecyphe.toString());
                     continue;
                 }
+                createNodecyphe.append("})");
+                session.run(createNodecyphe.toString());
+
                 for (int j = 0; j < para.size(); j++) {
-                    String childName = "第" + NumberChange.numberToChinese(j + 1) + "款";
+                    String paraName = articleName + "第" + NumberChange.numberToChinese(j + 1) + "款";
                     String childChildId = childId + "-" + j;
                     StringBuilder createChildNodecyphe = new StringBuilder("MERGE (n:paragraph {");
-                    createChildNodecyphe.append("name:'").append(childName).append("'");
+                    createChildNodecyphe.append("name:'").append(paraName).append("'");
                     createChildNodecyphe.append(", id:'").append(childChildId).append("'");
+                    createChildNodecyphe.append(", content:'").append(para.get(j)).append("'");
                     createChildNodecyphe.append("})");
                     session.run(createChildNodecyphe.toString());
                 }
