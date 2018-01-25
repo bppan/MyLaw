@@ -79,7 +79,7 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.nonword('value'),
                 queryTokenizer: Bloodhound.tokenizers.nonword,
                 limit: 8,
-                remote: '/solr/suggest?keyword=%QUERY',
+                remote: '/ruclaw/suggest?keyword=%QUERY',
             });
             bestSuggestes.initialize();
             $('.typeahead').typeahead({

@@ -79,7 +79,7 @@ Transcripts.getResultList = function (query, start, rows) {
         start: start,
         rows: rows
     };
-    $.ajax("/solr/query", {
+    $.ajax("/ruclaw/query", {
         type: "POST",
         dataType: "json",
         data: parm || {},

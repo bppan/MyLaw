@@ -24,7 +24,7 @@ import java.util.Map;
  * Modified By:
  */
 @Controller
-@RequestMapping(value = "/solr")
+@RequestMapping(value = "/ruclaw")
 public class SolrController {
 
     private static Logger LOGGER = MyLogger.getMyLogger(SolrController.class);
