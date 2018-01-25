@@ -30,8 +30,7 @@ public class Graph {
         this.driver = Neo4jDriver.getInstance().getDriver();
     }
 
-    public boolean createNode(Document law) {
-        Session session = driver.session();
+    public boolean createNode(Document law, Session session) {
         try {
             StringBuilder createNodecyphe = new StringBuilder("MERGE (n:law {");
             createNodecyphe.append("name:'").append(law.getString("title")).append("'");
@@ -67,14 +66,11 @@ public class Graph {
         } catch (Exception e) {
             LOGGER.info("create node in neo4j err: " + e);
             return false;
-        } finally {
-            session.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public boolean createChildNode(Document law) {
-        Session session = driver.session();
+    public boolean createChildNode(Document law, Session session) {
         String lawName = law.getString("title");
         try {
             List<Document> documentList = (List<Document>) law.get("articles");
@@ -121,14 +117,11 @@ public class Graph {
         } catch (Exception e) {
             LOGGER.info("create first layer child node in neo4j err: " + e);
             return false;
-        } finally {
-            session.close();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public boolean createRelationship(Document law) {
-        Session session = driver.session();
+    public boolean createRelationship(Document law, Session session) {
         try {
             List<Document> documentList = (List<Document>) law.get("articles");
             if (documentList.size() == 0) {
@@ -168,8 +161,6 @@ public class Graph {
         } catch (Exception e) {
             LOGGER.info("create child node relationShip in neo4j err: " + e);
             return false;
-        } finally {
-            session.close();
         }
     }
 
@@ -178,16 +169,23 @@ public class Graph {
         MongoCollection<Document> collection = mongoServer.getCollection(collectionName);
         FindIterable<Document> iterables = collection.find().noCursorTimeout(true).batchSize(10000);
         MongoCursor<Document> cursor = iterables.iterator();
+        Session session = driver.session();
+        int num = 0;
         try {
             while (cursor.hasNext()) {
                 Document law = cursor.next();
-                this.createNode(law);
-                this.createChildNode(law);
-                this.createRelationship(law);
+                long startTime = System.currentTimeMillis();
+                this.createNode(law, session);
+                this.createChildNode(law, session);
+                this.createRelationship(law, session);
+                long endTime = System.currentTimeMillis();
+                num++;
+                LOGGER.info("import law num:" + num + " cost time:"+(endTime - startTime));
             }
         } catch (Exception e) {
             LOGGER.info("read data from mongodb err: " + e);
         } finally {
+            session.close();
             driver.close();
             cursor.close();
         }
