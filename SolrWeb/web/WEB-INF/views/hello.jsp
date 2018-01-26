@@ -14,7 +14,7 @@
   <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
-<h1>Hello, world!</h1>
+<h1>${name}</h1>
 <script src="/js/jquery-2.2.0.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 
@@ -60,7 +60,7 @@
   <div class="modal fade">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      <h3>对话框标题</h3>
+      <h3>${name}</h3>
     </div>
     <div class="modal-body">
       <p>One fine body…</p>

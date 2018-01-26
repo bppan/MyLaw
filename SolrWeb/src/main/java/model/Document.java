@@ -1,5 +1,6 @@
 package model;
 
+import dao.WebProperties;
 import org.apache.solr.common.SolrDocument;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class Document {
     private String timeless;
     private String url;
     private String content;
-
+    public static java.util.Properties prop = WebProperties.getWebProperties().getProp();
     public Document(SolrDocument doc) {
         this.setId(doc.getFieldValue("id").toString());
         this.setTitle(doc.getFieldValue("title").toString());
@@ -36,7 +37,7 @@ public class Document {
         this.setCategory(doc.getFieldValue("category").toString());
         this.setLevel(doc.getFieldValue("level").toString());
         this.setTimeless(doc.getFieldValue("timeless").toString());
-        this.setUrl(doc.getFieldValue("url").toString());
+        this.setUrl(doc.getFieldValue("id").toString());
         this.setContent(doc.getFieldValue("content").toString());
     }
 
@@ -119,8 +120,10 @@ public class Document {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String id) {
+        String paperBaseUrl = prop.getProperty("paperBaseUrl");
+        String ruclawPaperUrl = paperBaseUrl + "?id=" + id;
+        this.url = ruclawPaperUrl;
     }
 
     public String getContent() {

@@ -1,15 +1,13 @@
 package controller;
 
+import dao.MongoDB;
 import log.MyLogger;
 import org.apache.log4j.Logger;
+import org.bson.Document;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Description：
@@ -21,28 +19,22 @@ import java.util.Map;
  */
 // 注解标注此类为springmvc的controller，url映射为"/hello"
 @Controller
-@RequestMapping(value = "/hello", method = RequestMethod.GET)
+@RequestMapping(value = "/ruclaw", method = RequestMethod.GET)
 public class HomeController {
     private static Logger LOGGER = MyLogger.getMyLogger(HomeController.class);
+    private static MongoDB mongoDB = MongoDB.getMongoDB();
     //映射一个action
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public  String index(){
-        //输出日志文件
-        LOGGER.info("the first jsp pages");
-        System.out.println("the first jsp pages");
+    @RequestMapping(value = "/paper", method = RequestMethod.GET)
+    public ModelAndView lawPaper(String id) {
+        System.out.println(id);
+        Document law = mongoDB.getDocumentById(id);
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("law");
+        mav.addObject("title", law.getString("title"));
+        mav.addObject("content", law.getString("content").replaceAll("\n", "<br>"));
         //返回一个index.jsp这个视图
-        return "hello";
+        return mav;
     }
-    @RequestMapping(value = "/getAjax", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String,Object> save(String name){
-        //输出日志文件
-        LOGGER.info("the first ajax:" + name);
-        System.out.println("the first ajax:" +name);
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("success", true);
-        map.put("name", name);
-        //返回一个index.jsp这个视图
-        return map;
-    }
+
 }
