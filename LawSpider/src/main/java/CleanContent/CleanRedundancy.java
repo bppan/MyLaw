@@ -102,7 +102,7 @@ public class CleanRedundancy extends LawClean {
                     release_number = release_number.replaceAll("〔", "[").replaceAll("〕", "]");
                 }
                 law.put("release_number", release_number);
-                this.updateDocumentContent(law);
+                mongoDB.updateDocument(getLawCollecion(), law);
             }
         } catch (Exception e) {
             LOGGER.error("do clean find error: " + e.getMessage());
@@ -110,17 +110,6 @@ public class CleanRedundancy extends LawClean {
             cursor.close();
         }
         LOGGER.info("Done do redoRemoveAndAlter...");
-    }
-
-    public void updateDocumentContent(Document law) {
-        org.bson.types.ObjectId id = law.getObjectId("_id");
-        Document filter = new Document();
-        filter.append("_id", id);
-        law.remove("_id");
-        Document update = new Document();
-        update.append("$set", law);
-        UpdateResult result = this.getLawCollecion().updateOne(filter, update);
-        LOGGER.info("update num :" + result.getModifiedCount());
     }
 
 }
