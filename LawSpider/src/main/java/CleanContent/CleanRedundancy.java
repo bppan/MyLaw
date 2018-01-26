@@ -35,7 +35,7 @@ public class CleanRedundancy extends LawClean {
     }
 
     public static void main(String[] args) {
-        CleanRedundancy cleanRedundancy = new CleanRedundancy("law", "law2");
+        CleanRedundancy cleanRedundancy = new CleanRedundancy("law2", "law3");
         cleanRedundancy.doCleanRepeat();
 //        cleanRedundancy.redoRemoveAndAlterLaw();
     }

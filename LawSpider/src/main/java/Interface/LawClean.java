@@ -8,7 +8,6 @@ import SimHash.SimHash;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -161,6 +160,7 @@ public abstract class LawClean {
         return updateContent.toString();
     }
 
+    @SuppressWarnings("unchecked")
     public boolean saveToCleanCollection(Document law) {
         String url = law.getString("url");
         FindIterable<Document> iterables = getCleanCollection().find(new Document("url", url)).noCursorTimeout(true).batchSize(10000);
@@ -194,32 +194,94 @@ public abstract class LawClean {
         FindIterable<Document> iterableContent4 = getCleanCollection().find(new Document("simHashPart4", simHashPart4)).noCursorTimeout(true).batchSize(10000);
         haveAttributeContentRepeat(haveSimilarity, iterableContent4);
 
-        String simhash1 = law.getString("simHash");
+        String simHash1 = law.getString("simHash");
         String release_number = law.getString("release_number");
         if (release_number == null) {
             release_number = "";
         }
 
         String content = law.getString("content").replaceAll("\n", "");
+        List<Document> articleList1 = (List<Document>) law.get("articles");
+        String release_date = law.getString("release_date");
+        String implement_date = law.getString("implement_date");
+
         for (Map.Entry<ObjectId, Document> entry : haveSimilarity.entrySet()) {
-            String simhash2 = entry.getValue().getString("simHash");
-            String theTitle = entry.getValue().getString("title");;
-            String the_release_number = entry.getValue().getString("release_number");
+            String simHash2 = entry.getValue().getString("simHash");
+            String theTitle = entry.getValue().getString("title");
             String theContent = entry.getValue().getString("content").replaceAll("\n", "");
+            String the_release_number = entry.getValue().getString("release_number");
             if (the_release_number == null) {
                 the_release_number = "";
             }
-            if (content.equals(theContent)) {
-                LOGGER.info("simHash similarity content equal:" + lawTitle + " : " + theTitle);
-                return false;
-            }
-            if(isLawContentEqual(law, entry.getValue()) && release_number.equals(the_release_number)){
-                LOGGER.info("law content equal:" + lawTitle + " : " + theTitle);
-                return false;
-            }
-            if (isSimilarityContent(simhash1, simhash2) && lawTitle.equals(theTitle) && release_number.equals(the_release_number)) {
-                LOGGER.info("content equal:" + lawTitle + " : " + theTitle);
-                return false;
+            List<Document> articleList2 = (List<Document>) entry.getValue().get("articles");
+            String the_release_date = entry.getValue().getString("release_date");
+            String the_implement_date = entry.getValue().getString("implement_date");
+
+            if (isSimilarityContent(simHash1, simHash2)) {
+                //两篇文章完全相同
+                if (content.equals(theContent)) {
+                    LOGGER.info("content equal:" + lawTitle + " : " + theTitle);
+                    return false;
+                }
+                //两篇文章的法律条数不同
+                if (articleList1.size() != articleList2.size()) {
+                    continue;
+                }
+                //只有一条法条
+                if (articleList1.size() == 1) {
+                    Document lawArticle1 = articleList1.get(0);
+                    Document lawArticle2 = articleList2.get(0);
+                    //不是法律
+                    if (lawArticle1.getString("name").trim().isEmpty() && lawArticle2.getString("name").trim().isEmpty()) {
+                        if (lawTitle.equals(theTitle)) {
+                            if (release_number.trim().equals(the_release_number.trim()) && !release_number.trim().isEmpty()) {
+                                LOGGER.info("title and release_number equal:" + lawTitle + " : " + theTitle);
+                                return false;
+                            }
+                            if (release_number.trim().isEmpty() || the_release_number.trim().isEmpty()) {
+                                if (release_date.trim().equals(the_release_date.trim()) && !release_date.trim().isEmpty()) {
+                                    LOGGER.info("title、release_number and the_release_date equal:" + lawTitle + " : " + theTitle);
+                                    return false;
+                                }
+                                if (release_date.trim().isEmpty() && the_release_date.isEmpty()) {
+                                    LOGGER.info("title、release_number and the_release_date empty equal:" + lawTitle + " : " + theTitle);
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    continue;
+                }
+
+                if (hasEqualParagraph(articleList1, articleList2)) {
+                    if (lawTitle.equals(theTitle)) {
+                        LOGGER.info("title、hasEqualParagraph equal:" + lawTitle + " : " + theTitle);
+                        return false;
+                    }
+                    if (release_number.trim().length() <= 3 || the_release_number.length() <= 3) {
+                        if (release_date.equals(the_release_date) && !release_date.isEmpty() && the_implement_date.equals(implement_date) && !implement_date.isEmpty()) {
+                            LOGGER.info("release_number wrong、hasEqualParagraph、date equal:" + lawTitle + " : " + theTitle);
+                            return false;
+                        }
+                        if (release_date.isEmpty() || the_release_date.isEmpty() || implement_date.isEmpty() || the_implement_date.isEmpty()) {
+                            if (lawTitle.equals(theTitle)) {
+                                LOGGER.info("release_number wrong、date empty、title、hasEqualParagraph equal:" + lawTitle + " : " + theTitle);
+                                return false;
+                            }
+                        }
+                        continue;
+                    }
+                    if (release_number.equals(the_release_number)) {
+                        LOGGER.info("release_number、hasEqualParagraph equal:" + lawTitle + " : " + theTitle);
+                        return false;
+                    }
+                } else {
+                    if (lawTitle.equals(theTitle) && release_date.equals(the_release_date) && !release_date.isEmpty() &&
+                            the_implement_date.equals(implement_date) && !implement_date.isEmpty()) {
+                        LOGGER.info("title、release_date、implement_date equal:" + lawTitle + " : " + theTitle);
+                        return false;
+                    }
+                }
             }
         }
         getCleanCollection().insertOne(law);
@@ -227,31 +289,44 @@ public abstract class LawClean {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean isLawContentEqual(Document law1, Document law2){
-        List<Document> articleList1 = (List<Document>)law1.get("articles");
-        List<Document> articleList2 = (List<Document>)law2.get("articles");
-        String content1 = law1.getString("content").replaceAll("\n", "");
-        String content2 = law2.getString("content").replaceAll("\n", "");
-        if(articleList1.size() != articleList2.size()){
+    public boolean isLawContentEqual(Document law1, Document law2) {
+        List<Document> articleList1 = (List<Document>) law1.get("articles");
+        List<Document> articleList2 = (List<Document>) law2.get("articles");
+        String simHash1 = law1.getString("simHash");
+        String simHash2 = law2.getString("simHash");
+        if (articleList1.size() != articleList2.size()) {
             return false;
         }
-        if(articleList1.size() == 1){
+        if (articleList1.size() == 1) {
             Document lawArticle1 = articleList1.get(0);
             Document lawArticle2 = articleList2.get(0);
-            if(lawArticle1.getString("name").trim().isEmpty() && lawArticle2.getString("name").trim().isEmpty()){
-                return content1.equals(content2);
+            if (lawArticle1.getString("name").trim().isEmpty() && lawArticle2.getString("name").trim().isEmpty()) {
+                if (isSimilarityContent(simHash1, simHash2)) {
+                    return true;
+                }
             }
         }
-        for(int i = 0; i < articleList1.size(); i++){
+        if (hasEqualParagraph(articleList1, articleList2)) {
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressWarnings("unchecked")
+    public boolean hasEqualParagraph(List<Document> articleList1, List<Document> articleList2) {
+        if (articleList1.size() != articleList2.size()) {
+            return false;
+        }
+        for (int i = 0; i < articleList1.size(); i++) {
             Document lawArticle1 = articleList1.get(i);
             Document lawArticle2 = articleList2.get(i);
-            List<String> paragraphList1 = (List<String>)lawArticle1.get("paragraph");
-            List<String> paragraphList2 = (List<String>)lawArticle2.get("paragraph");
-            if(paragraphList1.size() != paragraphList2.size()){
+            List<String> paragraphList1 = (List<String>) lawArticle1.get("paragraph");
+            List<String> paragraphList2 = (List<String>) lawArticle2.get("paragraph");
+            if (paragraphList1.size() != paragraphList2.size()) {
                 return false;
             }
-            for(int j = 0; j < paragraphList1.size(); j++){
-                if(!paragraphList1.get(j).trim().equals(paragraphList2.get(j).trim())){
+            for (int j = 0; j < paragraphList1.size(); j++) {
+                if (!paragraphList1.get(j).trim().equals(paragraphList2.get(j).trim())) {
                     return false;
                 }
             }
@@ -259,10 +334,11 @@ public abstract class LawClean {
         return true;
     }
 
+
     public boolean isSimilarityContent(String strSimhash1, String strSimhash2) {
         BigInteger intSimhash1 = new BigInteger(strSimhash1);
         BigInteger intSimhash2 = new BigInteger(strSimhash2);
-        return SimHash.hammingDistance(intSimhash1, intSimhash2) <= 3;
+        return SimHash.hammingDistance(intSimhash1, intSimhash2) < 3;
     }
 
     public boolean haveAttributeURLRepeat(Document law, FindIterable<Document> iterables) {
@@ -286,14 +362,61 @@ public abstract class LawClean {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     public boolean haveAttributeTitleRepeat(Document law, FindIterable<Document> iterables) {
         if (iterables.first() != null) {
+            String release_number1 = law.getString("release_number");
+            String release_date1 = law.getString("release_date");
+            String implement_date = law.getString("implement_date");
+            String simHash1 = law.getString("simHash");
+            List<Document> articleList1 = (List<Document>) law.get("articles");
             MongoCursor<Document> cursor = iterables.iterator();
             try {
                 while (cursor.hasNext()) {
                     Document cleanLaw = cursor.next();
-                    if (isLawContentEqual(law, cleanLaw)) {
-                        return true;
+                    String release_number2 = cleanLaw.getString("release_number");
+                    List<Document> articleList2 = (List<Document>) cleanLaw.get("articles");
+                    String release_date2 = cleanLaw.getString("release_date");
+                    String implement_date2 = cleanLaw.getString("implement_date");
+                    String simHash2 = cleanLaw.getString("simHash");
+                    if (articleList1.size() != articleList2.size()) {
+                        continue;
+                    }
+                    if (articleList1.size() == 1) {
+                        Document lawArticle1 = articleList1.get(0);
+                        Document lawArticle2 = articleList2.get(0);
+                        if (lawArticle1.getString("name").trim().isEmpty() && lawArticle2.getString("name").trim().isEmpty()) {
+                            if (release_date1.trim().equals(release_date2) && !release_date1.trim().isEmpty()) {
+                                return true;
+                            }
+                            if (release_date1.trim().isEmpty() || release_date2.trim().isEmpty()) {
+                                if(implement_date.equals(implement_date2) && !implement_date.isEmpty()){
+                                    return true;
+                                }
+                            }
+                            continue;
+                        }
+                        if(release_date1.trim().isEmpty() && implement_date.trim().isEmpty()){
+                            return true;
+                        }
+                        if (isSimilarityContent(simHash1, simHash2)) {
+                            return true;
+                        }
+                    } else {
+                        if (hasEqualParagraph(articleList1, articleList2)) {
+                            return true;
+                        }
+                        if(release_number1.equals(release_number2) && !release_number1.isEmpty()){
+                            return true;
+                        }
+                        if(release_number1.isEmpty() || release_number2.isEmpty()){
+                            if (release_date1.equals(release_date2) && !release_date1.isEmpty() && implement_date.equals(implement_date2) && !implement_date.isEmpty()) {
+                                return true;
+                            }
+                            if(release_date1.isEmpty() && release_date2.isEmpty() && implement_date.isEmpty() && implement_date2.isEmpty()){
+                                return true;
+                            }
+                        }
                     }
                 }
             } finally {
