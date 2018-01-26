@@ -66,12 +66,17 @@ public class MongoDB {
     }
 
     public Document getDocumentById(String id){
-        Document filter = new Document();
-        filter.append("_id", new ObjectId(id));
-        FindIterable<Document> iterables = getMongoCollection().find(filter).noCursorTimeout(true).batchSize(10000);
-        if(iterables.first() != null){
-            return iterables.first();
-        }else {
+        try {
+            Document filter = new Document();
+            filter.append("_id", new ObjectId(id));
+            FindIterable<Document> iterables = getMongoCollection().find(filter).noCursorTimeout(true).batchSize(10000);
+            if(iterables.first() != null){
+                return iterables.first();
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            LOGGER.error("getDocumentById err:" + e);
             return null;
         }
     }

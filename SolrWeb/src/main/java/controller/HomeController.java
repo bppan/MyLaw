@@ -28,11 +28,16 @@ public class HomeController {
     public ModelAndView lawPaper(String id) {
         System.out.println(id);
         Document law = mongoDB.getDocumentById(id);
-
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("law");
-        mav.addObject("title", law.getString("title"));
-        mav.addObject("content", law.getString("content").replaceAll("\n", "<br>"));
+        if(law != null){
+            mav.setViewName("law");
+            mav.addObject("title", law.getString("title"));
+            mav.addObject("content", law.getString("content").replaceAll("\n", "<br>"));
+        }else {
+            mav.setViewName("error");
+            mav.addObject("id", id);
+            mav.addObject("title", "Not Found");
+        }
         //返回一个index.jsp这个视图
         return mav;
     }
