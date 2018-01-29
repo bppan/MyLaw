@@ -1,5 +1,7 @@
 $(function () {
     $('#query').focus();
+    $.cookie("queryHistary", null);
+    $.cookie('queryStart', 0);
     $("#search_btn").click(function () {
         var search_content = $.trim($('#query').val());
         if (search_content) {
