@@ -59,6 +59,7 @@ Transcripts.cleanContent = function () {
 Transcripts.sendQuest = function () {
     var search_content = $.trim($('#user_input').val());
     if (search_content) {
+        $('#title').html(search_content + "-Ruclaw 搜索");
         var queryStart = $.cookie('queryStart');
         if (queryStart) {
             Transcripts.getResultList(search_content, parseInt(queryStart), 10);

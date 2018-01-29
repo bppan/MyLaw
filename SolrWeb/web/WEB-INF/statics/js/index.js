@@ -4,7 +4,7 @@ $(function () {
         var search_content = $.trim($('#query').val());
         if (search_content) {
             $.cookie("queryHistary", search_content);
-            window.location.href = "/seacher.html";
+            window.location.href = "/ruclaw.html";
         }
     });
     document.onkeydown = function (event) {
@@ -13,7 +13,7 @@ $(function () {
             var search_content = $.trim($('#query').val());
             if (search_content) {
                 $.cookie("queryHistary", search_content);
-                window.location.href = "/seacher.html";
+                window.location.href = "/ruclaw.html";
             }
         }
     }
