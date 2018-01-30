@@ -24,23 +24,31 @@ import service.LawService;
 public class HomeController {
     private static Logger LOGGER = MyLogger.getMyLogger(HomeController.class);
     private static MongoDB mongoDB = MongoDB.getMongoDB();
+
     //映射一个action
     @RequestMapping(value = "/paper", method = RequestMethod.GET)
     public ModelAndView lawPaper(String id) {
-        System.out.println(id);
-        Document law = mongoDB.getDocumentById(id);
+        LOGGER.info("Request mapping ruclaw/paper papaer id is:" + id);
         ModelAndView mav = new ModelAndView();
-        if(law != null){
-            mav.setViewName("law");
-            LawService lawService = new LawService(law);
-            mav.addObject("titleHtml", lawService.getTitleHtml());
-            mav.addObject("title", law.getString("title").trim());
-            mav.addObject("contentHtml", lawService.getContentHtml());
-
-        }else {
+        try {
+            Document law = mongoDB.getDocumentById(id);
+            if (law != null) {
+                mav.setViewName("law");
+                LawService lawService = new LawService(law);
+                mav.addObject("titleHtml", lawService.getTitleHtml());
+                mav.addObject("title", law.getString("title").trim());
+                mav.addObject("contentHtml", lawService.getContentHtml());
+            } else {
+                mav.setViewName("error");
+                mav.addObject("title", "Not Found");
+                mav.addObject("contentHtml", "<p class='text-center'><font color='#dd4b39'>"+"law paper id:" + id + " Not Found</font></p>");
+                LOGGER.warn("Request mapping ruclaw/paper not found id:" + id);
+            }
+        }catch (Exception e){
             mav.setViewName("error");
-            mav.addObject("id", id);
-            mav.addObject("title", "Not Found");
+            mav.addObject("title", "Server Error");
+            mav.addObject("contentHtml", "<p class='text-center'><font color='#dd4b39'>"+"law paper id:" + id + " Server Error</font></p>");
+            LOGGER.error("Request mapping ruclaw/paper err:" + e);
         }
         //返回一个index.jsp这个视图
         return mav;

@@ -25,7 +25,7 @@
 <div class="container-fluid" >
     <div class="row" style="padding-top: 15px; padding-bottom: 30px">
         <div class="col-md-1"></div>
-        <div class="col-md-10"><p>法律文档${id}未找到!</p></div>
+        <div class="col-md-10">${contentHtml}</div>
         <div class="col-md-1"></div>
     </div>
 
