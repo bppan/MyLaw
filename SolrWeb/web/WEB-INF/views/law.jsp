@@ -25,7 +25,10 @@
         <div class="container-fluid" >
             <div class="row" style="padding-top: 15px; padding-bottom: 30px">
                 <div class="col-md-1"></div>
-                <div class="col-md-10"><p>${content}</p></div>
+                <div class="col-md-10">
+                    <div style="font-size: 14px; line-height: 15px">${titleHtml}</div>
+                    <div>${contentHtml}</div>
+                </div>
                 <div class="col-md-1"></div>
             </div>
 

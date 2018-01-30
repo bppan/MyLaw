@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import service.LawService;
 
 /**
  * Description：
@@ -31,8 +32,11 @@ public class HomeController {
         ModelAndView mav = new ModelAndView();
         if(law != null){
             mav.setViewName("law");
-            mav.addObject("title", law.getString("title"));
-            mav.addObject("content", law.getString("content").replaceAll("\n", "<br>"));
+            LawService lawService = new LawService(law);
+            mav.addObject("titleHtml", lawService.getTitleHtml());
+            mav.addObject("title", law.getString("title").trim());
+            mav.addObject("contentHtml", lawService.getContentHtml());
+
         }else {
             mav.setViewName("error");
             mav.addObject("id", id);
