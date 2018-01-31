@@ -21,6 +21,7 @@ $(function () {
     $("#search_button").click(function () {
         $('.typeahead').typeahead('close');
         $.cookie('queryStart', 0);
+        $.cookie('querySortFiled', "score");
         Transcripts.sendQuest();
     });
     document.onkeydown = function (event) {
@@ -29,6 +30,7 @@ $(function () {
             if(true==isFocus){
                 $('.typeahead').typeahead('close');
                 $.cookie('queryStart', 0);
+                $.cookie('querySortFiled', "score");
                 Transcripts.sendQuest();
             }
             return false;
@@ -42,6 +44,7 @@ $(function () {
             }
         }
     });
+    bindSortFieldEvent();
 });
 
 Transcripts.cleanContent = function () {
@@ -61,24 +64,32 @@ Transcripts.sendQuest = function () {
     if (search_content) {
         $('#title').html(search_content + " - Ruclaw 搜索");
         var queryStart = $.cookie('queryStart');
+        var querySortFiled = $.cookie('querySortFiled');
+        if(!querySortFiled){
+            querySortFiled = getSelectSortField();
+        }
         if (queryStart) {
-            Transcripts.getResultList(search_content, parseInt(queryStart), 10);
+            Transcripts.getResultList(search_content, parseInt(queryStart), 10, querySortFiled);
         } else {
-            Transcripts.getResultList(search_content, 0, 10);
+            Transcripts.getResultList(search_content, 0, 10, querySortFiled);
         }
     } else {
         window.location.href = "/index.html";
     }
 };
 
-Transcripts.getResultList = function (query, start, rows) {
+
+Transcripts.getResultList = function (query, start, rows, sortField) {
     $.cookie('queryStart', start);
     $.cookie('queryHistary', query);
+    $.cookie('querySortFiled', sortField);
+    activeSortFiled(sortField);
     $('#fade_mask').show();
     var parm = {
         query_string: $.trim(query),
         start: start,
-        rows: rows
+        rows: rows,
+        sortField:sortField
     };
     $.ajax("/ruclaw/query", {
         type: "POST",
@@ -131,6 +142,48 @@ Transcripts.addviewList = function (resultInfo, start, rows) {
     var ads_evaluation_html = refreshAdsAndEvaluation(resultInfo, start, rows);
     $('#adv').html(ads_evaluation_html);
 };
+
+function bindSortFieldEvent() {
+    $(".sortFiled").click(function () {
+        if($(this).hasClass("active")){
+            return;
+        }
+        clearActiveSortFiled();
+        var queryStart = $.cookie('queryStart');
+        var search_content = $.cookie('queryHistary');
+        querySortFiled = $(this).attr('id');
+        Transcripts.getResultList(search_content, parseInt(queryStart), 10, querySortFiled);
+    });
+}
+
+function clearActiveSortFiled() {
+    var index = $(".sortFiled");
+    for (var i = 0; i < index.length; i++) {
+        $($(".sortFiled")[i]).removeClass('active');
+    }
+}
+
+function activeSortFiled(sortField) {
+    clearActiveSortFiled();
+    var index = $(".sortFiled");
+    for (var i = 0; i < index.length; i++) {
+        if($($(".sortFiled")[i]).attr("id") == sortField){
+            $($(".sortFiled")[i]).addClass('active');
+            break;
+        }
+    }
+}
+
+function getSelectSortField() {
+    var index = $(".sortFiled");
+    for (var i = 0; i < index.length; i++) {
+        if($($(".sortFiled")[i]).hasClass('active')){
+            return $($(".sortFiled")[i]).attr('id');
+        }
+    }
+    return "score";
+}
+
 
 function refreshAdsAndEvaluation(resultInfo, start, rows) {
     var rand_num_ads = parseInt(Math.random() * 3);
@@ -227,11 +280,12 @@ function bindIndexEvent() {
         clearActive();
         var message_index = parseInt($(this).attr('id')) - 1;
         var search_content = $.cookie('queryHistary');
+        var sortFiled = getSelectSortField();
         $('#user_input').val(search_content);
         if (search_content) {
             var start = message_index;
             var rows = 10;
-            Transcripts.getResultList(search_content, start, rows);
+            Transcripts.getResultList(search_content, start, rows, sortFiled);
         }
     });
 }
@@ -261,14 +315,15 @@ function nextActive(rowSize) {
         if ($($(".index")[i]).hasClass('active')) {
             $($(".index")[i]).removeClass('active');
             var search_content = $.cookie('queryHistary');
+            var sortField = getSelectSortField();
             $('#user_input').val(search_content);
             if (i + 1 >= index.length) {
                 var message_index = parseInt($($(".index")[i]).attr('id'));
-                Transcripts.getResultList(search_content, message_index, 10);
+                Transcripts.getResultList(search_content, message_index, 10, sortField);
                 break;
             } else {
                 var message_index = parseInt($($(".index")[i + 1]).attr('id')) - 1;
-                Transcripts.getResultList(search_content, message_index, 10);
+                Transcripts.getResultList(search_content, message_index, 10, sortField);
                 break;
             }
         }
@@ -281,14 +336,15 @@ function previousActive(rowSize) {
         if ($($(".index")[i]).hasClass('active')) {
             $($(".index")[i]).removeClass('active');
             var search_content = $.cookie('queryHistary');
+            var sortFiled = getSelectSortField();
             $('#user_input').val(search_content);
             if (i - 1 < 0) {
                 var message_index = parseInt($($(".index")[0]).attr('id')) - 1;
-                Transcripts.getResultList(search_content, message_index, 10);
+                Transcripts.getResultList(search_content, message_index, 10, sortFiled);
                 break;
             } else {
                 var message_index = parseInt($($(".index")[i - 1]).attr('id')) - 1;
-                Transcripts.getResultList(search_content, message_index, 10);
+                Transcripts.getResultList(search_content, message_index, 10, sortFiled);
                 break;
             }
         }

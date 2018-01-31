@@ -21,12 +21,12 @@
         <script type="text/javascript" src="js/ruclaw.js" charset="utf-8" ></script>
         <!-- Head -->
         <div class="container-fluid" style="background:#F1F1F1">
-            <div class="row" style="margin-top: 20px; background:#F1F1F1">
+            <div class="row" style="margin-top: 20px; margin-bottom:0; background:#F1F1F1">
                 <div class="col-md-1" style="background:#F1F1F1;">
                     <a href="/"><img width="90" height="36" style="position: absolute; right: 0;left: 15px;margin: auto;" src="img/ruclaw_small_logo.png"></a>
                 </div>
                 <div class="col-md-5 col-sm-12 col-xs-12" style="background:#F1F1F1">
-                    <div class="form-group">
+                    <div class="form-group" style="margin-bottom: 10px;">
                         <div class="input-group">
                             <input id = "user_input" type="text" class="typeahead form-control input-private-lg" autocomplete="off" name="query" value maxlength="255">
                             <span class="input-group-btn">
@@ -35,6 +35,14 @@
                                 </span>
                             </span>
                         </div>
+                    </div>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-bottom: 10px">
+                        <button type="button" class="btn btn-default sortFiled" id = "score">相关度 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-default sortFiled" id = "release_date">发布日期 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-default sortFiled" id = "implement_date">实施日期 <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                        </button>
                     </div>
                 </div>
             </div>

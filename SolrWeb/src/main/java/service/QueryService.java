@@ -41,11 +41,12 @@ public class QueryService {
         return QTime;
     }
 
-    public List<Document> getQueryResult(String queryString, int start, int rows) {
+    public List<Document> getQueryResult(String queryString, int start, int rows, String sortField) {
         this.documentList = new ArrayList<>();
         SolrQuery solrQuery = new SolrQuery();
         String weightQueryString = generateWeightQueryString(queryString);
         solrQuery.setQuery(weightQueryString);
+        solrQuery.setSort(sortField, SolrQuery.ORDER.desc);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("content");
         solrQuery.addHighlightField("title");

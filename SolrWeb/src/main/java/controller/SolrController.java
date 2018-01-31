@@ -41,11 +41,11 @@ public class SolrController {
 
     @RequestMapping(value = "/query", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> query(String query_string, int start, int rows) {
+    public Map<String, Object> query(String query_string, int start, int rows, String sortField) {
         Map<String, Object> map = new HashMap<String, Object>();
         LOGGER.info("query :" + query_string + " start:" + start +" rows:" + rows);
         QueryService queryService = new QueryService();
-        List<Document> resultList = queryService.getQueryResult(query_string, start*rows, rows);
+        List<Document> resultList = queryService.getQueryResult(query_string, start*rows, rows, sortField);
         long numFound = queryService.getNumFound();
         int QTime = queryService.getQTime();
         map.put("numFound", numFound);
