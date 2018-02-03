@@ -23,17 +23,31 @@ public class Neo4jDriver {
 //        StatementResult result = session.run( "MATCH (a:Person) WHERE a.name = {name} " +
 //                        "RETURN a.name AS name, a.title AS title",
 //                parameters( "name", "Arthur" ) )
-        StatementResult result = session.run("CREATE INDEX ON Person:(姓名)");
-        StatementResult result2 = session.run("CREATE (n:Person {姓名: '潘北平'}) RETURN n");
+
+        StatementResult result = session.run("match (n:law) where n.id = '5a117970ed8e9d2e68aa4844' return n");
+//        StatementResult result = session.run("CREATE INDEX ON Person:(姓名)");
+//        StatementResult result2 = session.run("CREATE (n:Person {姓名: '潘北平'}) RETURN n");
 //        StatementResult result2 = session.run("CREATE (n:Person { name: 'Dan' }) RETURN n");
 //        StatementResult result3 = session.run("MATCH (a:Person { name: 'Ann' }), (b:Person { name: 'Dan' }) CREATE (a)-[:依据]->(b)");
-
-        while ( result.hasNext() )
+        System.out.println("beging...");
+        String id = "5a117970ed8e9d2e68aa4844";
+        while (result.hasNext())
         {
             Record record = result.next();
-            System.out.println( record.get( "title" ).asString() + " " + record.get( "name" ).asString() );
+            int article_num = record.get("n").get("article_num").asInt();
+            if(article_num > 1){
+                for(int i = 0; i < article_num; i++){
+                    String articleId = id + "-" + i;
+                    StringBuilder deleteNodeCyphe = new StringBuilder("MATCH (a:article)-[r:有]-(p:paragraph)");
+                    deleteNodeCyphe.append("where a.id = '").append(articleId).append("'").append(" DETACH delete p,r");
+                    session.run(deleteNodeCyphe.toString());
+                }
+            }
+            StringBuilder deleteNodeCyphe = new StringBuilder("MATCH (n:law)-[r:有]-(a:article)");
+            deleteNodeCyphe.append("where n.id = '").append(id).append("'").append(" DETACH delete n,a,r");
+            session.run(deleteNodeCyphe.toString());
         }
-
+        System.out.println("done...");
         session.close();
         driver.close();
     }
