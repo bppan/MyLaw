@@ -87,13 +87,14 @@ public class Graph {
                 //创建法条
                 String articleName = lawName + documentList.get(i).getString("name");
                 String childId = law.getObjectId("_id").toString() + "-" + i;
-                StringBuilder createNodecyphe = new StringBuilder("MERGE (n:article {");
+                StringBuilder createNodecyphe = new StringBuilder("MERGE (a:article {");
                 createNodecyphe.append("name:'").append(articleName).append("'");
                 createNodecyphe.append(", id:'").append(childId).append("'");
                 //创建法条款项
                 List<String> para = (List<String>) documentList.get(i).get("paragraph");
+                createNodecyphe.append(", paragraph_num:").append(para.size());
                 if (para.size() == 1) {
-                    createNodecyphe.append(", content:'").append(para.get(0)).append("'");
+                    createNodecyphe.append(", content:'").append(para.get(0).trim()).append("'");
                     createNodecyphe.append("})");
                     session.run(createNodecyphe.toString());
                     continue;
@@ -104,10 +105,10 @@ public class Graph {
                 for (int j = 0; j < para.size(); j++) {
                     String paraName = articleName + "第" + NumberChange.numberToChinese(j + 1) + "款";
                     String childChildId = childId + "-" + j;
-                    StringBuilder createChildNodecyphe = new StringBuilder("MERGE (n:paragraph {");
+                    StringBuilder createChildNodecyphe = new StringBuilder("MERGE (p:paragraph {");
                     createChildNodecyphe.append("name:'").append(paraName).append("'");
                     createChildNodecyphe.append(", id:'").append(childChildId).append("'");
-                    createChildNodecyphe.append(", content:'").append(para.get(j)).append("'");
+                    createChildNodecyphe.append(", content:'").append(para.get(j).trim()).append("'");
                     createChildNodecyphe.append("})");
                     session.run(createChildNodecyphe.toString());
                 }
@@ -134,12 +135,12 @@ public class Graph {
             }
             for (int i = 0; i < documentList.size(); i++) {
                 //创建法律和法条
-                StringBuilder createNodecyphe = new StringBuilder("MATCH (a:law {");
+                StringBuilder createNodecyphe = new StringBuilder("MATCH (n:law {");
                 createNodecyphe.append("id: '").append(law.getObjectId("_id").toString()).append("'}), ");
                 String childId = law.getObjectId("_id").toString() + "-" + i;
-                createNodecyphe.append("(b:article {");
+                createNodecyphe.append("(a:article {");
                 createNodecyphe.append("id: '").append(childId).append("'}) ");
-                createNodecyphe.append("MERGE (a)").append("-[:").append("有").append("]").append("->(b)");
+                createNodecyphe.append("MERGE (n)").append("-[:").append("有").append("]").append("->(a)");
                 session.run(createNodecyphe.toString());
                 //创建法条款项关系
                 List<String> para = (List<String>) documentList.get(i).get("paragraph");
@@ -150,9 +151,9 @@ public class Graph {
                     StringBuilder createNodeChildRelationshipcyphe = new StringBuilder("MATCH (a:article {");
                     createNodeChildRelationshipcyphe.append("id: '").append(childId).append("'}), ");
                     String childChildId = childId + "-" + j;
-                    createNodeChildRelationshipcyphe.append("(b:paragraph {");
+                    createNodeChildRelationshipcyphe.append("(p:paragraph {");
                     createNodeChildRelationshipcyphe.append("id: '").append(childChildId).append("'}) ");
-                    createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append("有").append("]").append("->(b)");
+                    createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append("有").append("]").append("->(p)");
                     session.run(createNodeChildRelationshipcyphe.toString());
                 }
             }
@@ -189,5 +190,11 @@ public class Graph {
             driver.close();
             cursor.close();
         }
+    }
+
+    public boolean deleteNodeById(String id, Session session){
+        StringBuilder deleteNodeCyphe = new StringBuilder("MATCH (a:key)-[r:KEY_WORD]-(b:JAVA) where ID(a) = 47 and ID(b) = 48 DETACH delete a,b,r ");
+        deleteNodeCyphe.append("MATCH (a:law)");
+        return false;
     }
 }
