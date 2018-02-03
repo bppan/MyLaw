@@ -32,8 +32,8 @@ public class CleanRedundancy extends LawClean {
     }
 
     public static void main(String[] args) {
-        CleanRedundancy cleanRedundancy = new CleanRedundancy("law2", "law3");
-        cleanRedundancy.doCleanRepeat();
+        CleanRedundancy cleanRedundancy = new CleanRedundancy("law", "law");
+        cleanRedundancy.redoRemoveTitleEqualLaw();
 //        cleanRedundancy.redoRemoveAndAlterLaw();
     }
 
@@ -118,7 +118,7 @@ public class CleanRedundancy extends LawClean {
             while (cursor.hasNext()) {
                 Document law = cursor.next();
                 num++;
-                LOGGER.info("doClean clean num: " + num);
+                LOGGER.info("do redoRemoveTitleEqualLaw num: " + num);
                 String title = law.getString("title");
                 int article_num = law.getInteger("article_num");
                 String release_date = law.getString("release_date");
@@ -134,9 +134,9 @@ public class CleanRedundancy extends LawClean {
                             repeateTitleList.add(law_repeate);
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     LOGGER.error("find clean Collection err:" + e);
-                }finally {
+                } finally {
                     cursorRepeateTitle.close();
                 }
                 LOGGER.info("Title:" + title + " " + repeateTitleList.size());
@@ -145,7 +145,7 @@ public class CleanRedundancy extends LawClean {
                 }
                 for (int i = 0; i < repeateTitleList.size() - 1; i++) {
                     mongoDB.deleteDocumentOneById(getCleanCollection(), repeateTitleList.get(i));
-                    LOGGER.info("delete: " + i + " success");
+                    LOGGER.info("delete: " + i + " success...");
                 }
             }
         } catch (Exception e) {

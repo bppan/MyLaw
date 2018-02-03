@@ -3,6 +3,7 @@ package FayiSpider;
 import Interface.LawClean;
 import Interface.LawSpider;
 import Log.LawLogger;
+import Mongo.MongoDB;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.jsoup.Jsoup;
@@ -19,6 +20,7 @@ import org.jsoup.select.Elements;
  */
 public class Clean extends LawClean {
 
+    private static MongoDB mongoDB = MongoDB.getMongoDB();
     private static Logger LOGGER = LawLogger.getLawLogger(Clean.class);
 
     public Clean(String crawJobCollection, String lawCollection, String cleanCollection) {
@@ -56,7 +58,7 @@ public class Clean extends LawClean {
             }
             super.cleanContent(law);
         } else {
-            super.deleteDocumentOneById(getLawCollecion(), law);
+            mongoDB.deleteDocumentOneById(getLawCollecion(), law);
             LOGGER.info("this law is unvaild deleted...");
         }
     }
