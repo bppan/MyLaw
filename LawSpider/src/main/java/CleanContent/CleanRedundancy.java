@@ -9,14 +9,11 @@ import Mongo.MongoDB;
 import SimHash.SimHash;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description：
@@ -58,7 +55,7 @@ public class CleanRedundancy extends LawClean {
                 String content = law.getString("content");
                 if (content.indexOf("万方数据知识服务平台-法规检索结果【新版入口】") == 0) {
                     LOGGER.info("contains 万方数据知识服务平台-法规检索结果:" + lawTitle);
-                    this.deleteDocumentOneById(this.getLawCollecion(), law);
+                    mongoDB.deleteDocumentOneById(this.getLawCollecion(), law);
                     continue;
                 }
                 if (lawTitle.contains("-法律教育网")) {
@@ -110,6 +107,53 @@ public class CleanRedundancy extends LawClean {
             cursor.close();
         }
         LOGGER.info("Done do redoRemoveAndAlter...");
+    }
+
+    public void redoRemoveTitleEqualLaw() {
+        LOGGER.info("Begin do redoRemoveTitleEqualLaw...");
+        FindIterable<Document> iterables = this.getLawCollecion().find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                num++;
+                LOGGER.info("doClean clean num: " + num);
+                String title = law.getString("title");
+                int article_num = law.getInteger("article_num");
+                String release_date = law.getString("release_date");
+                List<Document> repeateTitleList = new ArrayList<>();
+                FindIterable<Document> iterablesRepeateTitle = this.getCleanCollection().find(new Document("title", title)).noCursorTimeout(true).batchSize(10000);
+                MongoCursor<Document> cursorRepeateTitle = iterablesRepeateTitle.iterator();
+                try {
+                    while (cursorRepeateTitle.hasNext()) {
+                        Document law_repeate = cursorRepeateTitle.next();
+                        int repeate_article_num = law_repeate.getInteger("article_num");
+                        String repeate_release_date = law_repeate.getString("release_date");
+                        if (article_num == repeate_article_num && release_date.equals(repeate_release_date)) {
+                            repeateTitleList.add(law_repeate);
+                        }
+                    }
+                }catch (Exception e){
+                    LOGGER.error("find clean Collection err:" + e);
+                }finally {
+                    cursorRepeateTitle.close();
+                }
+                LOGGER.info("Title:" + title + " " + repeateTitleList.size());
+                if (repeateTitleList.size() <= 1) {
+                    continue;
+                }
+                for (int i = 0; i < repeateTitleList.size() - 1; i++) {
+                    mongoDB.deleteDocumentOneById(getCleanCollection(), repeateTitleList.get(i));
+                    LOGGER.info("delete: " + i + " success");
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("do clean find error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+        LOGGER.info("Done do redoRemoveTitleEqualLaw...");
     }
 
 }

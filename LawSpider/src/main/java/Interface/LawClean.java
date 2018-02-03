@@ -440,20 +440,6 @@ public abstract class LawClean {
         }
     }
 
-    public void deleteDocumentMonyById(MongoCollection<Document> collection, List<Document> needDelete) {
-        for (Document deleteLaw : needDelete) {
-            Document filter = new Document();
-            filter.append("_id", deleteLaw.getObjectId("_id"));
-            collection.deleteOne(filter);
-        }
-    }
-
-    public void deleteDocumentOneById(MongoCollection<Document> collection, Document needDelete) {
-        Document filter = new Document();
-        filter.append("_id", needDelete.getObjectId("_id"));
-        collection.deleteOne(filter);
-    }
-
     public String getFormateStringDate(String time) {
         String formateDateString = "";
         if (time != null && !time.isEmpty()) {

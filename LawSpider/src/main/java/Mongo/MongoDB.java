@@ -7,6 +7,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.apache.log4j.Logger;
 import org.bson.Document;
@@ -143,6 +144,28 @@ public class MongoDB extends DB {
         update.append("$set", law);
         UpdateResult result = collection.updateOne(filter, update);
         LOGGER.info(collection.getNamespace().getCollectionName() + " updateDocument num: " + result.getModifiedCount());
+    }
+
+    public synchronized void deleteDocumentManyById(MongoCollection<Document> collection, List<Document> needDelete) {
+        int count = 0;
+        for (Document deleteLaw : needDelete) {
+            Document filter = new Document();
+            filter.append("_id", deleteLaw.getObjectId("_id"));
+            try {
+                collection.deleteOne(filter);
+                count++;
+            }catch (Exception e){
+                LOGGER.error("deleteDocumentManyById id :" + deleteLaw.getObjectId("_id").toString() + " err:"+e);
+            }
+        }
+        LOGGER.info(collection.getNamespace().getCollectionName() + " delete count: " + count);
+    }
+
+    public synchronized void deleteDocumentOneById(MongoCollection<Document> collection, Document needDelete) {
+        Document filter = new Document();
+        filter.append("_id", needDelete.getObjectId("_id"));
+        DeleteResult result = collection.deleteOne(filter);
+        LOGGER.info(collection.getNamespace().getCollectionName() + " delete count: " + result.getDeletedCount());
     }
 }
 
