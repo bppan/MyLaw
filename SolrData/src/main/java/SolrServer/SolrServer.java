@@ -103,4 +103,9 @@ public class SolrServer {
         solrServer.deleteByQuery("*:*");
         solrServer.commit();
     }
+    public void deleteById(String id) throws IOException, SolrServerException {
+        HttpSolrClient solrServer = getHttpSolrClient();
+        solrServer.deleteByQuery("id:"+id);
+        solrServer.commit();
+    }
 }

@@ -21,7 +21,7 @@ import java.util.List;
  * Modified By:
  */
 public class ImportData {
-    private static final int CACHESIZE = 5000;
+    private static final int CACHESIZE = 10000;
     private static Logger LOGGER = MyLogger.getMyLogger(ImportData.class);
     private static MongoDB mongoDB = MongoDB.getMongoDB();
     private MongoCollection<Document> collection;
