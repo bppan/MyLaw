@@ -8,6 +8,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 
 /**
  * Description：
@@ -30,7 +32,7 @@ public class WanfangCleanContent {
 
     public static void main(String[] args) {
         WanfangCleanContent wanfangCleanContent = new WanfangCleanContent("wanfangdata_clean", "law2");
-        wanfangCleanContent.cleanContent();
+        wanfangCleanContent.addContentHtml();
     }
 
     public void cleanContent() {
@@ -64,7 +66,7 @@ public class WanfangCleanContent {
                             timeless = true;
                             continue;
                         }
-                        if(contentpar.trim().isEmpty()){
+                        if (contentpar.trim().isEmpty()) {
                             continue;
                         }
                         updateContent.append(contentpar.trim()).append("\n");
@@ -87,5 +89,48 @@ public class WanfangCleanContent {
             cursor.close();
         }
         LOGGER.info("Done do cleanContent...");
+    }
+
+    public void addContentHtml() {
+        LOGGER.info("Begin do addContentHtml...");
+        FindIterable<Document> iterables = this.lawCollecion.find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                String url = law.getString("url");
+                FindIterable<Document> iterablesclean = this.cleanCollection.find(new Document("url", url)).noCursorTimeout(true).limit(1);
+                if (iterablesclean.first() != null) {
+                    LOGGER.info("clean url: " + url);
+                    Document cleanlaw = iterablesclean.first();
+                    String html = cleanlaw.getString("rawHtml");
+                    org.jsoup.nodes.Document lawHtmlDocument = Jsoup.parse(html);
+                    Elements lawHtmlHead = lawHtmlDocument.select("body > *:nth-child(1)");
+                    if (lawHtmlHead.html().contains("【颁布日期】")) {
+                        lawHtmlHead.remove();
+                    }
+                    Elements contentHtml = lawHtmlDocument.getElementsByTag("body");
+                    contentHtml.select("title").remove();
+                    contentHtml.select("script").remove();
+                    contentHtml.select("meta").remove();
+                    contentHtml.select("link").remove();
+                    contentHtml.select("*").removeAttr("class");
+                    contentHtml.select("*").removeAttr("style");
+                    contentHtml.select("*").removeAttr("color");
+                    contentHtml.select("font").removeAttr("face");
+                    contentHtml.select("font").removeAttr("size");
+                    cleanlaw.append("contentHtml", contentHtml.html());
+                    mongoDB.updateDocument(this.cleanCollection, cleanlaw);
+                }
+                num++;
+                LOGGER.info("addContentHtml num: " + num);
+            }
+        } catch (Exception e) {
+            LOGGER.error("addContentHtml find error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+        LOGGER.info("Done do addContentHtml...");
     }
 }
