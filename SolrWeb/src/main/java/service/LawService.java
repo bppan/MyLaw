@@ -89,7 +89,7 @@ public class LawService {
             if (m_tiao.find() && m_tiao.start() == 0) {
                 String name = par.substring(m_tiao.start(), m_tiao.end());
                 String content = par.substring(m_tiao.end(), par.length());
-                contentHtml.append("<p class='paperContent'>").append(name).append(" ").append(content).append("</p>");
+                contentHtml.append("<p class='paperContent'>").append("<span class='label label-primary'>").append(name).append("</span>").append(" ").append(content).append("</p>");
                 continue;
             }
             if (par.equals("目录")) {
