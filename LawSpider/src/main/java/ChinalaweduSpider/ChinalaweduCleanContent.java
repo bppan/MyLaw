@@ -8,6 +8,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.Iterator;
 
 /**
  * Description：
@@ -29,8 +34,8 @@ public class ChinalaweduCleanContent {
     }
 
     public static void main(String[] args) {
-        ChinalaweduCleanContent chinalaweduCleanContent = new ChinalaweduCleanContent("chinaLawedu_clean", "law2");
-        chinalaweduCleanContent.cleanContent();
+        ChinalaweduCleanContent chinalaweduCleanContent = new ChinalaweduCleanContent("chinaLawedu_clean", "law3");
+        chinalaweduCleanContent.addContentHtml();
     }
 
     public void cleanContent() {
@@ -94,5 +99,97 @@ public class ChinalaweduCleanContent {
             cursor.close();
         }
         LOGGER.info("Done do cleanContent...");
+    }
+    public void addContentHtml() {
+        LOGGER.info("Begin do addContentHtml...");
+        FindIterable<Document> iterables = this.lawCollecion.find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                String url = law.getString("url");
+                FindIterable<Document> iterablesclean = this.cleanCollection.find(new Document("url", url)).noCursorTimeout(true).limit(1);
+                if (iterablesclean.first() != null) {
+                    LOGGER.info("addContentHtml url: " + url);
+                    Document cleanlaw = iterablesclean.first();
+                    String html = cleanlaw.getString("rawHtml");
+                    org.jsoup.nodes.Document lawHtmlDocument = Jsoup.parse(html);
+                    Elements contentHtml = lawHtmlDocument.select("#fontzoom");
+                    Elements esd = contentHtml.select("p");
+                    Iterator<Element> iterator = esd.iterator();
+                    while (iterator.hasNext())
+                    {
+                        Element etemp = iterator.next();
+                        String styleStr = etemp.text();
+                        if(styleStr.contains("发文单位")){
+                            etemp.remove();
+                            continue;
+                        }
+                        if(styleStr.contains("发布日期")){
+                            etemp.remove();
+                            continue;
+                        }
+                        if(styleStr.contains("生效日期")){
+                            etemp.remove();
+                            continue;
+                        }
+                        if(styleStr.contains("文　　号")){
+                            etemp.remove();
+                            continue;
+                        }
+                        if(styleStr.contains("执行日期")){
+                            etemp.remove();
+                            continue;
+                        }
+                        if(styleStr.contains("失效日期")){
+                            etemp.remove();
+                        }
+                    }
+                    Elements esdDiv = contentHtml.select("div");
+                    Iterator<Element> iteratorDiv = esdDiv.iterator();
+                    while (iteratorDiv.hasNext())
+                    {
+                        Element etemp = iteratorDiv.next();
+                        String styleStr = etemp.text();
+                        if(styleStr.contains("责任编辑：")){
+                            etemp.remove();
+                            continue;
+                        }
+                        if(styleStr.contains("转发分享：")){
+                            etemp.remove();
+                        }
+                    }
+                    Elements esda = contentHtml.select("a");
+                    Iterator<Element> iteratora = esda.iterator();
+                    while (iteratora.hasNext())
+                    {
+                        Element etemp = iteratora.next();
+                        etemp.removeAttr("href");
+                        etemp.removeAttr("title");
+                        etemp.removeAttr("target");
+                    }
+                    contentHtml.select("title").remove();
+                    contentHtml.select("script").remove();
+                    contentHtml.select("meta").remove();
+                    contentHtml.select("link").remove();
+                    contentHtml.select("*").removeAttr("class");
+                    contentHtml.select("*").removeAttr("color");
+                    contentHtml.select("font").removeAttr("face");
+                    contentHtml.select("font").removeAttr("size");
+                    cleanlaw.append("contentHtml", contentHtml.html().replaceAll("<a>","").replaceAll("</a>",""));
+//                    System.out.println(contentHtml.html().replaceAll("<a>","").replaceAll("</a>",""));
+                    mongoDB.updateDocument(this.cleanCollection, cleanlaw);
+
+                }
+                num++;
+                LOGGER.info("addContentHtml num: " + num);
+            }
+        } catch (Exception e) {
+            LOGGER.error("addContentHtml find error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+        LOGGER.info("Done do addContentHtml...");
     }
 }

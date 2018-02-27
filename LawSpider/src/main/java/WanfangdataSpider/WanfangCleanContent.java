@@ -31,7 +31,7 @@ public class WanfangCleanContent {
     }
 
     public static void main(String[] args) {
-        WanfangCleanContent wanfangCleanContent = new WanfangCleanContent("wanfangdata_clean", "law2");
+        WanfangCleanContent wanfangCleanContent = new WanfangCleanContent("wanfangdata_clean", "law3");
         wanfangCleanContent.addContentHtml();
     }
 
@@ -102,13 +102,17 @@ public class WanfangCleanContent {
                 String url = law.getString("url");
                 FindIterable<Document> iterablesclean = this.cleanCollection.find(new Document("url", url)).noCursorTimeout(true).limit(1);
                 if (iterablesclean.first() != null) {
-                    LOGGER.info("clean url: " + url);
+                    LOGGER.info("addContentHtml url: " + url);
                     Document cleanlaw = iterablesclean.first();
                     String html = cleanlaw.getString("rawHtml");
                     org.jsoup.nodes.Document lawHtmlDocument = Jsoup.parse(html);
                     Elements lawHtmlHead = lawHtmlDocument.select("body > *:nth-child(1)");
                     if (lawHtmlHead.html().contains("【颁布日期】")) {
                         lawHtmlHead.remove();
+                    }
+                    Elements lawHtmlHead2 = lawHtmlDocument.select("body > *:nth-child(1)");
+                    if (lawHtmlHead2.html().contains("【有效性】")) {
+                        lawHtmlHead2.remove();
                     }
                     Elements contentHtml = lawHtmlDocument.getElementsByTag("body");
                     contentHtml.select("title").remove();
@@ -121,7 +125,13 @@ public class WanfangCleanContent {
                     contentHtml.select("font").removeAttr("face");
                     contentHtml.select("font").removeAttr("size");
                     cleanlaw.append("contentHtml", contentHtml.html());
-                    mongoDB.updateDocument(this.cleanCollection, cleanlaw);
+//                    System.out.println(contentHtml.html());
+                    try {
+                        mongoDB.updateDocument(this.cleanCollection, cleanlaw);
+                    }catch (Exception e){
+                        LOGGER.error("addContentHtml updatedocument error: " + e);
+                    }
+
                 }
                 num++;
                 LOGGER.info("addContentHtml num: " + num);

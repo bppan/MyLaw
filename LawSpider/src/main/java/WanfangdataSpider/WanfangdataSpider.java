@@ -139,16 +139,11 @@ public class  WanfangdataSpider extends LawSpider {
         WebClient currentClient = getUnusedClient();
         try {
             page = currentClient.getPage(htmlUrl);
-            Thread.sleep(3000);
+            Thread.sleep(5000);
         } catch (Exception e) {
             LOGGER.error("Get parseLawHtml page error: " + e.getMessage());
             closeClient(currentClient);
             return null;
-        }
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            LOGGER.error("wait thread interrupt error: " + e.getMessage());
         }
         LawDocument doc = parseLawHtmlGetDocument(page);
         HtmlAnchor contentAnchor = null;
