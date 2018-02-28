@@ -71,7 +71,7 @@ Transcripts.sendQuest = function () {
         if (queryStart) {
             Transcripts.getResultList(search_content, parseInt(queryStart), 10, querySortFiled);
         } else {
-            Transcripts.getResultList(search_content, 0, 10, querySortFiled);
+            Transcripts.getResultList(search_content, 0, 10, "score");
         }
     } else {
         window.location.href = "/index.html";
