@@ -22,16 +22,32 @@
         <script src="../js/jquery-2.2.0.min.js"></script>
         <script src="../js/bootstrap.min.js"></script>
         <!-- Head -->
+        <div class="container-fluid" style="background:#F1F1F1">
+            <div class="row" style="margin-top: 20px; margin-bottom:0; background:#F1F1F1;">
+                <div class="col-md-1 col-sm-1 col-xs-1" style="background:#F1F1F1;height: 50px">
+                    <a href="/ruclaw.html"><img width="90" height="36" style="position: absolute; right: 0;left: 15px;margin: auto;" src="../img/ruclaw_small_logo.png"></a>
+                </div>
+            </div>
+        </div>
+        <!-- content -->
         <div class="container-fluid" >
-            <div class="row" style="padding-top: 15px; padding-bottom: 30px">
+            <div class="row" style="padding-top: 15px; padding-bottom: 30px;">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <div style="font-size: 14px; line-height: 15px">${titleHtml}</div>
-                    <div>${contentHtml}</div>
+                    <div style="font-size: 15px; line-height: 22px; margin-top: 25px;min-height:718px;">${contentHtml}</div>
                 </div>
                 <div class="col-md-1"></div>
             </div>
 
+        </div>
+        <!-- 底部版权 -->
+        <div class="container foot" style = "background-color: #F1F1F1; width:100% ;font-size: 12px;min-height: 50px; margin-bottom: 0px">
+            <span>
+                <p class="text-center" style = "vertical-align:middle;margin: 0;line-height: 50px;">
+                    This web is developed by BDAI.Copyright © 2018 Renmin University of China.
+                </p>
+            </span>
         </div>
     </body>
 </html>

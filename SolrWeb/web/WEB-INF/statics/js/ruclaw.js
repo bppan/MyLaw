@@ -16,7 +16,7 @@ $(function () {
         $('#user_input').val(queryHistary);
         Transcripts.sendQuest();
     } else {
-        $('#seach_content').html("<p>请按\"回车键\"或点击\"搜索\"按钮进行检索</p>");
+        $('#seach_content').html("<p>请输入内容后按\"回车键\"或点击\"搜索\"按钮进行检索</p>");
     }
     $("#search_button").click(function () {
         $('.typeahead').typeahead('close');
@@ -65,13 +65,15 @@ Transcripts.sendQuest = function () {
         $('#title').html(search_content + " - Ruclaw 搜索");
         var queryStart = $.cookie('queryStart');
         var querySortFiled = $.cookie('querySortFiled');
-        if(!querySortFiled){
+        if(querySortFiled == 'null'){
+            querySortFiled = getSelectSortField();
+        }else if(!querySortFiled){
             querySortFiled = getSelectSortField();
         }
         if (queryStart) {
             Transcripts.getResultList(search_content, parseInt(queryStart), 10, querySortFiled);
         } else {
-            Transcripts.getResultList(search_content, 0, 10, "score");
+            Transcripts.getResultList(search_content, 0, 10, querySortFiled);
         }
     } else {
         window.location.href = "/index.html";
