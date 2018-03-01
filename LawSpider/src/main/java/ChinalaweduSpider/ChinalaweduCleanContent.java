@@ -168,6 +168,7 @@ public class ChinalaweduCleanContent {
                         etemp.removeAttr("href");
                         etemp.removeAttr("title");
                         etemp.removeAttr("target");
+                        etemp.removeAttr("name");
                     }
                     contentHtml.select("title").remove();
                     contentHtml.select("script").remove();
