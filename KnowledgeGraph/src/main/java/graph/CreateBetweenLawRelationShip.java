@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public class CreateBetweenLawRelationShip {
     private static MongoServer mongoServer = MongoServer.getMongoDB();
     private static Logger LOGGER = MyLogger.getMyLogger(CreateBetweenLawRelationShip.class);
-    private static String[] relationFront = {"依据", "根据", "依照", "按照", "适用"};
+    private static String[] relationFront = {"依据", "根据", "依照", "按照", "适用", "符合"};
     private static String[] relationBehind = {"同时废止"};
     private MongoCollection<Document> fromCollection;
     private MongoCollection<Document> toCollection;
