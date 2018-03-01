@@ -1,5 +1,7 @@
 import org.neo4j.driver.v1.*;
 
+import java.security.acl.LastOwnerException;
+
 import static org.neo4j.driver.v1.Values.parameters;
 
 /**
@@ -24,16 +26,17 @@ public class Neo4jDriver {
 //                        "RETURN a.name AS name, a.title AS title",
 //                parameters( "name", "Arthur" ) )
 
-        StatementResult result = session.run("match (n:law) where n.id = '5a117970ed8e9d2e68aa4844' return n");
+        StatementResult result = session.run("match (n:law) where n.id = '5a3b57eaed8e9d35307daaba' return n");
 //        StatementResult result = session.run("CREATE INDEX ON Person:(姓名)");
 //        StatementResult result2 = session.run("CREATE (n:Person {姓名: '潘北平'}) RETURN n");
 //        StatementResult result2 = session.run("CREATE (n:Person { name: 'Dan' }) RETURN n");
 //        StatementResult result3 = session.run("MATCH (a:Person { name: 'Ann' }), (b:Person { name: 'Dan' }) CREATE (a)-[:依据]->(b)");
         System.out.println("beging...");
-        String id = "5a117970ed8e9d2e68aa4844";
+        String id = "5a3b57eaed8e9d35307daaba";
         while (result.hasNext())
         {
             Record record = result.next();
+            System.out.println("has one");
             int article_num = record.get("n").get("article_num").asInt();
             if(article_num > 1){
                 for(int i = 0; i < article_num; i++){

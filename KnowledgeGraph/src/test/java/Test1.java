@@ -10,6 +10,9 @@ import util.NumberChange;
  */
 public class Test1 {
     public static void main(String[] args){
-        System.out.println(NumberChange.numberToChinese(7));
+//        System.out.println(NumberChange.numberToChinese(7));
+        String time1 = "2017.11.10";
+        String time2 = "2017.11.12";
+        System.out.println(time1.compareTo(time2));
     }
 }
