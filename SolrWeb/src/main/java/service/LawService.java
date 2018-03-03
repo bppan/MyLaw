@@ -4,9 +4,6 @@ import log.MyLogger;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Description：
  * Author: beiping_pan
@@ -52,52 +49,12 @@ public class LawService {
     }
 
     public String getContentHtml() {
-        StringBuilder contentHtml = new StringBuilder();
-        String title = law.getString("title").trim();
-        String[] contentArray = law.getString("content").split("\n");
-        String zhang = "第[零一二三四五六七八九十百千万]+章";//定义章数
-        String tiao = "第[零一二三四五六七八九十百千万]+条(之[一二三四五六七八九十百千万]+)?";//定义条数
-        String jie = "第[零一二三四五六七八九十百千万]+节";//定义条数
-        for (int i = 0; i < contentArray.length; i++) {
-            String par = contentArray[i].trim();
-            if (i == 0) {
-                if (par.equals(title)) {
-                    contentHtml.append("<p class='text-center paperTitle'><b>").append(par).append("</b></p>");
-                    continue;
-                } else {
-                    contentHtml.append("<p class='text-center paperTitle'><b>").append(title).append("</b></p>");
-                }
-            }
-            Pattern regEx_zhang = Pattern.compile(zhang, Pattern.CASE_INSENSITIVE);
-            Matcher m_zhang = regEx_zhang.matcher(par);
-            if (m_zhang.find() && m_zhang.start() == 0) {
-                String name = par.substring(m_zhang.start(), m_zhang.end());
-                String content = par.substring(m_zhang.end(), par.length());
-                contentHtml.append("<p class='text-center'>").append(name).append(" ").append(content).append("</p>");
-                continue;
-            }
-            Pattern regEx_jie = Pattern.compile(jie, Pattern.CASE_INSENSITIVE);
-            Matcher m_jie = regEx_jie.matcher(par);
-            if (m_jie.find() && m_jie.start() == 0) {
-                String name = par.substring(m_jie.start(), m_jie.end());
-                String content = par.substring(m_jie.end(), par.length());
-                contentHtml.append("<p class='text-center'>").append(name).append(" ").append(content).append("</p>");
-                continue;
-            }
-            Pattern regEx_tiao = Pattern.compile(tiao, Pattern.CASE_INSENSITIVE);
-            Matcher m_tiao = regEx_tiao.matcher(par.trim());
-            if (m_tiao.find() && m_tiao.start() == 0) {
-                String name = par.substring(m_tiao.start(), m_tiao.end());
-                String content = par.substring(m_tiao.end(), par.length());
-                contentHtml.append("<p class='paperContent'>").append("<span class='label label-primary'>").append(name).append("</span>").append(" ").append(content).append("</p>");
-                continue;
-            }
-            if (par.equals("目录")) {
-                contentHtml.append("<p class='text-center'>").append(par).append("</p>");
-                continue;
-            }
-            contentHtml.append("<p class='paperContent'>").append(par).append("</p>");
+        String contentHtml = "";
+        try {
+            contentHtml = law.getString("contentHtml").trim();
+        } catch (Exception e) {
+            LOGGER.error("getContentHtml error: " + e);
         }
-        return contentHtml.toString();
+        return contentHtml;
     }
 }
