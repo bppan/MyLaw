@@ -31,7 +31,7 @@ public class WanfangCleanContent {
     }
 
     public static void main(String[] args) {
-        WanfangCleanContent wanfangCleanContent = new WanfangCleanContent("wanfangdata_clean", "law3");
+        WanfangCleanContent wanfangCleanContent = new WanfangCleanContent("wanfangdata_clean2", "law3");
         wanfangCleanContent.addContentHtml();
     }
 

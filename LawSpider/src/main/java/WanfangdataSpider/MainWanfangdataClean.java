@@ -10,7 +10,8 @@ package WanfangdataSpider;
  */
 public class MainWanfangdataClean {
     public static void main(String[] args) {
-        WanfangdataClean wanfangdataClean = new WanfangdataClean("wanfangdata_crawJob", "wanfangdata_law", "wanfangdata_clean");
-        wanfangdataClean.doClean();
+        WanfangdataClean wanfangdataClean = new WanfangdataClean("wanfangdata_crawJob", "wanfangdata_clean2", "law3");
+//        wanfangdataClean.doClean2();
+        wanfangdataClean.doCleanRepeat();
     }
 }

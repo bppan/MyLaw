@@ -55,6 +55,39 @@ public abstract class LawClean {
         return cleanCollection;
     }
 
+    public void doClean2() {
+        LOGGER.info("Begin do clean...");
+        FindIterable<Document> iterables = getLawCollecion().find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+                String url = document.getString("url");
+                FindIterable<Document> iterablesCrawJob = getCrawJobcollection().find(new Document("url", url)).limit(1).noCursorTimeout(true).batchSize(10000);
+                if(iterablesCrawJob.first() != null){
+                    Document crawjob = iterablesCrawJob.first();
+                    LOGGER.info("do clean url: " + url);
+                    String category = crawjob.getString("title");
+                    try {
+                        doDocument(url, category);
+                        num++;
+                    } catch (Exception e) {
+                        LOGGER.error("Do document error: " + e.getMessage());
+                    }
+                    LOGGER.info("doClean clean num: " + num);
+                }else {
+                    LOGGER.info("doClean current document no exits in crawJob...");
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("do clean find error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+//        doCleanRepeat();
+    }
+
     public void doClean() {
         LOGGER.info("Begin do clean...");
         FindIterable<Document> iterables = getCrawJobcollection().find().noCursorTimeout(true).batchSize(10000);

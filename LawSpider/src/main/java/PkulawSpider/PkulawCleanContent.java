@@ -36,7 +36,7 @@ public class PkulawCleanContent {
 
     public static void main(String[] args) {
         PkulawCleanContent pkulawCleanContent = new PkulawCleanContent("pkulaw_clean", "law3");
-        pkulawCleanContent.addContentHtml();
+        pkulawCleanContent.cleanTitle();
     }
 
     public void cleanContent() {
@@ -136,4 +136,41 @@ public class PkulawCleanContent {
         }
         LOGGER.info("Done do addContentHtml...");
     }
+    public void cleanTitle() {
+        LOGGER.info("Begin do cleanTitle...");
+        FindIterable<Document> iterables = this.lawCollecion.find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                String url = law.getString("url");
+                FindIterable<Document> iterablesclean = this.cleanCollection.find(new Document("url", url)).noCursorTimeout(true).limit(1);
+                if (iterablesclean.first() != null) {
+                    LOGGER.info("cleanTitle url: " + url);
+                    Document cleanlaw = iterablesclean.first();
+                    String title = cleanlaw.getString("title").trim();
+                    LOGGER.info("cleanTitle title: " + title);
+                    Pattern titleRemoveAlter = Pattern.compile("(\\(\\d{1,4}((年)?修(正|订)+)?\\))|(\\[失效\\])", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+                    Matcher matcherTitle = titleRemoveAlter.matcher(title);
+                    while (matcherTitle.find()){
+                        if(matcherTitle.end() == title.length()){
+                            title = title.substring(0, matcherTitle.start());
+                            LOGGER.info("cleanTitle title change: " + title);
+                            cleanlaw.put("title", title);
+                            mongoDB.updateDocument(this.cleanCollection, cleanlaw);
+                        }
+                    }
+                }
+                num++;
+                LOGGER.info("cleanTitle num: " + num);
+            }
+        } catch (Exception e) {
+            LOGGER.error("cleanTitle find error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+        LOGGER.info("Done do cleanTitle...");
+    }
+
 }
