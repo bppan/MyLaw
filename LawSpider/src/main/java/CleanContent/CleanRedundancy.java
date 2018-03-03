@@ -32,8 +32,8 @@ public class CleanRedundancy extends LawClean {
     }
 
     public static void main(String[] args) {
-        CleanRedundancy cleanRedundancy = new CleanRedundancy("law", "law");
-        cleanRedundancy.redoRemoveTitleEqualLaw();
+        CleanRedundancy cleanRedundancy = new CleanRedundancy("law3", "law3");
+        cleanRedundancy.redoRemoveTitleEqualLawStrict();
 //        cleanRedundancy.redoRemoveAndAlterLaw();
     }
 
@@ -55,6 +55,11 @@ public class CleanRedundancy extends LawClean {
                 String content = law.getString("content");
                 if (content.indexOf("万方数据知识服务平台-法规检索结果【新版入口】") == 0) {
                     LOGGER.info("contains 万方数据知识服务平台-法规检索结果:" + lawTitle);
+                    mongoDB.deleteDocumentOneById(this.getLawCollecion(), law);
+                    continue;
+                }
+                if (content.trim().indexOf("系统忙，请稍候再试") == 0) {
+                    LOGGER.info("find -系统忙，请稍候再试 replace that" + lawTitle);
                     mongoDB.deleteDocumentOneById(this.getLawCollecion(), law);
                     continue;
                 }
@@ -154,6 +159,51 @@ public class CleanRedundancy extends LawClean {
             cursor.close();
         }
         LOGGER.info("Done do redoRemoveTitleEqualLaw...");
+    }
+
+    public void redoRemoveTitleEqualLawStrict() {
+        LOGGER.info("Begin do redoRemoveTitleEqualLawStrict...");
+        FindIterable<Document> iterables = this.getLawCollecion().find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                num++;
+                LOGGER.info("do redoRemoveTitleEqualLawStrict num: " + num);
+                String title = law.getString("title");
+                String release_date = law.getString("release_date");
+                List<Document> repeateTitleList = new ArrayList<>();
+                FindIterable<Document> iterablesRepeateTitle = this.getCleanCollection().find(new Document("title", title)).noCursorTimeout(true).batchSize(10000);
+                MongoCursor<Document> cursorRepeateTitle = iterablesRepeateTitle.iterator();
+                try {
+                    while (cursorRepeateTitle.hasNext()) {
+                        Document law_repeate = cursorRepeateTitle.next();
+                        String repeate_release_date = law_repeate.getString("release_date");
+                        if (release_date.equals(repeate_release_date)) {
+                            repeateTitleList.add(law_repeate);
+                        }
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("find redoRemoveTitleEqualLawStrict err:" + e);
+                } finally {
+                    cursorRepeateTitle.close();
+                }
+                LOGGER.info("Title:" + title + " " + repeateTitleList.size());
+                if (repeateTitleList.size() <= 1) {
+                    continue;
+                }
+                for (int i = 0; i < repeateTitleList.size() - 1; i++) {
+                    mongoDB.deleteDocumentOneById(getCleanCollection(), repeateTitleList.get(i));
+                    LOGGER.info("delete: " + i + " success...");
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("do redoRemoveTitleEqualLawStrict error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+        LOGGER.info("Done do redoRemoveTitleEqualLawStrict...");
     }
 
 }

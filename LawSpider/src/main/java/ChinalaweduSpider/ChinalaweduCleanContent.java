@@ -13,6 +13,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Description：
@@ -35,7 +37,7 @@ public class ChinalaweduCleanContent {
 
     public static void main(String[] args) {
         ChinalaweduCleanContent chinalaweduCleanContent = new ChinalaweduCleanContent("chinaLawedu_clean", "law3");
-        chinalaweduCleanContent.addContentHtml();
+        chinalaweduCleanContent.cleanTitle();
     }
 
     public void cleanContent() {
@@ -192,5 +194,43 @@ public class ChinalaweduCleanContent {
             cursor.close();
         }
         LOGGER.info("Done do addContentHtml...");
+    }
+    public void cleanTitle() {
+        LOGGER.info("Begin do cleanTitle...");
+        FindIterable<Document> iterables = this.lawCollecion.find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        long num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                String url = law.getString("url");
+                FindIterable<Document> iterablesclean = this.cleanCollection.find(new Document("url", url)).noCursorTimeout(true).limit(1);
+                if (iterablesclean.first() != null) {
+                    LOGGER.info("cleanTitle url: " + url);
+                    Document cleanlaw = iterablesclean.first();
+                    String title = cleanlaw.getString("title").trim();
+                    LOGGER.info("cleanTitle title: " + title);
+                    Pattern titleRemoveAlter = Pattern.compile("(（\\d{1,4}((版)?|((年|版)?修(正|订)+)?)）)(［(失效|已被修订|已被修正)］)?|" +
+                            "((（修正）)|(（修订）))(［(失效|已被修订|已被修正)］)?|(［(失效|已被修订|已被修正)］)|" +
+                            "(（\\d{1,4}年(\\d{1,2}月)?(\\d{1,2}(日|号)?)?）)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+                    Matcher matcherTitle = titleRemoveAlter.matcher(title);
+                    while (matcherTitle.find()){
+                        if(matcherTitle.end() == title.length()){
+                            title = title.substring(0, matcherTitle.start());
+                            LOGGER.info("cleanTitle title change: " + title);
+                            cleanlaw.put("title", title);
+                            mongoDB.updateDocument(this.cleanCollection, cleanlaw);
+                        }
+                    }
+                }
+                num++;
+                LOGGER.info("cleanTitle num: " + num);
+            }
+        } catch (Exception e) {
+            LOGGER.error("cleanTitle find error: " + e.getMessage());
+        } finally {
+            cursor.close();
+        }
+        LOGGER.info("Done do cleanTitle...");
     }
 }
