@@ -53,7 +53,8 @@ public class CreateBetweenLawRelationShip {
                 }
                 long endTime = System.currentTimeMillis();
                 num++;
-                LOGGER.info("Create law num:" + num + " cost time:" + (endTime - startTime));
+                LOGGER.info("Create law num:" + num + " cost time:" + (endTime - startTime) +
+                        "From collection:" + this.fromCollection.getNamespace().getCollectionName() + " To Collection: " + this.toCollection.getNamespace().getCollectionName());
             }
         } catch (Exception e) {
             LOGGER.info("Create law err: " + e);
@@ -314,7 +315,7 @@ public class CreateBetweenLawRelationShip {
                 Document findDocumentLaw = cursor.next();
                 String implement_date = findDocumentLaw.getString("implement_date");
                 //找到实施时间比当前法律发布时间最大小的一个
-                if (implement_date == null || implement_date.isEmpty() || release_date.compareTo(implement_date) >= 0) {
+                if (implement_date == null || implement_date.isEmpty() || release_date.compareTo(implement_date) > 0) {
                     String lawId = findDocumentLaw.getObjectId("_id").toString();
                     //如果法律名后没有条
                     if (relationShipLaw.getTiaoName() == null || relationShipLaw.getTiaoName().isEmpty()) {
@@ -375,7 +376,7 @@ public class CreateBetweenLawRelationShip {
                 String findDocumentLaw_relase_date = findDocumentLaw.getString("release_date");
                 Date findDocumentLawDate = DateParse.getStringToDate(findDocumentLaw_relase_date);
                 if (theLawReleasDate == null || theLawReleasDate.isEmpty()) {
-                    if (release_date.compareTo(findDocumentLaw_relase_date) >= 0) {
+                    if (release_date.compareTo(findDocumentLaw_relase_date) > 0) {
                         String lawId = findDocumentLaw.getObjectId("_id").toString();
                         graph.createRelationshipLawAuto(id, lawId, relationShipTag);
                         break;
