@@ -151,7 +151,7 @@ public class PkulawCleanContent {
                     Document cleanlaw = iterablesclean.first();
                     String title = cleanlaw.getString("title").trim();
                     LOGGER.info("cleanTitle title: " + title);
-                    Pattern titleRemoveAlter = Pattern.compile("(\\(\\d{1,4}((年)?修(正|订)+)?\\))|(\\[失效\\])", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+                    Pattern titleRemoveAlter = Pattern.compile("(\\(\\d{1,4}((年)?修(正|订|改)+)?\\))(\\[失效\\])?|(\\[失效\\])", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
                     Matcher matcherTitle = titleRemoveAlter.matcher(title);
                     while (matcherTitle.find()){
                         if(matcherTitle.end() == title.length()){
