@@ -8,6 +8,7 @@ import mongo.MongoServer;
 import neo4jDriver.Neo4jDriver;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Session;
 import util.NumberChange;
@@ -24,10 +25,21 @@ import java.util.List;
  */
 public class Graph {
     private static Logger LOGGER = MyLogger.getMyLogger(Graph.class);
+    private MongoCollection<Document> sourceCollection;
     private Driver driver;
 
     public Graph() {
         this.driver = Neo4jDriver.getInstance().getDriver();
+    }
+
+    public Graph(String sourceCollectionName) {
+        MongoServer mongoServer = MongoServer.getMongoDB();
+        this.sourceCollection = mongoServer.getCollection(sourceCollectionName);
+        this.driver = Neo4jDriver.getInstance().getDriver();
+    }
+
+    public MongoCollection<Document> getSourceCollection() {
+        return sourceCollection;
     }
 
     public boolean createNode(Document law, Session session) {
@@ -64,7 +76,7 @@ public class Graph {
             LOGGER.info("create node done: " + law.getString("title"));
             return true;
         } catch (Exception e) {
-            LOGGER.info("create node in neo4j err: " + e);
+            LOGGER.error("create node in neo4j err: " + e);
             return false;
         }
     }
@@ -116,7 +128,7 @@ public class Graph {
             LOGGER.info("create first layer child node done: " + law.getString("title"));
             return true;
         } catch (Exception e) {
-            LOGGER.info("create first layer child node in neo4j err: " + e);
+            LOGGER.error("create first layer child node in neo4j err: " + e);
             return false;
         }
     }
@@ -160,15 +172,13 @@ public class Graph {
             LOGGER.info("create relationShip done: " + law.getString("title"));
             return true;
         } catch (Exception e) {
-            LOGGER.info("create child node relationShip in neo4j err: " + e);
+            LOGGER.error("create child node relationShip in neo4j err: " + e);
             return false;
         }
     }
 
-    public void importDataToGraph(String collectionName) {
-        MongoServer mongoServer = MongoServer.getMongoDB();
-        MongoCollection<Document> collection = mongoServer.getCollection(collectionName);
-        FindIterable<Document> iterables = collection.find().noCursorTimeout(true).batchSize(10000);
+    public void importDataToGraph() {
+        FindIterable<Document> iterables = this.sourceCollection.find().noCursorTimeout(true).batchSize(10000);
         MongoCursor<Document> cursor = iterables.iterator();
         Session session = driver.session();
         int num = 0;
@@ -184,7 +194,7 @@ public class Graph {
                 LOGGER.info("import law num:" + num + " cost time:" + (endTime - startTime));
             }
         } catch (Exception e) {
-            LOGGER.info("read data from mongodb err: " + e);
+            LOGGER.error("read data from mongodb err: " + e);
         } finally {
             session.close();
             driver.close();
@@ -192,10 +202,88 @@ public class Graph {
         }
     }
 
-    public boolean deleteNodeById(String id, Session session) {
-        StringBuilder deleteNodeCyphe = new StringBuilder("MATCH (a:key)-[r:KEY_WORD]-(b:JAVA) where ID(a) = 47 and ID(b) = 48 DETACH delete a,b,r ");
-        deleteNodeCyphe.append("MATCH (a:law)");
-        return false;
+    public void deleteLawNodeSimple() {
+        FindIterable<Document> iterables = this.sourceCollection.find().noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        Session session = driver.session();
+        int num = 0;
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                long startTime = System.currentTimeMillis();
+                this.deleteNode(law, session);
+                long endTime = System.currentTimeMillis();
+                num++;
+                LOGGER.info("import law num:" + num + " cost time:" + (endTime - startTime));
+            }
+        } catch (Exception e) {
+            LOGGER.error("read data from mongodb err: " + e);
+        } finally {
+            session.close();
+            driver.close();
+            cursor.close();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public boolean deleteNode(Document law, Session session) {
+        LOGGER.info("deleteNode begin...");
+        String lawId = law.getObjectId("_id").toString();
+        List<Document> documentList = (List<Document>) law.get("articles");
+        try {
+            if (documentList.size() > 1 && !documentList.get(0).getString("name").isEmpty()) {
+                LOGGER.info("deleteNode article...");
+                for (int i = 0; i < documentList.size(); i++) {
+                    //创建法律和法条
+                    String articleId = law.getObjectId("_id").toString() + "-" + i;
+                    //创建法条款项关系
+                    List<String> para = (List<String>) documentList.get(i).get("paragraph");
+                    if (para.size() > 1) {
+                        LOGGER.info("deleteNode paragraph...");
+                        for (int j = 0; j < para.size(); j++) {
+                            String paragraphId = articleId + "-" + j;
+                            StringBuilder deleteNodeCyphe = new StringBuilder("MATCH (a:article)-[r]-(p:paragraph) where a.id = '");
+                            deleteNodeCyphe.append(articleId).append("'");
+                            deleteNodeCyphe.append(" and ").append("p.id = '").append(paragraphId).append("'");
+                            deleteNodeCyphe.append(" DETACH delete p,r");
+                            session.run(deleteNodeCyphe.toString());
+                        }
+                    }
+                    StringBuilder deleteNodeCyphe = new StringBuilder("MATCH (n:law)-[r]-(a:article) where n.id = '");
+                    deleteNodeCyphe.append(lawId).append("'");
+                    deleteNodeCyphe.append(" and ").append("a.id = '").append(articleId).append("'");
+                    deleteNodeCyphe.append(" DETACH delete a,r");
+                    session.run(deleteNodeCyphe.toString());
+                }
+            }
+            StringBuilder deleteNodeCyphe = new StringBuilder("MATCH (n:law) where n.id = '");
+            deleteNodeCyphe.append(lawId).append("'").append(" delete n");
+            session.run(deleteNodeCyphe.toString());
+            return true;
+        } catch (Exception e) {
+            LOGGER.error("deleteNode err: " + e);
+            return false;
+        } finally {
+            LOGGER.info("deleteNode end...");
+        }
+    }
+
+    public boolean deleteNodeById(String id) {
+        FindIterable<Document> iterables = this.sourceCollection.find(new Document("_id", new ObjectId(id))).noCursorTimeout(true).batchSize(10000);
+        Session session = driver.session();
+        try {
+            if (iterables.first() != null) {
+                Document law = iterables.first();
+                LOGGER.info("delete law title: " + law.getString("title"));
+                this.deleteNode(law, session);
+            }
+            return true;
+        } catch (Exception e) {
+            LOGGER.error("deleteNodeById err: " + e);
+            return false;
+        } finally {
+            session.close();
+        }
     }
 
     //法律-法律

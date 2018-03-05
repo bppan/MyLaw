@@ -10,7 +10,7 @@ package graph;
  */
 public class MainCreateGraph {
     public static void main(String[] args) {
-        Graph graph = new Graph();
-        graph.importDataToGraph("law3");
+        Graph graph = new Graph("law3");
+        graph.importDataToGraph();
     }
 }
