@@ -45,7 +45,7 @@ public class CreateBetweenLawRelationShip {
                 String url = fromLaw.getString("url");
                 LOGGER.info("create current url: " + url);
                 long startTime = System.currentTimeMillis();
-                FindIterable<Document> findIterable = this.toCollection.find(new Document("url", "http://www.pkulaw.cn/fulltext_form.aspx?Db=chl&Gid=1ab3c8ada302cb6e&keyword=&EncodingName=&Search_Mode=accurate&Search_IsTitle=0")).limit(1).noCursorTimeout(true);
+                FindIterable<Document> findIterable = this.toCollection.find(new Document("url", url)).limit(1).noCursorTimeout(true);
                 if (findIterable.first() != null) {
                     Document toLaw = findIterable.first();
                     //遍历到在库中的law，开始穿件该law对应的关系
@@ -55,7 +55,6 @@ public class CreateBetweenLawRelationShip {
                 num++;
                 LOGGER.info("Create law num:" + num + " cost time:" + (endTime - startTime) +
                         "From collection:" + this.fromCollection.getNamespace().getCollectionName() + " To Collection: " + this.toCollection.getNamespace().getCollectionName());
-                break;
             }
         } catch (Exception e) {
             LOGGER.info("Create law err: " + e);
