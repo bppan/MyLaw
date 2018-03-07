@@ -45,7 +45,7 @@ public class CreateBetweenLawRelationShip {
                 String url = fromLaw.getString("url");
                 LOGGER.info("create current url: " + url);
                 long startTime = System.currentTimeMillis();
-                FindIterable<Document> findIterable = this.toCollection.find(new Document("url", url)).limit(1).noCursorTimeout(true);
+                FindIterable<Document> findIterable = this.toCollection.find(new Document("url", "http://www.pkulaw.cn/fulltext_form.aspx?Db=chl&Gid=1ab3c8ada302cb6e&keyword=&EncodingName=&Search_Mode=accurate&Search_IsTitle=0")).limit(1).noCursorTimeout(true);
                 if (findIterable.first() != null) {
                     Document toLaw = findIterable.first();
                     //遍历到在库中的law，开始穿件该law对应的关系
@@ -55,6 +55,7 @@ public class CreateBetweenLawRelationShip {
                 num++;
                 LOGGER.info("Create law num:" + num + " cost time:" + (endTime - startTime) +
                         "From collection:" + this.fromCollection.getNamespace().getCollectionName() + " To Collection: " + this.toCollection.getNamespace().getCollectionName());
+                break;
             }
         } catch (Exception e) {
             LOGGER.info("Create law err: " + e);
@@ -237,7 +238,6 @@ public class CreateBetweenLawRelationShip {
         if (subSentence.length() < 1 || subSentence.charAt(0) != '《') {
             return;
         }
-
         boolean startName = false;
         StringBuilder name = new StringBuilder();
         for (int i = 0; i < subSentence.length(); ) {
@@ -258,42 +258,68 @@ public class CreateBetweenLawRelationShip {
             if (word == '》') {
                 startName = false;
                 RelationShipLaw relationShipLaw = new RelationShipLaw(name.toString(), null, null, null);
-                //查看法律名后是否还跟有哪一条哪一款哪一项详细细信息
-                String reg_1 = "(第[零一二三四五六七八九十百千万]+条)+(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
-                Pattern regEx_zhang = Pattern.compile(reg_1, Pattern.CASE_INSENSITIVE);
-                Matcher m_zhang = regEx_zhang.matcher(subSentence.substring(i + 1));
-                if (m_zhang.find()) {
-                    String tiao = m_zhang.group(1);
-                    String tiaoAdd = m_zhang.group(2);
-                    String kuan = m_zhang.group(3);
-                    String xiang = m_zhang.group(4);
-                    if (tiaoAdd != null) {
-                        tiao += tiaoAdd;
-                    }
-                    relationShipLaw.setTiaoName(tiao);
-                    relationShipLaw.setKuanName(kuan);
-                    relationShipLaw.setXiangName(xiang);
-                }
-                findLawNameFromDbAndCreateRelationFront(law, id, relationShipTag, relationShipLaw);
-                name.delete(0, name.length());
-                LOGGER.info("findLawNameFromDbAndCreateRelationFront done");
+                i++;
                 //判断后面是否有小括号赘述,如果有直接跳过小括号
                 String kuaoHao = "（(.*?)）";//定义括号
                 Pattern regEx_kuaoHao = Pattern.compile(kuaoHao, Pattern.CASE_INSENSITIVE);
-                Matcher m_kuaoHao = regEx_kuaoHao.matcher(subSentence.substring(i + 1));
+                Matcher m_kuaoHao = regEx_kuaoHao.matcher(subSentence.substring(i));
                 if (m_kuaoHao.find() && m_kuaoHao.start() == 0) {
                     i += m_kuaoHao.group(0).length();
                 }
-                i++;
+                if (i >= subSentence.length()) {
+                    findLawNameFromDbAndCreateRelationFront(law, id, relationShipTag, relationShipLaw);
+                    LOGGER.info("findLawNameFromDbAndCreateRelationFront title:" + name.toString());
+                    name.delete(0, name.length());
+                    continue;
+                }
+                //查看法律名后是否还跟有哪一条哪一款哪一项详细细信息
+                //由于可能存在并列后关系，因此此部分应该循环查找
+                while (i < subSentence.length()) {
+                    String reg_1 = "(第[零一二三四五六七八九十百千万]+条)+(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+                    Pattern regEx_tiao = Pattern.compile(reg_1, Pattern.CASE_INSENSITIVE);
+                    Matcher m_tiao = regEx_tiao.matcher(subSentence.substring(i));
+                    if (m_tiao.find() && m_tiao.start() == 0) {
+                        String tiao = m_tiao.group(1);
+                        String tiaoAdd = m_tiao.group(2);
+                        String kuan = m_tiao.group(3);
+                        String xiang = m_tiao.group(4);
+                        if (tiaoAdd != null) {
+                            tiao += tiaoAdd;
+                        }
+                        relationShipLaw.setTiaoName(tiao);
+                        relationShipLaw.setKuanName(kuan);
+                        relationShipLaw.setXiangName(xiang);
+                        findLawNameFromDbAndCreateRelationFront(law, id, relationShipTag, relationShipLaw);
+                        LOGGER.info("findLawNameFromDbAndCreateRelationFront title: " + name.toString() + " tiao: " + m_tiao.group(0));
+                        i += m_tiao.group(0).length();
+                        if (i < subSentence.length()) {
+                            if (subSentence.charAt(i) == '和' || subSentence.charAt(i) == '及' || subSentence.charAt(i) == '、') {
+                                Matcher m_tiao_continue = regEx_tiao.matcher(subSentence.substring(i + 1));
+                                if (m_tiao_continue.find() && m_tiao_continue.start() == 0) {
+                                    i++;
+                                    continue;
+                                }
+                            }
+                        }
+                        break;
+                    } else {
+                        findLawNameFromDbAndCreateRelationFront(law, id, relationShipTag, relationShipLaw);
+                        break;
+                    }
+                }
+                name.delete(0, name.length());
                 //向后看一位如果没有继续词，直接退出
                 if (i < subSentence.length()) {
+                    if (subSentence.charAt(i) == '《') {
+                        continue;
+                    }
                     if (subSentence.charAt(i) == '和' || subSentence.charAt(i) == '及' || subSentence.charAt(i) == '、') {
                         i++;
+                        continue;
                     } else {
                         break;
                     }
                 }
-                continue;
             }
             if (word == '。' || word == '，') {
                 break;
@@ -304,7 +330,7 @@ public class CreateBetweenLawRelationShip {
 
     @SuppressWarnings("unchecked")
     public void findLawNameFromDbAndCreateRelationFront(Document law, String id, String relationShipTag, RelationShipLaw relationShipLaw) {
-        LOGGER.info("find name is: " + relationShipLaw.getLawName());
+        LOGGER.info("find name is: " + relationShipLaw.getLawName() + " find tiao is: " + relationShipLaw.getTiaoName() + " find kuan is: " + relationShipLaw.getKuanName());
         String release_date = law.getString("release_date");
         //根据文本中的检索的法律名查找法律库，找到实施时间比当前法律发布时间最大小的一个
         FindIterable<Document> findIterable = this.toCollection.find(new Document("title", relationShipLaw.getLawName())).sort(new Document("release_date", -1)).noCursorTimeout(true);
