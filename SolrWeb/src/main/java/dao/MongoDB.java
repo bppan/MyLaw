@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,5 +81,24 @@ public class MongoDB {
             return null;
         }
     }
+
+    public List<Document>getDocumentByName(String name){
+        List<Document> reusltDocuments = new ArrayList<>();
+        FindIterable<Document> iterables = getMongoCollection().find(new Document("title", name)).sort(new Document("getTime", -1)).noCursorTimeout(true).batchSize(10000);
+        MongoCursor<Document> cursor = iterables.iterator();
+        try {
+            while (cursor.hasNext()) {
+                Document law = cursor.next();
+                reusltDocuments.add(law);
+            }
+        }catch (Exception e){
+            LOGGER.error("getDocumentByName err:" + e);
+            return reusltDocuments;
+        }finally {
+            cursor.close();
+        }
+        return reusltDocuments;
+    }
+
 
 }

@@ -1,8 +1,13 @@
 package service;
 
+import dao.MongoDB;
 import log.MyLogger;
+import model.Article;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description：
@@ -14,13 +19,19 @@ import org.bson.Document;
  */
 public class LawService {
     private static Logger LOGGER = MyLogger.getMyLogger(LawService.class);
-    private Document law;
+    private static MongoDB mongoDB = MongoDB.getMongoDB();
 
-    public LawService(Document law) {
-        this.law = law;
+    public Document getLawDocument(String lawDoucumentId) {
+        Document law = null;
+        try {
+             law = mongoDB.getDocumentById(lawDoucumentId);
+        }catch (Exception e){
+            LOGGER.error("WebServer get document from db error: "+ e);
+        }
+        return law;
     }
 
-    public String getTitleHtml() {
+    public String getTitleHtml(Document law) {
         StringBuilder titleHtml = new StringBuilder();
         if (law.getString("department") != null && !law.getString("department").trim().isEmpty()) {
             titleHtml.append("<p>").append("【发布部门】 ").append(law.getString("department").trim()).append("</p>");
@@ -48,7 +59,7 @@ public class LawService {
         return titleHtml.toString();
     }
 
-    public String getContentHtml() {
+    public String getContentHtml(Document law) {
         String contentHtml = "";
         try {
             contentHtml = law.getString("contentHtml").trim();
@@ -57,4 +68,33 @@ public class LawService {
         }
         return contentHtml;
     }
+
+    @SuppressWarnings("unchecked")
+    public List<Article> getArtcileContent(String lawName, String lawTiaoName){
+        List<Document> lawList = mongoDB.getDocumentByName(lawName);
+        List<Article> resultList = new ArrayList<>();
+        for (Document law: lawList) {
+            List<Document> documentList = (List<Document>) law.get("articles");
+            for(int i = 0; i < documentList.size(); i++){
+                Document article = documentList.get(i);
+                String articleId = law.getObjectId("_id").toString() + "-" + i;
+                if(article.getString("name").trim().equals(lawTiaoName)){
+                    Article articleReturn = new Article();
+                    articleReturn.setProperty(law);
+                    articleReturn.setId(articleId);
+                    articleReturn.setName(lawTiaoName);
+
+                    StringBuilder articleConent = new StringBuilder("");
+                    List<String> paraArray = (List<String>) article.get("paragraph");
+                    for (String para:paraArray) {
+                        articleConent.append(para);
+                    }
+                    articleReturn.setArticleContent(articleConent.toString());
+                    resultList.add(articleReturn);
+                }
+            }
+        }
+        return resultList;
+    }
+
 }
