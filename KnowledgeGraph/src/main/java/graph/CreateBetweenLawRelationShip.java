@@ -10,6 +10,7 @@ import org.bson.Document;
 import util.DateParse;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 public class CreateBetweenLawRelationShip {
     private static MongoServer mongoServer = MongoServer.getMongoDB();
     private static Logger LOGGER = MyLogger.getMyLogger(CreateBetweenLawRelationShip.class);
-    private static String[] relationFront = {"依据", "根据", "依照", "按照", "适用", "符合"};
+    private static String[] relationFront = {"依据", "根据", "依照", "按照", "适用", "符合", "引用"};
     private static String[] relationBehind = {"同时废止"};
     private MongoCollection<Document> fromCollection;
     private MongoCollection<Document> toCollection;
@@ -101,13 +102,16 @@ public class CreateBetweenLawRelationShip {
         for (String sentence : sentenceArray) {
             //根据前置关系词遍历关系词是否在该句子中
             LOGGER.info("begin search relationFront...");
+            HashSet<Integer> endRelationshipIndex = new HashSet<>();
             for (String relationShip : relationFront) {
                 Pattern pattern_relation = Pattern.compile(relationShip, Pattern.CASE_INSENSITIVE);
                 Matcher m_relation = pattern_relation.matcher(sentence);
                 while (m_relation.find()) {
-                    LOGGER.info("find relationFront: " + relationShip + " startIndex:" + m_relation.start());
-                    //找到关键词后，直接开始寻找后面对应的法律法规
-                    findBackLawName(id, m_relation.end(), sentence, relationShip, law);
+                    if(endRelationshipIndex.add(m_relation.end())){
+                        LOGGER.info("find relationFront: " + relationShip + " startIndex:" + m_relation.start());
+                        //找到关键词后，直接开始寻找后面对应的法律法规
+                        findBackLawName(id, m_relation.end(), sentence, relationShip, law);
+                    }
                 }
             }
             LOGGER.info("done search relationFront...");
