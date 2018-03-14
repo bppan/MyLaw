@@ -57,7 +57,6 @@ public class CreateBetweenLawRelationShip {
                 num++;
                 LOGGER.info("Create law num:" + num + " cost time:" + (endTime - startTime) +
                         "From collection:" + this.fromCollection.getNamespace().getCollectionName() + " To Collection: " + this.toCollection.getNamespace().getCollectionName());
-                break;
             }
         } catch (Exception e) {
             LOGGER.info("Create law err: " + e);
@@ -101,15 +100,15 @@ public class CreateBetweenLawRelationShip {
     public void createFromAndToLawRelationShip(String id, String lawSentence, Document law) {
         //将当前款进行换行分割
         String[] sentenceArray = lawSentence.split("\n");
+        HashSet<Integer> relationshipIndex = new HashSet<>();
         for (String sentence : sentenceArray) {
             //根据前置关系词遍历关系词是否在该句子中
             LOGGER.info("begin search relationFront...");
-            HashSet<Integer> endRelationshipIndex = new HashSet<>();
             for (String relationShip : relationFront) {
                 Pattern pattern_relation = Pattern.compile(relationShip, Pattern.CASE_INSENSITIVE);
                 Matcher m_relation = pattern_relation.matcher(sentence);
                 while (m_relation.find()) {
-                    if (endRelationshipIndex.add(m_relation.end())) {
+                    if (relationshipIndex.add(m_relation.end())) {
                         LOGGER.info("find relationFront: " + relationShip + " startIndex:" + m_relation.start());
                         //找到关键词后，直接开始寻找后面对应的法律法规
                         findBackLawName(id, m_relation.end(), sentence, relationShip, law);
@@ -123,11 +122,15 @@ public class CreateBetweenLawRelationShip {
                 Pattern pattern_relation = Pattern.compile(relationShip, Pattern.CASE_INSENSITIVE);
                 Matcher m_relation = pattern_relation.matcher(sentence);
                 while (m_relation.find()) {
-                    //找到关键词后，直接开始寻找后面对应的法律法规
-                    LOGGER.info("find relationBehind: " + relationShip);
-                    findFrontLawName(id, m_relation.start(), sentence, relationShip, law);
+                    if (relationshipIndex.add(m_relation.end())) {
+                        //找到关键词后，直接开始寻找后面对应的法律法规
+                        LOGGER.info("find relationBehind: " + relationShip);
+                        findFrontLawName(id, m_relation.start(), sentence, relationShip, law);
+                    }
                 }
             }
+            //清空关系词位置信息
+            relationshipIndex.clear();
             LOGGER.info("done relationBehind...");
         }
         LOGGER.info("done createFromAndToLawRelationShip");
