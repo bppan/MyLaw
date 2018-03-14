@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 public class CreateBetweenLawRelationShip {
     private static MongoServer mongoServer = MongoServer.getMongoDB();
     private static Logger LOGGER = MyLogger.getMyLogger(CreateBetweenLawRelationShip.class);
-    private static String[] relationFront = {"依据", "根据", "依照", "按照", "适用", "符合", "引用"};
+    private static String[] relationFront = {"依据", "根据", "依照", "按照", "不适用", "适用", "不符合", "符合", "引用"};
     private static String[] relationBehind = {"同时废止"};
     private MongoCollection<Document> fromCollection;
     private MongoCollection<Document> toCollection;
@@ -48,6 +48,7 @@ public class CreateBetweenLawRelationShip {
                 long startTime = System.currentTimeMillis();
                 FindIterable<Document> findIterable = this.toCollection.find(new Document("url", url)).limit(1).noCursorTimeout(true);
                 if (findIterable.first() != null) {
+                    System.out.println("tt");
                     Document toLaw = findIterable.first();
                     //遍历到在库中的law，开始穿件该law对应的关系
                     createLawTiaoRelationShipBetweenAndLaw(toLaw);
@@ -56,6 +57,7 @@ public class CreateBetweenLawRelationShip {
                 num++;
                 LOGGER.info("Create law num:" + num + " cost time:" + (endTime - startTime) +
                         "From collection:" + this.fromCollection.getNamespace().getCollectionName() + " To Collection: " + this.toCollection.getNamespace().getCollectionName());
+                break;
             }
         } catch (Exception e) {
             LOGGER.info("Create law err: " + e);
@@ -107,7 +109,7 @@ public class CreateBetweenLawRelationShip {
                 Pattern pattern_relation = Pattern.compile(relationShip, Pattern.CASE_INSENSITIVE);
                 Matcher m_relation = pattern_relation.matcher(sentence);
                 while (m_relation.find()) {
-                    if(endRelationshipIndex.add(m_relation.end())){
+                    if (endRelationshipIndex.add(m_relation.end())) {
                         LOGGER.info("find relationFront: " + relationShip + " startIndex:" + m_relation.start());
                         //找到关键词后，直接开始寻找后面对应的法律法规
                         findBackLawName(id, m_relation.end(), sentence, relationShip, law);
@@ -278,22 +280,34 @@ public class CreateBetweenLawRelationShip {
                 //查看法律名后是否还跟有哪一条哪一款哪一项详细细信息
                 //由于可能存在并列后关系，因此此部分应该循环查找
                 while (i < subSentence.length()) {
-                    String reg_1 = "(第[零一二三四五六七八九十百千万]+条)+(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+                    String reg_1 = "(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
                     Pattern regEx_tiao = Pattern.compile(reg_1, Pattern.CASE_INSENSITIVE);
                     Matcher m_tiao = regEx_tiao.matcher(subSentence.substring(i));
                     if (m_tiao.find() && m_tiao.start() == 0) {
                         String tiao = m_tiao.group(1);
+                        System.out.println("tiao: " + tiao);
                         String tiaoAdd = m_tiao.group(2);
+                        System.out.println("tiaoAdd: " + tiaoAdd);
                         String kuan = m_tiao.group(3);
+                        System.out.println("kuan: " + kuan);
                         String xiang = m_tiao.group(4);
+                        System.out.println("xiang: " + xiang);
                         if (tiaoAdd != null) {
                             tiao += tiaoAdd;
                         }
-                        relationShipLaw.setTiaoName(tiao);
-                        relationShipLaw.setKuanName(kuan);
-                        relationShipLaw.setXiangName(xiang);
+                        if (tiao != null) {
+                            relationShipLaw.setTiaoName(tiao);
+                            relationShipLaw.setKuanName(kuan);
+                            relationShipLaw.setXiangName(xiang);
+                        }
+                        if (tiao == null && kuan != null) {
+                            relationShipLaw.setKuanName(kuan);
+                            relationShipLaw.setXiangName(xiang);
+                        }
+                        if (tiao == null && kuan == null) {
+                            relationShipLaw.setXiangName(xiang);
+                        }
                         findLawNameFromDbAndCreateRelationFront(law, id, relationShipTag, relationShipLaw);
-                        LOGGER.info("findLawNameFromDbAndCreateRelationFront title: " + name.toString() + " tiao: " + m_tiao.group(0));
                         i += m_tiao.group(0).length();
                         if (i < subSentence.length()) {
                             if (subSentence.charAt(i) == '和' || subSentence.charAt(i) == '及' || subSentence.charAt(i) == '、') {
@@ -333,7 +347,9 @@ public class CreateBetweenLawRelationShip {
 
     @SuppressWarnings("unchecked")
     public void findLawNameFromDbAndCreateRelationFront(Document law, String id, String relationShipTag, RelationShipLaw relationShipLaw) {
-        LOGGER.info("find name is: " + relationShipLaw.getLawName() + " find tiao is: " + relationShipLaw.getTiaoName() + " find kuan is: " + relationShipLaw.getKuanName());
+        LOGGER.info("find name is: " + relationShipLaw.getLawName() + " find tiao is: " + relationShipLaw.getTiaoName() + " find kuan is: " +
+                relationShipLaw.getKuanName() + " xiang is:" + relationShipLaw.getXiangName());
+        String relationshipDetail = relationShipLaw.getTiaoName() + relationShipLaw.getKuanName() + relationShipLaw.getXiangName();
         String release_date = law.getString("release_date");
         //根据文本中的检索的法律名查找法律库，找到实施时间比当前法律发布时间最大小的一个
         FindIterable<Document> findIterable = this.toCollection.find(new Document("title", relationShipLaw.getLawName())).sort(new Document("release_date", -1)).noCursorTimeout(true);
@@ -348,7 +364,7 @@ public class CreateBetweenLawRelationShip {
                     String lawId = findDocumentLaw.getObjectId("_id").toString();
                     //如果法律名后没有条
                     if (relationShipLaw.getTiaoName() == null || relationShipLaw.getTiaoName().isEmpty()) {
-                        graph.createRelationshipLawAuto(id, lawId, relationShipTag);
+                        graph.createRelationshipLawAuto(id, lawId, relationShipTag, relationshipDetail);
                         return;
                     }
                     //如果法律有条，后面没有款信息
@@ -358,7 +374,7 @@ public class CreateBetweenLawRelationShip {
                         for (int i = 0; i < documentList.size(); i++) {
                             if (documentList.get(i).getString("name").trim().equals(tiaoName)) {
                                 String articleId = lawId + "-" + i;
-                                graph.createRelationshipLawAuto(id, articleId, relationShipTag);
+                                graph.createRelationshipLawAuto(id, articleId, relationShipTag, relationshipDetail);
                                 break;
                             }
                         }
@@ -374,9 +390,9 @@ public class CreateBetweenLawRelationShip {
                             List<String> para = (List<String>) documentList.get(i).get("paragraph");
                             if (para.size() > kuanNum) {
                                 String paraId = articleId + "-" + kuanNum;
-                                graph.createRelationshipLawAuto(id, paraId, relationShipTag);
+                                graph.createRelationshipLawAuto(id, paraId, relationShipTag, relationshipDetail);
                             } else {
-                                graph.createRelationshipLawAuto(id, articleId, relationShipTag);
+                                graph.createRelationshipLawAuto(id, articleId, relationShipTag, relationshipDetail);
                             }
                             break;
                         }
@@ -393,6 +409,7 @@ public class CreateBetweenLawRelationShip {
 
     public void findLawNameFromDbAndCreateRelationBack(Document law, String id, String relationShipTag, RelationShipLaw relationShipLaw) {
         String release_date = law.getString("release_date");
+        String relationshipDetail = relationShipLaw.getTiaoName() + relationShipLaw.getKuanName() + relationShipLaw.getXiangName();
         LOGGER.info("find name is: " + relationShipLaw.getLawName() + " releaseTime: " + relationShipLaw.getReleaseTime());
         String theLawReleasDate = relationShipLaw.getReleaseTime();
         //根据文本中的检索的法律名查找法律库，找到实施时间比当前法律发布时间最大小的一个
@@ -407,7 +424,7 @@ public class CreateBetweenLawRelationShip {
                 if (theLawReleasDate == null || theLawReleasDate.isEmpty()) {
                     if (release_date.compareTo(findDocumentLaw_relase_date) > 0) {
                         String lawId = findDocumentLaw.getObjectId("_id").toString();
-                        graph.createRelationshipLawAuto(id, lawId, relationShipTag);
+                        graph.createRelationshipLawAuto(id, lawId, relationShipTag, relationshipDetail);
                         break;
                     }
                     continue;
@@ -418,7 +435,7 @@ public class CreateBetweenLawRelationShip {
                             DateParse.getMonthOfYear(documentDate) == DateParse.getMonthOfYear(findDocumentLawDate) &&
                             DateParse.getDayofMonth(documentDate) == DateParse.getDayofMonth(findDocumentLawDate)) {
                         String lawId = findDocumentLaw.getObjectId("_id").toString();
-                        graph.createRelationshipLawAuto(id, lawId, relationShipTag);
+                        graph.createRelationshipLawAuto(id, lawId, relationShipTag, relationshipDetail);
                     }
                     continue;
                 }
@@ -427,7 +444,7 @@ public class CreateBetweenLawRelationShip {
                     if (DateParse.getYear(documentDate) == DateParse.getYear(findDocumentLawDate) &&
                             DateParse.getMonthOfYear(documentDate) == DateParse.getMonthOfYear(findDocumentLawDate)) {
                         String lawId = findDocumentLaw.getObjectId("_id").toString();
-                        graph.createRelationshipLawAuto(id, lawId, relationShipTag);
+                        graph.createRelationshipLawAuto(id, lawId, relationShipTag, relationshipDetail);
                     }
                     continue;
                 }
@@ -435,7 +452,7 @@ public class CreateBetweenLawRelationShip {
                     Date documentDate = DateParse.getStringToDate(theLawReleasDate.trim());
                     if (DateParse.getYear(documentDate) == DateParse.getYear(findDocumentLawDate)) {
                         String lawId = findDocumentLaw.getObjectId("_id").toString();
-                        graph.createRelationshipLawAuto(id, lawId, relationShipTag);
+                        graph.createRelationshipLawAuto(id, lawId, relationShipTag, relationshipDetail);
                     }
                 }
             }

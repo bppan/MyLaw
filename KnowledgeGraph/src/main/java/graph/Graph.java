@@ -287,7 +287,7 @@ public class Graph {
     }
 
     //法律-法律
-    public void createRelationshipLawToLaw(String formId, String toId, String relationShipTag) {
+    public void createRelationshipLawToLaw(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipLawToLaw begin");
         Session session = driver.session();
         try {
@@ -295,7 +295,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(m:law {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (n)").append("-[:").append(relationShipTag).append("]").append("->(m)");
+            createNodeChildRelationshipcyphe.append("MERGE (n)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(m)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipLawToLaw err: " + e);
@@ -306,7 +306,7 @@ public class Graph {
     }
 
     //法律-条
-    public void createRelationshipLawToTiao(String formId, String toId, String relationShipTag) {
+    public void createRelationshipLawToTiao(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipLawToTiao begin");
         Session session = driver.session();
         try {
@@ -314,7 +314,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(a:article {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (n)").append("-[:").append(relationShipTag).append("]").append("->(a)");
+            createNodeChildRelationshipcyphe.append("MERGE (n)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(a)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipLawToTiao err: " + e);
@@ -326,7 +326,7 @@ public class Graph {
     }
 
     //法律-款
-    public void createRelationshipLawToKuan(String formId, String toId, String relationShipTag) {
+    public void createRelationshipLawToKuan(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipLawToKuan begin");
         Session session = driver.session();
         try {
@@ -334,7 +334,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(p:paragraph {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (n)").append("-[:").append(relationShipTag).append("]").append("->(p)");
+            createNodeChildRelationshipcyphe.append("MERGE (n)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(p)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipLawToKuan err: " + e);
@@ -346,7 +346,7 @@ public class Graph {
     }
 
     //条-法律
-    public void createRelationshipTiaoToLaw(String formId, String toId, String relationShipTag) {
+    public void createRelationshipTiaoToLaw(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipTiaoToLaw begin");
         Session session = driver.session();
         try {
@@ -354,7 +354,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(n:law {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append(relationShipTag).append("]").append("->(n)");
+            createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(n)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipTiaoToLaw err: " + e);
@@ -365,7 +365,7 @@ public class Graph {
     }
 
     //条-条
-    public void createRelationshipTiaoToTiao(String formId, String toId, String relationShipTag) {
+    public void createRelationshipTiaoToTiao(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipTiaoToTiao begin");
         Session session = driver.session();
         try {
@@ -373,7 +373,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(b:article {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append(relationShipTag).append("]").append("->(b)");
+            createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(b)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipTiaoToTiao err: " + e);
@@ -384,7 +384,7 @@ public class Graph {
     }
 
     //条-款
-    public void createRelationshipTiaoToPar(String formId, String toId, String relationShipTag) {
+    public void createRelationshipTiaoToPar(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipTiaoToPar begin");
         Session session = driver.session();
         try {
@@ -392,7 +392,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(p:paragraph {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append(relationShipTag).append("]").append("->(p)");
+            createNodeChildRelationshipcyphe.append("MERGE (a)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(p)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipTiaoToPar err: " + e);
@@ -403,7 +403,7 @@ public class Graph {
     }
 
     //款-法律
-    public void createRelationshipParToLaw(String formId, String toId, String relationShipTag) {
+    public void createRelationshipParToLaw(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipParToLaw begin");
         Session session = driver.session();
         try {
@@ -411,7 +411,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(n:law {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (p)").append("-[:").append(relationShipTag).append("]").append("->(n)");
+            createNodeChildRelationshipcyphe.append("MERGE (p)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(n)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipParToLaw err: " + e);
@@ -422,7 +422,7 @@ public class Graph {
     }
 
     //款-条
-    public void createRelationshipParToTiao(String formId, String toId, String relationShipTag) {
+    public void createRelationshipParToTiao(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipParToTiao begin");
         Session session = driver.session();
         try {
@@ -430,7 +430,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(a:article {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (p)").append("-[:").append(relationShipTag).append("]").append("->(a)");
+            createNodeChildRelationshipcyphe.append("MERGE (p)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(a)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipParToTiao err: " + e);
@@ -441,7 +441,7 @@ public class Graph {
     }
 
     //款-款
-    public void createRelationshipParToPar(String formId, String toId, String relationShipTag) {
+    public void createRelationshipParToPar(String formId, String toId, String relationShipTag, String relationshipDetail) {
         LOGGER.info("createRelationshipParToPar begin");
         Session session = driver.session();
         try {
@@ -449,7 +449,7 @@ public class Graph {
             createNodeChildRelationshipcyphe.append("id: '").append(formId).append("'}), ");
             createNodeChildRelationshipcyphe.append("(p:paragraph {");
             createNodeChildRelationshipcyphe.append("id: '").append(toId).append("'}) ");
-            createNodeChildRelationshipcyphe.append("MERGE (b)").append("-[:").append(relationShipTag).append("]").append("->(p)");
+            createNodeChildRelationshipcyphe.append("MERGE (b)").append("-[:").append(relationShipTag).append(" {detail:'").append(relationshipDetail).append("'}").append("]").append("->(p)");
             session.run(createNodeChildRelationshipcyphe.toString());
         } catch (Exception e) {
             LOGGER.error("createRelationshipParToPar err: " + e);
@@ -460,46 +460,46 @@ public class Graph {
     }
 
     //根据传入的id判断创建何种节点之间的关系
-    public boolean createRelationshipLawAuto(String formId, String toId, String relationShipTag) {
+    public boolean createRelationshipLawAuto(String formId, String toId, String relationShipTag, String relationshipDetail) {
         int fromIdLength = formId.split("-").length;
         int toIdLength = toId.split("-").length;
         LOGGER.info("createRelationshipLawAuto begin fromIdLength: " + fromIdLength + " toIdLength: " + toIdLength);
         if (fromIdLength == 1 && toIdLength == 1) {
-            createRelationshipLawToLaw(formId, toId, relationShipTag);
+            createRelationshipLawToLaw(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
         if (fromIdLength == 1 && toIdLength == 2) {
-            createRelationshipLawToTiao(formId, toId, relationShipTag);
+            createRelationshipLawToTiao(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
         if (fromIdLength == 1 && toIdLength == 3) {
-            createRelationshipLawToKuan(formId, toId, relationShipTag);
+            createRelationshipLawToKuan(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
 
         if (fromIdLength == 2 && toIdLength == 1) {
-            createRelationshipTiaoToLaw(formId, toId, relationShipTag);
+            createRelationshipTiaoToLaw(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
         if (fromIdLength == 2 && toIdLength == 2) {
-            createRelationshipTiaoToTiao(formId, toId, relationShipTag);
+            createRelationshipTiaoToTiao(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
         if (fromIdLength == 2 && toIdLength == 3) {
-            createRelationshipTiaoToPar(formId, toId, relationShipTag);
+            createRelationshipTiaoToPar(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
 
         if (fromIdLength == 3 && toIdLength == 1) {
-            createRelationshipParToLaw(formId, toId, relationShipTag);
+            createRelationshipParToLaw(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
         if (fromIdLength == 3 && toIdLength == 2) {
-            createRelationshipParToTiao(formId, toId, relationShipTag);
+            createRelationshipParToTiao(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
         if (fromIdLength == 3 && toIdLength == 3) {
-            createRelationshipParToPar(formId, toId, relationShipTag);
+            createRelationshipParToPar(formId, toId, relationShipTag, relationshipDetail);
             return true;
         }
         return false;

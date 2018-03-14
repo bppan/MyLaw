@@ -41,6 +41,9 @@ public class RelationShipLaw {
     }
 
     public String getTiaoName() {
+        if (tiaoName == null) {
+            return "";
+        }
         return tiaoName;
     }
 
@@ -49,6 +52,9 @@ public class RelationShipLaw {
     }
 
     public String getKuanName() {
+        if (kuanName == null) {
+            return "";
+        }
         return kuanName;
     }
 
@@ -57,6 +63,9 @@ public class RelationShipLaw {
     }
 
     public String getXiangName() {
+        if (xiangName == null) {
+            return "";
+        }
         return xiangName;
     }
 
