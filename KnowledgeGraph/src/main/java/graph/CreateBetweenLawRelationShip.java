@@ -49,7 +49,6 @@ public class CreateBetweenLawRelationShip {
                 long startTime = System.currentTimeMillis();
                 FindIterable<Document> findIterable = this.toCollection.find(new Document("url", url)).limit(1).noCursorTimeout(true);
                 if (findIterable.first() != null) {
-                    System.out.println("tt");
                     Document toLaw = findIterable.first();
                     //遍历到在库中的law，开始穿件该law对应的关系
                     createLawTiaoRelationShipBetweenAndLaw(toLaw);
