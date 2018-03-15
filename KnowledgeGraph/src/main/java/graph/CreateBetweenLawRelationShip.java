@@ -320,7 +320,7 @@ public class CreateBetweenLawRelationShip {
             }
             findLawNameFromDbAndCreateRelationFront(law, id, relationShipTag, relationShipLaw);
             if (i < subSentence.length()) {
-                if (subSentence.charAt(i) == '和' || subSentence.charAt(i) == '及' || subSentence.charAt(i) == '、') {
+                if (subSentence.charAt(i) == '和' || subSentence.charAt(i) == '及' || subSentence.charAt(i) == '、'||subSentence.charAt(i) == '或') {
                     Matcher m_law_continue = pattern_law.matcher(subSentence.substring(i + 1));
                     if (m_law_continue.find() && m_law_continue.start() == 0) {
                         i++;
