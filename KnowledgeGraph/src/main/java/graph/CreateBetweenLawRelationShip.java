@@ -27,7 +27,9 @@ import java.util.regex.Pattern;
 public class CreateBetweenLawRelationShip {
     private static MongoServer mongoServer = MongoServer.getMongoDB();
     private static Logger LOGGER = MyLogger.getMyLogger(CreateBetweenLawRelationShip.class);
-    private static String[] relationFront = {"依据", "根据", "依照", "按照", "不适用", "适用", "不符合", "符合", "引用"};
+    private static String[] relationFront = {"未依据", "依据", "根据", "未依照", "依照", "未按照", "按照",
+            "不适用", "适用", "不符合", "符合", "引用",
+            "不属于", "属于","不得违反","不违反", "未违反","违反", "未实施", "实施", "不参照", "参照", "未涉及", "不涉及", "涉及"};
     private static String[] relationBehind = {"同时废止"};
     private MongoCollection<Document> fromCollection;
     private MongoCollection<Document> toCollection;
@@ -56,7 +58,7 @@ public class CreateBetweenLawRelationShip {
                 long endTime = System.currentTimeMillis();
                 num++;
                 LOGGER.info("Create law num:" + num + " cost time:" + (endTime - startTime) +
-                        "From collection:" + this.fromCollection.getNamespace().getCollectionName() + " To Collection: " + this.toCollection.getNamespace().getCollectionName());
+                        " from collection: " + this.fromCollection.getNamespace().getCollectionName() + " to Collection: " + this.toCollection.getNamespace().getCollectionName());
             }
         } catch (Exception e) {
             LOGGER.info("Create law err: " + e);
@@ -242,7 +244,7 @@ public class CreateBetweenLawRelationShip {
     public void findBackLawName2(String id, int startIndex, String sentence, String relationShipTag, Document law) {
         String subSentence = sentence.substring(startIndex);
         LOGGER.info("findBackLawName sentence is: " + subSentence);
-        String regEx_law = "(《(.*?)》)+(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+        String regEx_law = "(《(.*?)》)+(（(.*?)）)?(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
         String regEx_law2 = "((.*?)(法|规定)+)+(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
         String regEx_lawTiaoAndKuan = "(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
         int i = 0;
@@ -257,10 +259,10 @@ public class CreateBetweenLawRelationShip {
             boolean findLaw = false;
             if (m_law.find() && m_law.start() == 0) {
                 law_name = m_law.group(2);
-                law_tiao = m_law.group(3);
-                String law_tiao_add = m_law.group(4);
-                law_kuan = m_law.group(5);
-                law_xiang = m_law.group(6);
+                law_tiao = m_law.group(5);
+                String law_tiao_add = m_law.group(6);
+                law_kuan = m_law.group(7);
+                law_xiang = m_law.group(8);
                 if (law_tiao_add != null) {
                     law_tiao += law_tiao_add;
                 }
@@ -534,6 +536,9 @@ public class CreateBetweenLawRelationShip {
         String relationshipDetail = relationShipLaw.getTiaoName() + relationShipLaw.getKuanName() + relationShipLaw.getXiangName();
         LOGGER.info("find name is: " + relationShipLaw.getLawName() + " releaseTime: " + relationShipLaw.getReleaseTime());
         String theLawReleasDate = relationShipLaw.getReleaseTime();
+        if(relationShipLaw.getLawName() == null || relationShipLaw.getLawName().isEmpty()){
+            return;
+        }
         //根据文本中的检索的法律名查找法律库，找到实施时间比当前法律发布时间最大小的一个
         FindIterable<Document> findIterable = this.toCollection.find(new Document("title", relationShipLaw.getLawName())).sort(new Document("release_date", -1)).noCursorTimeout(true);
         MongoCursor<Document> cursor = findIterable.iterator();
