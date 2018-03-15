@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.bson.Document;
 import util.DateParse;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -111,7 +112,7 @@ public class CreateBetweenLawRelationShip {
                     if (relationshipIndex.add(m_relation.end())) {
                         LOGGER.info("find relationFront: " + relationShip + " startIndex:" + m_relation.start());
                         //找到关键词后，直接开始寻找后面对应的法律法规
-                        findBackLawName(id, m_relation.end(), sentence, relationShip, law);
+                        findBackLawName2(id, m_relation.end(), sentence, relationShip, law);
                     }
                 }
             }
@@ -239,6 +240,109 @@ public class CreateBetweenLawRelationShip {
         }
     }
 
+    public void findBackLawName2(String id, int startIndex, String sentence, String relationShipTag, Document law) {
+        String subSentence = sentence.substring(startIndex);
+        LOGGER.info("findBackLawName sentence is: " + subSentence);
+        String regEx_law = "(《(.*?)》)+(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+        String regEx_law2 = "((.*?)(法|规定)+)+(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+        String regEx_lawTiaoAndKuan = "(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+        int i = 0;
+        RelationShipLaw relationShipLaw = new RelationShipLaw(null, null, null, null);
+        while (i < subSentence.length()) {
+            Pattern pattern_law = Pattern.compile(regEx_law, Pattern.CASE_INSENSITIVE);
+            Matcher m_law = pattern_law.matcher(subSentence.substring(i));
+            String law_name = null;
+            String law_tiao = null;
+            String law_kuan = null;
+            String law_xiang = null;
+            boolean findLaw = false;
+            if (m_law.find() && m_law.start() == 0) {
+                law_name = m_law.group(2);
+                law_tiao = m_law.group(3);
+                String law_tiao_add = m_law.group(4);
+                law_kuan = m_law.group(5);
+                law_xiang = m_law.group(6);
+                if (law_tiao_add != null) {
+                    law_tiao += law_tiao_add;
+                }
+                i += m_law.group(0).length();
+                findLaw = true;
+            }
+            Pattern pattern_law2 = Pattern.compile(regEx_law2, Pattern.CASE_INSENSITIVE);
+            Matcher m_law2 = pattern_law2.matcher(subSentence.substring(i));
+            if (!findLaw && m_law2.find() && m_law2.start() == 0) {
+                law_name = m_law2.group(1);
+                law_tiao = m_law2.group(4);
+                String law_tiao_add = m_law2.group(5);
+                law_kuan = m_law2.group(6);
+                law_xiang = m_law2.group(7);
+                if (law_tiao_add != null) {
+                    law_tiao += law_tiao_add;
+                }
+                i += m_law2.group(0).length();
+                findLaw = true;
+            }
+            Pattern pattern_lawTiaoAndKuan = Pattern.compile(regEx_lawTiaoAndKuan, Pattern.CASE_INSENSITIVE);
+            Matcher m_lawTiaoAndKuan = pattern_lawTiaoAndKuan.matcher(subSentence.substring(i));
+            if (!findLaw && m_lawTiaoAndKuan.find() && m_lawTiaoAndKuan.start() == 0 && !m_lawTiaoAndKuan.group().isEmpty()) {
+                law_tiao = m_lawTiaoAndKuan.group(1);
+                String law_tiao_add = m_lawTiaoAndKuan.group(2);
+                law_kuan = m_lawTiaoAndKuan.group(3);
+                law_xiang = m_lawTiaoAndKuan.group(4);
+                if (law_tiao_add != null) {
+                    law_tiao += law_tiao_add;
+                }
+                i += m_lawTiaoAndKuan.group(0).length();
+                findLaw = true;
+            }
+            if (!findLaw || i > subSentence.length()) {
+                break;
+            }
+
+            if (law_name != null) {
+                relationShipLaw.setLawName(law_name);
+                relationShipLaw.setTiaoName(law_tiao);
+                relationShipLaw.setKuanName(law_kuan);
+                relationShipLaw.setXiangName(law_xiang);
+            }
+            if (law_name == null && law_tiao != null) {
+                relationShipLaw.setTiaoName(law_tiao);
+                relationShipLaw.setKuanName(law_kuan);
+                relationShipLaw.setXiangName(law_xiang);
+            }
+            if (law_name == null && law_tiao == null && law_kuan != null) {
+                relationShipLaw.setKuanName(law_kuan);
+                relationShipLaw.setXiangName(law_xiang);
+            }
+            if (law_name == null && law_tiao == null && law_kuan == null) {
+                relationShipLaw.setXiangName(law_xiang);
+            }
+            findLawNameFromDbAndCreateRelationFront(law, id, relationShipTag, relationShipLaw);
+            if (i < subSentence.length()) {
+                if (subSentence.charAt(i) == '和' || subSentence.charAt(i) == '及' || subSentence.charAt(i) == '、') {
+                    Matcher m_law_continue = pattern_law.matcher(subSentence.substring(i + 1));
+                    if (m_law_continue.find() && m_law_continue.start() == 0) {
+                        i++;
+                        continue;
+                    }
+                    Matcher m_law2_continue = pattern_law2.matcher(subSentence.substring(i + 1));
+                    if (m_law2_continue.find() && m_law2_continue.start() == 0) {
+                        i++;
+                        continue;
+                    }
+                    Matcher m_lawTIaoAndKuan_continue = pattern_lawTiaoAndKuan.matcher(subSentence.substring(i + 1));
+                    if (m_lawTIaoAndKuan_continue.find() && m_lawTIaoAndKuan_continue.start() == 0 && !m_lawTIaoAndKuan_continue.group().isEmpty()) {
+                        i++;
+                        continue;
+                    }
+                } else {
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
     public void findBackLawName(String id, int startIndex, String sentence, String relationShipTag, Document law) {
         String subSentence = sentence.substring(startIndex);
         LOGGER.info("findBackLawName sentence is: " + subSentence);
@@ -315,7 +419,8 @@ public class CreateBetweenLawRelationShip {
                         if (i < subSentence.length()) {
                             if (subSentence.charAt(i) == '和' || subSentence.charAt(i) == '及' || subSentence.charAt(i) == '、') {
                                 Matcher m_tiao_continue = regEx_tiao.matcher(subSentence.substring(i + 1));
-                                if (m_tiao_continue.find() && m_tiao_continue.start() == 0) {
+                                if (m_tiao_continue.find() && m_tiao_continue.start() == 0 && subSentence.charAt(i + 1) == '第') {
+                                    System.out.println("next : " + m_tiao_continue.start());
                                     i++;
                                     continue;
                                 }
@@ -354,57 +459,72 @@ public class CreateBetweenLawRelationShip {
                 relationShipLaw.getKuanName() + " xiang is:" + relationShipLaw.getXiangName());
         String relationshipDetail = relationShipLaw.getTiaoName() + relationShipLaw.getKuanName() + relationShipLaw.getXiangName();
         String release_date = law.getString("release_date");
-        //根据文本中的检索的法律名查找法律库，找到实施时间比当前法律发布时间最大小的一个
-        FindIterable<Document> findIterable = this.toCollection.find(new Document("title", relationShipLaw.getLawName())).sort(new Document("release_date", -1)).noCursorTimeout(true);
-        MongoCursor<Document> cursor = findIterable.iterator();
+        if (relationShipLaw.getLawName() == null || relationShipLaw.getLawName().isEmpty()) {
+            return;
+        }
+        List<Document> findDocumentList = findLawWithTitleFromDb(relationShipLaw.getLawName());
+        for (Document lawDocument : findLawWithTitleFromDb("中华人民共和国" + relationShipLaw.getLawName())) {
+            findDocumentList.add(lawDocument);
+        }
         Graph graph = new Graph();
-        try {
-            while (cursor.hasNext()) {
-                Document findDocumentLaw = cursor.next();
-                String implement_date = findDocumentLaw.getString("implement_date");
-                //找到实施时间比当前法律发布时间最大小的一个
-                if (implement_date == null || implement_date.isEmpty() || release_date.compareTo(implement_date) > 0) {
-                    String lawId = findDocumentLaw.getObjectId("_id").toString();
-                    //如果法律名后没有条
-                    if (relationShipLaw.getTiaoName() == null || relationShipLaw.getTiaoName().isEmpty()) {
-                        graph.createRelationshipLawAuto(id, lawId, relationShipTag, relationshipDetail);
-                        return;
-                    }
-                    //如果法律有条，后面没有款信息
-                    if (relationShipLaw.getKuanName() == null || relationShipLaw.getKuanName().isEmpty()) {
-                        String tiaoName = relationShipLaw.getTiaoName().trim();
-                        List<Document> documentList = (List<Document>) findDocumentLaw.get("articles");
-                        for (int i = 0; i < documentList.size(); i++) {
-                            if (documentList.get(i).getString("name").trim().equals(tiaoName)) {
-                                String articleId = lawId + "-" + i;
-                                graph.createRelationshipLawAuto(id, articleId, relationShipTag, relationshipDetail);
-                                break;
-                            }
-                        }
-                        return;
-                    }
-                    //如果法律后有条有款，后面没有项信息或者有项信息（当前只精确到款，项的不做处理）
+        for (Document findDocumentLaw : findDocumentList) {
+            String implement_date = findDocumentLaw.getString("implement_date");
+            //找到实施时间比当前法律发布时间最大小的一个
+            if (implement_date == null || implement_date.isEmpty() || release_date.compareTo(implement_date) > 0) {
+                String lawId = findDocumentLaw.getObjectId("_id").toString();
+                //如果法律名后没有条
+                if (relationShipLaw.getTiaoName() == null || relationShipLaw.getTiaoName().isEmpty()) {
+                    graph.createRelationshipLawAuto(id, lawId, relationShipTag, relationshipDetail);
+                    return;
+                }
+                //如果法律有条，后面没有款信息
+                if (relationShipLaw.getKuanName() == null || relationShipLaw.getKuanName().isEmpty()) {
                     String tiaoName = relationShipLaw.getTiaoName().trim();
                     List<Document> documentList = (List<Document>) findDocumentLaw.get("articles");
                     for (int i = 0; i < documentList.size(); i++) {
                         if (documentList.get(i).getString("name").trim().equals(tiaoName)) {
                             String articleId = lawId + "-" + i;
-                            int kuanNum = relationShipLaw.getKuanNum() - 1;
-                            List<String> para = (List<String>) documentList.get(i).get("paragraph");
-                            if (para.size() > kuanNum) {
-                                String paraId = articleId + "-" + kuanNum;
-                                graph.createRelationshipLawAuto(id, paraId, relationShipTag, relationshipDetail);
-                            } else {
-                                graph.createRelationshipLawAuto(id, articleId, relationShipTag, relationshipDetail);
-                            }
+                            graph.createRelationshipLawAuto(id, articleId, relationShipTag, relationshipDetail);
                             break;
                         }
                     }
                     return;
                 }
+                //如果法律后有条有款，后面没有项信息或者有项信息（当前只精确到款，项的不做处理）
+                String tiaoName = relationShipLaw.getTiaoName().trim();
+                List<Document> documentList = (List<Document>) findDocumentLaw.get("articles");
+                for (int i = 0; i < documentList.size(); i++) {
+                    if (documentList.get(i).getString("name").trim().equals(tiaoName)) {
+                        String articleId = lawId + "-" + i;
+                        int kuanNum = relationShipLaw.getKuanNum() - 1;
+                        List<String> para = (List<String>) documentList.get(i).get("paragraph");
+                        if (para.size() > kuanNum) {
+                            String paraId = articleId + "-" + kuanNum;
+                            graph.createRelationshipLawAuto(id, paraId, relationShipTag, relationshipDetail);
+                        } else {
+                            graph.createRelationshipLawAuto(id, articleId, relationShipTag, relationshipDetail);
+                        }
+                        break;
+                    }
+                }
+                return;
             }
+        }
+    }
+
+    public List<Document> findLawWithTitleFromDb(String title) {
+        List<Document> findDocumentList = new ArrayList<>();
+        FindIterable<Document> findIterable = this.toCollection.find(new Document("title", title)).sort(new Document("release_date", -1)).noCursorTimeout(true);
+        MongoCursor<Document> cursor = findIterable.iterator();
+        try {
+            while (cursor.hasNext()) {
+                Document findDocumentLaw = cursor.next();
+                findDocumentList.add(findDocumentLaw);
+            }
+            return findDocumentList;
         } catch (Exception e) {
-            LOGGER.error("findLawNameFromDbAndCreateRelationFront err: " + e);
+            LOGGER.error(title + " find document from db err: " + e);
+            return findDocumentList;
         } finally {
             cursor.close();
         }
