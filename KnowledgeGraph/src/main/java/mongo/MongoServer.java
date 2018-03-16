@@ -20,6 +20,7 @@ public class MongoServer {
     private static Logger LOGGER = MyLogger.getMyLogger(MongoServer.class);
     private static MongoServer mongoDB = new MongoServer();
     private MongoDatabase mongoDatabase;
+
     private MongoServer() {
         //初始化mongodb
         GraphProperties dbProperties = GraphProperties.getWebProperties();
