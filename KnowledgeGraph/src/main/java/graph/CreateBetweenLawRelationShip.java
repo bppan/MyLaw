@@ -27,10 +27,13 @@ import java.util.regex.Pattern;
 public class CreateBetweenLawRelationShip {
     private static MongoServer mongoServer = MongoServer.getMongoDB();
     private static Logger LOGGER = MyLogger.getMyLogger(CreateBetweenLawRelationShip.class);
-    private static String[] relationFront = {"未依据", "依据", "根据", "未依照", "依照", "未按照", "按照",
+    private static String[] relationFront = {"未依据", "依据", "未根据", "根据", "未依照", "依照", "未按照", "按照",
             "不适用", "适用", "不符合", "符合", "引用",
-            "不属于", "属于","不得违反","不违反", "未违反","违反", "未实施", "实施", "不参照", "参照", "未涉及", "不涉及", "涉及"};
+            "不属于", "属于","不得违反","不违反", "未违反","违反",
+            "未实施", "实施", "不参照", "参照", "未涉及",
+            "不涉及", "涉及", "修改", "废止", "删除", "增加", "批准", "印发"};
     private static String[] relationBehind = {"同时废止"};
+    private static String[] relationTitleBehind = {"解释", "决定", "批复", "批准", "答复", "通知", "规定", "意见"};
     private MongoCollection<Document> fromCollection;
     private MongoCollection<Document> toCollection;
 
@@ -72,12 +75,13 @@ public class CreateBetweenLawRelationShip {
     @SuppressWarnings("unchecked")
     public void createLawTiaoRelationShipBetweenAndLaw(Document law) {
         String lawId = law.getObjectId("_id").toString();
+        String title = law.getString("title").trim();
         List<Document> documentList = (List<Document>) law.get("articles");
-        //如果不是法律法规，自行跳过，不做处理
+        //对法律内容进行关系抽取
         if (documentList.size() <= 1) {
             String content = law.getString("content");
-            createFromAndToLawRelationShip(lawId, content, law);
-            LOGGER.info("the law have no tiao begin content: " + law.getString("title"));
+            createFromAndToLawRelationShipFromContent(lawId, content, law);
+            LOGGER.info("the law have no tiao begin content: " + title);
         } else {
             for (int i = 0; i < documentList.size(); i++) {
                 String articleId = lawId + "-" + i;
@@ -86,22 +90,61 @@ public class CreateBetweenLawRelationShip {
                     if (para.size() == 1) {
                         //如果仅有一款
                         LOGGER.info(documentList.get(i).getString("name") + " the law have one para");
-                        createFromAndToLawRelationShip(articleId, para.get(0), law);
+                        createFromAndToLawRelationShipFromContent(articleId, para.get(0), law);
                     }
                 } else {
                     //如果仅有多款款
                     LOGGER.info(documentList.get(i).getString("name") + "the law have many para");
                     for (int j = 0; j < para.size(); j++) {
                         String paragraphId = articleId + "-" + j;
-                        createFromAndToLawRelationShip(paragraphId, para.get(j), law);
+                        createFromAndToLawRelationShipFromContent(paragraphId, para.get(j), law);
                     }
                 }
             }
         }
+        //对法律标题进行关系抽取
+        createFromAndToLawRelationShipFromTilte(lawId, title, law);
     }
-
+    public void createFromAndToLawRelationShipFromTilte(String id, String lawTitle, Document law) {
+        //首先使用法律正则匹配尾部关系词
+        String findTitleRelationShip = "";
+        HashSet<Integer> relationshipIndex = new HashSet<>();
+        for(String titleBehindRelationship : relationTitleBehind){
+            Pattern pattern_relation = Pattern.compile(titleBehindRelationship + "((（(.*?)）)|(\\((.*?)\\)))*", Pattern.CASE_INSENSITIVE);
+            Matcher m_relation = pattern_relation.matcher(lawTitle);
+            while (m_relation.find()) {
+                if (relationshipIndex.add(m_relation.end()) && m_relation.end() == lawTitle.length()) {
+                    findTitleRelationShip = titleBehindRelationship;
+                    LOGGER.info("find relationTitleBehind: " + titleBehindRelationship + " endIndex:" + m_relation.end());
+                }
+            }
+        }
+        LOGGER.info("begin search relationFront...");
+        for (String relationShip : relationFront) {
+            Pattern pattern_relation = Pattern.compile(relationShip, Pattern.CASE_INSENSITIVE);
+            Matcher m_relation = pattern_relation.matcher(lawTitle);
+            while (m_relation.find()) {
+                if (relationshipIndex.add(m_relation.end())) {
+                    LOGGER.info("find relationFront: " + relationShip + " startIndex:" + m_relation.start());
+                    //找到关键词后，直接开始寻找后面对应的法律法规
+                    findBackLawName2(id, m_relation.end(), lawTitle, relationShip+findTitleRelationShip, law);
+                }
+            }
+        }
+        //对于没有前向关系词的法律实体同样纳入
+        String regEx_law = "(《(.*?)》)+(（(.*?)）)?(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+        Pattern pattern_relation = Pattern.compile(regEx_law, Pattern.CASE_INSENSITIVE);
+        Matcher m_relation = pattern_relation.matcher(lawTitle);
+        while (m_relation.find()) {
+            if (relationshipIndex.add(m_relation.start())) {
+                LOGGER.info("find relationFront: none startIndex:" + m_relation.start());
+                //找到关键词后，直接开始寻找后面对应的法律法规
+                findBackLawName2(id, m_relation.start(), lawTitle, findTitleRelationShip, law);
+            }
+        }
+    }
     //根据当前遍历到的条款，查找是否存在关系，如果存在，并在neo4j中创建关系
-    public void createFromAndToLawRelationShip(String id, String lawSentence, Document law) {
+    public void createFromAndToLawRelationShipFromContent(String id, String lawSentence, Document law) {
         //将当前款进行换行分割
         String[] sentenceArray = lawSentence.split("\n");
         HashSet<Integer> relationshipIndex = new HashSet<>();
