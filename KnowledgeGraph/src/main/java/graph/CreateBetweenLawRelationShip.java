@@ -31,9 +31,9 @@ public class CreateBetweenLawRelationShip {
             "不适用", "适用", "不符合", "符合", "引用",
             "不属于", "属于", "不得违反", "不违反", "未违反", "违反",
             "未实施", "实施", "不参照", "参照", "未涉及",
-            "不涉及", "涉及", "修改", "废止", "删除", "增加", "批准", "印发"};
+            "不涉及", "涉及", "修改", "废止", "删除", "增加", "批准", "印发", "修正", "发布"};
     private static String[] relationBehind = {"同时废止"};
-    private static String[] relationTitleBehind = {"解释", "决定", "批复", "批准", "答复", "通知", "规定", "意见"};
+    private static String[] relationTitleBehind = {"解释", "决定", "批复", "批准", "答复", "通知", "规定", "意见", "决议"};
     private MongoCollection<Document> fromCollection;
     private MongoCollection<Document> toCollection;
 
@@ -103,11 +103,28 @@ public class CreateBetweenLawRelationShip {
             }
         }
         //对法律标题进行关系抽取
-        createFromAndToLawRelationShipFromTilte(lawId, title, law);
+        try {
+            createFromAndToLawRelationShipFromTilte(lawId, title, law);
+        } catch (Exception e) {
+            LOGGER.info("createFromAndToLawRelationShipFromTilte error: " + e);
+        }
+
     }
 
     public void createFromAndToLawRelationShipFromTilte(String id, String lawTitle, Document law) {
         LOGGER.info("===Title relationship begin===");
+
+        if (lawTitle == null || lawTitle.isEmpty()) {
+            return;
+        }
+        //清除括号
+        String removeKuo = "((（(.*?)）)|(\\((.*?)\\)))*";
+        Pattern pattern_remove_kuo = Pattern.compile(removeKuo, Pattern.CASE_INSENSITIVE);
+        Matcher m_remove_kuo = pattern_remove_kuo.matcher(lawTitle);
+        if (m_remove_kuo.find() && m_remove_kuo.end() == lawTitle.length()) {
+            lawTitle = lawTitle.substring(0, m_remove_kuo.start());
+        }
+
         //首先使用法律正则匹配尾部关系词
         String findTitleRelationShip = "";
         HashSet<Integer> relationshipIndex = new HashSet<>();
@@ -142,7 +159,11 @@ public class CreateBetweenLawRelationShip {
             if (relationshipIndex.add(m_relation.start())) {
                 LOGGER.info("find relationFront: none startIndex:" + m_relation.start());
                 //找到关键词后，直接开始寻找后面对应的法律法规
-                findBackLawName2(id, m_relation.start(), lawTitle, findTitleRelationShip, law);
+                if (findTitleRelationShip.isEmpty()) {
+                    findBackLawName2(id, m_relation.start(), lawTitle, lawTitle.substring(lawTitle.length() - 2), law);
+                } else {
+                    findBackLawName2(id, m_relation.start(), lawTitle, findTitleRelationShip, law);
+                }
             }
         }
     }

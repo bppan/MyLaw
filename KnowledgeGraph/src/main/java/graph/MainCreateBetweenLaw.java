@@ -9,8 +9,8 @@ package graph;
  * Modified By:
  */
 public class MainCreateBetweenLaw {
-    public static void main(String[] args){
-        CreateBetweenLawRelationShip createBetweenLawRelationShip = new CreateBetweenLawRelationShip("pkulaw_clean", "law3");
+    public static void main(String[] args) {
+        CreateBetweenLawRelationShip createBetweenLawRelationShip = new CreateBetweenLawRelationShip("chinacourt_clean", "law3");
         createBetweenLawRelationShip.create();
     }
 
