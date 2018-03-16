@@ -75,7 +75,9 @@ public class CreateBetweenLawRelationShip {
         List<Document> documentList = (List<Document>) law.get("articles");
         //如果不是法律法规，自行跳过，不做处理
         if (documentList.size() <= 1) {
-            LOGGER.info("the law have no tiao relationship");
+            String content = law.getString("content");
+            createFromAndToLawRelationShip(lawId, content, law);
+            LOGGER.info("the law have no tiao begin content: " + law.getString("title"));
         } else {
             for (int i = 0; i < documentList.size(); i++) {
                 String articleId = lawId + "-" + i;
@@ -245,7 +247,7 @@ public class CreateBetweenLawRelationShip {
         String subSentence = sentence.substring(startIndex);
         LOGGER.info("findBackLawName sentence is: " + subSentence);
         String regEx_law = "(《(.*?)》)+(（(.*?)）)?(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
-        String regEx_law2 = "((.*?)(法|规定)+)+(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
+        String regEx_law2 = "((.*?)(法|规定|则)+)+(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
         String regEx_lawTiaoAndKuan = "(第[零一二三四五六七八九十百千万]+条)?(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
         int i = 0;
         RelationShipLaw relationShipLaw = new RelationShipLaw(null, null, null, null);
