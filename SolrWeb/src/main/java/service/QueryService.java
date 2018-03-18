@@ -10,7 +10,6 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +82,8 @@ public class QueryService {
         }
         return this.documentList;
     }
-    public String generateWeightQueryString(String queryString){
+
+    public String generateWeightQueryString(String queryString) {
         StringBuilder weightQueryString = new StringBuilder("");
         weightQueryString.append("(title:").append(queryString).append(")^3");
         weightQueryString.append(" OR ");

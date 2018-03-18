@@ -198,7 +198,7 @@ function refreshAdsAndEvaluation(resultInfo, start, rows) {
     for (var i = 0; i < rand_num_ads; i++) {
         var rand_index = parseInt(Math.random() * indexNum);
         html_ads += "<div class='panel panel-default'>" +
-            "<div class='panel-heading'>图谱关系</div>" +
+            "<div class='panel-heading'>自动问答</div>" +
             "<div class='panel-body' style='text-align: left;overflow :auto'>" +
             "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank' style='color: #666'><p>" + resultInfo.resultList[rand_index].content + "</p></a>" +
             "</div></div>";
@@ -219,7 +219,7 @@ function getContent(resultList) {
     var html = "";
     for (var i = 0; i < resultList.length; i++) {
         html += "<div class='row' style='margin-bottom: 15px'><div class='col-md-12'>" +
-            "<h4 style='margin-bottom: 5px; font-family: arial;'><a href=" + resultList[i].url + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
+            "<h4 style='margin-bottom: 5px; font-family: arial;'><a href=" + resultList[i].contentUrl + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
             "<p style='font-size: 13px; font-family: arial;line-height: 1.4; word-wrap: break-word; word-break: break-word; margin-top: 0; margin-bottom: 3px;color: #545454;'>" + resultList[i].content + "</p>" +
             "<p class='pull-left' style='margin-top: 0;margin-bottom: 3px; font-family: arial;'>" +
             "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发布单位]" + resultList[i].department + "</span>" +
@@ -231,7 +231,7 @@ function getContent(resultList) {
             "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[时效性]" + resultList[i].timeless + "</span>" +
             "</p>" +
             "<p class='pull-left' style='margin: 0;padding: 0;font-size: 14px;line-height: 1.4; '>" +
-            "<a href=" + resultList[i].url + " target='_blank' style='color:#006621;word-break:break-all;'>" + resultList[i].url + "</a></p>" +
+            "<a href=" + resultList[i].graphUrl + " target='_blank' style='color:#006621;word-break:break-all;'>" + resultList[i].graphUrl + "</a></p>" +
             "</div></div>";
     }
     return html;

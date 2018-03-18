@@ -103,26 +103,26 @@ public class Article {
         this.articleContent = articleContent;
     }
 
-    public void setProperty(Document lawDocument){
-        if(lawDocument.getString("department") != null){
+    public void setProperty(Document lawDocument) {
+        if (lawDocument.getString("department") != null) {
             this.department = lawDocument.getString("department");
         }
-        if(lawDocument.getString("release_date") != null){
+        if (lawDocument.getString("release_date") != null) {
             this.department = lawDocument.getString("release_date");
         }
-        if(lawDocument.getString("release_number") != null){
+        if (lawDocument.getString("release_number") != null) {
             this.department = lawDocument.getString("release_number");
         }
-        if(lawDocument.getString("implement_date") != null){
+        if (lawDocument.getString("implement_date") != null) {
             this.department = lawDocument.getString("implement_date");
         }
-        if(lawDocument.getString("category") != null){
+        if (lawDocument.getString("category") != null) {
             this.department = lawDocument.getString("category");
         }
-        if(lawDocument.getString("level") != null){
+        if (lawDocument.getString("level") != null) {
             this.department = lawDocument.getString("level");
         }
-        if(lawDocument.getString("timeless") != null){
+        if (lawDocument.getString("timeless") != null) {
             this.department = lawDocument.getString("timeless");
         }
     }

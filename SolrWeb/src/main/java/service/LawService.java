@@ -1,10 +1,12 @@
 package service;
 
 import dao.MongoDB;
+import dao.WebProperties;
 import log.MyLogger;
 import model.Article;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import util.NumberChange;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +26,9 @@ public class LawService {
     public Document getLawDocument(String lawDoucumentId) {
         Document law = null;
         try {
-             law = mongoDB.getDocumentById(lawDoucumentId);
-        }catch (Exception e){
-            LOGGER.error("WebServer get document from db error: "+ e);
+            law = mongoDB.getDocumentById(lawDoucumentId);
+        } catch (Exception e) {
+            LOGGER.error("WebServer get document from db error: " + e);
         }
         return law;
     }
@@ -70,15 +72,15 @@ public class LawService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Article> getArtcileContent(String lawName, String lawTiaoName){
+    public List<Article> getArtcileContent(String lawName, String lawTiaoName) {
         List<Document> lawList = mongoDB.getDocumentByName(lawName);
         List<Article> resultList = new ArrayList<>();
-        for (Document law: lawList) {
+        for (Document law : lawList) {
             List<Document> documentList = (List<Document>) law.get("articles");
-            for(int i = 0; i < documentList.size(); i++){
+            for (int i = 0; i < documentList.size(); i++) {
                 Document article = documentList.get(i);
                 String articleId = law.getObjectId("_id").toString() + "-" + i;
-                if(article.getString("name").trim().equals(lawTiaoName)){
+                if (article.getString("name").trim().equals(lawTiaoName)) {
                     Article articleReturn = new Article();
                     articleReturn.setProperty(law);
                     articleReturn.setId(articleId);
@@ -86,7 +88,7 @@ public class LawService {
 
                     StringBuilder articleConent = new StringBuilder("");
                     List<String> paraArray = (List<String>) article.get("paragraph");
-                    for (String para:paraArray) {
+                    for (String para : paraArray) {
                         articleConent.append(para);
                     }
                     articleReturn.setArticleContent(articleConent.toString());
@@ -97,4 +99,75 @@ public class LawService {
         return resultList;
     }
 
+    @SuppressWarnings("unchecked")
+    public Article getLawContent(String id) {
+        Article resultArticle = new Article();
+        String[] splitId = id.split("-");
+        String lawId = splitId[0];
+        Document law = this.getLawDocument(lawId);
+        String lawName = law.getString("title");
+        if (splitId.length == 3) {
+            String articleId = splitId[1];
+            String parId = splitId[2];
+            List<Document> documentList = (List<Document>) law.get("articles");
+            for (int i = 0; i < documentList.size(); i++) {
+                if (String.valueOf(i).equals(articleId)) {
+                    Document article = documentList.get(i);
+                    List<String> paraArray = (List<String>) article.get("paragraph");
+                    for (int j = 0; j < paraArray.size(); j++) {
+                        if (String.valueOf(j).equals(parId)) {
+                            String content = paraArray.get(j);
+                            String name = lawName + "第" + NumberChange.numberToChinese(i + 1) + "条" + "第" + NumberChange.numberToChinese(j + 1) + "款";
+                            resultArticle.setId(id);
+                            resultArticle.setName(name);
+                            resultArticle.setArticleContent(content);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            return resultArticle;
+        }
+        if (splitId.length == 2) {
+            String articleId = splitId[1];
+            List<Document> documentList = (List<Document>) law.get("articles");
+            for (int i = 0; i < documentList.size(); i++) {
+                if (String.valueOf(i).equals(articleId)) {
+                    Document article = documentList.get(i);
+                    List<String> paraArray = (List<String>) article.get("paragraph");
+                    StringBuilder articleContent = new StringBuilder();
+                    for (String par : paraArray) {
+                        articleContent.append(par);
+                    }
+                    String name = lawName + "第" + NumberChange.numberToChinese(i + 1) + "条";
+                    resultArticle.setName(name);
+                    resultArticle.setId(id);
+                    resultArticle.setArticleContent(articleContent.toString());
+                    break;
+                }
+            }
+            return resultArticle;
+        }
+        resultArticle.setId(lawId);
+        resultArticle.setName(lawName);
+        String absContent = law.getString("content");
+        if (absContent.length() > 250) {
+            absContent = absContent.substring(0, 250) + "...";
+        }
+        resultArticle.setArticleContent(absContent);
+        return resultArticle;
+    }
+
+    public String getPaperUrl(String id) {
+        if (id == null || id.isEmpty()) {
+            return "";
+        }
+        String[] splitId = id.split("-");
+        String lawId = splitId[0];
+        WebProperties dbProperties = WebProperties.getWebProperties();
+        java.util.Properties prop = dbProperties.getProp();
+        String paperBaseURL = prop.getProperty("paperBaseUrl");
+        return paperBaseURL + "?id=" + lawId;
+    }
 }

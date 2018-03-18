@@ -5,8 +5,6 @@ import log.MyLogger;
 import model.SuggestValue;
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.SpellCheckResponse;
 
@@ -56,7 +54,7 @@ public class SuggestService {
                     best_suggest.add(suggest);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.info("GetSpellCheckResponse null： " + e.toString());
         }
 

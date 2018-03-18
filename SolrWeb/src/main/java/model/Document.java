@@ -15,6 +15,7 @@ import java.util.Map;
  * Modified By:
  */
 public class Document {
+    public static java.util.Properties prop = WebProperties.getWebProperties().getProp();
     private String title;
     private String id;
     private String department;
@@ -24,9 +25,10 @@ public class Document {
     private String category;
     private String level;
     private String timeless;
-    private String url;
+    private String contentUrl;
     private String content;
-    public static java.util.Properties prop = WebProperties.getWebProperties().getProp();
+    private String graphUrl;
+
     public Document(SolrDocument doc) {
         this.setId(doc.getFieldValue("id").toString());
         this.setTitle(doc.getFieldValue("title").toString());
@@ -37,7 +39,8 @@ public class Document {
         this.setCategory(doc.getFieldValue("category").toString());
         this.setLevel(doc.getFieldValue("level").toString());
         this.setTimeless(doc.getFieldValue("timeless").toString());
-        this.setUrl(doc.getFieldValue("id").toString());
+        this.setContentUrl(doc.getFieldValue("id").toString());
+        this.setGraphUrl(doc.getFieldValue("id").toString());
         this.setContent(doc.getFieldValue("content").toString());
     }
 
@@ -116,14 +119,22 @@ public class Document {
         this.timeless = timeless;
     }
 
-    public String getUrl() {
-        return url;
+    public String getContentUrl() {
+        return contentUrl;
     }
 
-    public void setUrl(String id) {
+    public void setContentUrl(String contentUrl) {
         String paperBaseUrl = prop.getProperty("paperBaseUrl");
-        String ruclawPaperUrl = paperBaseUrl + "?id=" + id;
-        this.url = ruclawPaperUrl;
+        this.contentUrl = paperBaseUrl + "?id=" + id;
+    }
+
+    public String getGraphUrl() {
+        return graphUrl;
+    }
+
+    public void setGraphUrl(String graphUrl) {
+        String graphBaseUrl = prop.getProperty("graphBaseUrl");
+        this.graphUrl = graphBaseUrl + "?id=" + id;
     }
 
     public String getContent() {

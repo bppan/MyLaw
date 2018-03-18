@@ -3,11 +3,6 @@ package dao;
 import log.MyLogger;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
-
 /**
  * Description：
  * Author: Administrator

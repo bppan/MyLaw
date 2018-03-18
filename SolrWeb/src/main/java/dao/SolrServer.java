@@ -8,11 +8,9 @@ import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 
 import java.io.IOException;
-import java.util.Collection;
 
 /**
  * Description：
@@ -63,6 +61,7 @@ public class SolrServer {
             LOGGER.error("Close solr server err: " + e.getMessage());
         }
     }
+
     public void get(String name) throws IOException, SolrServerException {
 
         HttpSolrClient solrServer = this.solrClient;
