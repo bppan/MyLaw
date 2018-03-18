@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>知识详情</div>
+                        <div class='panel-heading'>知识实体详情</div>
                         <div class='panel-body' style='text-align: left;overflow :auto' id = "knowledgeDetail">
                         </div>
                     </div>
