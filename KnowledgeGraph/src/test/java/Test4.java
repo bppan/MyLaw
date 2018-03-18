@@ -17,14 +17,14 @@ import java.util.regex.Pattern;
  */
 public class Test4 {
     public static void main(String[] args){
-        String test = "123";
-        System.out.println(test.substring(2));
-        String reg_1 = "(第[零一二三四五六七八九十百千万]+条)+(之[零一二三四五六七八九十百千万]+)?(第[零一二三四五六七八九十百千万]+款)?(第[零一二三四五六七八九十百千万]+项)?";
-        Pattern regEx_zhang = Pattern.compile(reg_1, Pattern.CASE_INSENSITIVE);
-        Matcher m_zhang = regEx_zhang.matcher("根据第二条第二款第二项的规定");
+
+        String test = "通知(2-23)";
+        Pattern regEx_zhang = Pattern.compile("通知" +"((（(.*?)）)|(\\((.*?)\\)))*" , Pattern.CASE_INSENSITIVE);
+        Matcher m_zhang = regEx_zhang.matcher(test);
         if(m_zhang.find()){
             System.out.println(m_zhang.groupCount());
-
+            System.out.println("length:" + test.length());
+            System.out.println("end:" + m_zhang.end());
             System.out.println(m_zhang.group(0));
             String ee = m_zhang.group(1);
             System.out.println(m_zhang.group(1));
@@ -72,6 +72,19 @@ public class Test4 {
         }catch (Exception e){
             System.out.println(e);
         }
+        Pattern titleRemoveAlter = Pattern.compile("(《(.*?)》)(第[零一二三四五六七八九十百千万]+条)?", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+        String test2 = "dsd《中华人民共和国刑法》第五条sdsd";
+        Matcher matcher3p = titleRemoveAlter.matcher(test2);
+        while (matcher3p.find()){
+            System.out.println("start "+ matcher3p.start());
+            System.out.println("start "+ test2.substring(matcher3p.start()));
+            System.out.println(matcher3p.group(0));
+            System.out.println(matcher3p.group(1));
+            System.out.println(matcher3p.group(2));
+            System.out.println(matcher3p.group(3));
+
+        }
+
 
 
     }
