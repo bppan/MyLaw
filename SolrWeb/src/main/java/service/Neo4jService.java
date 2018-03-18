@@ -96,14 +96,13 @@ public class Neo4jService {
     public void getpaths(List<GraphPath> graphPaths, String cypher) {
         Session session = driver.session();
         List<GraphPath> currentgraphPaths = new ArrayList<>();
-        System.out.println(cypher);
+        LOGGER.info("getPaths cypher: " + cypher);
         try {
             StatementResult resultStart = session.run(cypher);
             while (resultStart.hasNext()) {
                 //get one path
                 Record record = resultStart.next();
                 org.neo4j.driver.v1.types.Path path = record.get("p").asPath();
-                System.out.println(path.length());
                 int startAddpathIndex = currentgraphPaths.size();
                 //get node of path
                 Iterable<Node> pNodeIterable = path.nodes();
@@ -113,7 +112,6 @@ public class Neo4jService {
                     Node node = pNodeIterator.next();
                     String nodeId = node.get("id").asString();
                     String nodeName = node.get("name").asString();
-                    System.out.println(nodeName);
                     GraphNode graphNode = new GraphNode(nodeId, nodeName);
                     pathNode.add(graphNode);
                 }
@@ -140,7 +138,6 @@ public class Neo4jService {
                 while (relationshipIterator.hasNext()) {
                     Relationship relationship = relationshipIterator.next();
                     String relationType = relationship.type();
-                    System.out.println(relationType);
                     currentgraphPaths.get(i).setRelationShip(relationType);
                     i++;
                 }
