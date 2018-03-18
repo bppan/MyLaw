@@ -48,5 +48,6 @@
     <orderEntry type="library" name="commons-codec-1.9" level="project" />
     <orderEntry type="library" exported="" name="commons-logging-1.2" level="project" />
     <orderEntry type="library" name="noggit-0.5" level="project" />
+    <orderEntry type="library" name="neo4j-java-driver-1.5.0" level="project" />
   </component>
 </module>
