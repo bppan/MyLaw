@@ -54,7 +54,8 @@ $(document).ready(function () {
         initGraph();
     });
 });
-function initGraph(){
+
+function initGraph() {
     nodes.clear();
     edges.clear();
     var depth = parseInt($("#depth").val());
