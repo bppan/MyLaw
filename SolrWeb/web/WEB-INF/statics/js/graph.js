@@ -1,8 +1,9 @@
+// 创建节点数组
+var nodes = new vis.DataSet([]);
+// 创建关系数组
+var edges = new vis.DataSet([]);
+
 $(document).ready(function () {
-    // 创建节点数组
-    var nodes = new vis.DataSet([]);
-    // 创建关系数组
-    var edges = new vis.DataSet([]);
     // 创建一个网络
     var container = document.getElementById('graph');
     // vis数据
@@ -19,14 +20,16 @@ $(document).ready(function () {
     };
     // 初始化网络
     var knowledgeGraph = new vis.Network(container, data, options);
-    getGraph(nodes, edges, $("#lawId").text(), 4, 50);
+    initGraph();
     //增加节点信息
     knowledgeGraph.on("click", function (params) {
         if (params.nodes.length == 0) {
             return;
         }
         getNodeGraph(nodes, edges, params.nodes[0]);
-        refreshKnowledgeContent(params.nodes[0]);
+    });
+    knowledgeGraph.on("hoverNode", function (params) {
+        refreshKnowledgeContent(params.node);
     });
     knowledgeGraph.on("doubleClick", function (params) {
         if (params.nodes.length == 0) {
@@ -46,7 +49,19 @@ $(document).ready(function () {
         });
     });
     refreshKnowledgeContent($("#lawId").text());
+    //为初始化面板
+    $("#initButton").click(function () {
+        initGraph();
+    });
 });
+function initGraph(){
+    nodes.clear();
+    edges.clear();
+    var depth = parseInt($("#depth").val());
+    var limitNum = parseInt($("#limitNum").val());
+    var nodeType = $("input[name='nodeType']:checked").val();
+    getGraph(nodes, edges, $("#lawId").text(), depth, limitNum, nodeType)
+}
 
 function getColor(id) {
     var splitId = id.split("-");
@@ -98,11 +113,12 @@ function refreshKnowledgeContent(id) {
     });
 }
 
-function getGraph(nodes, edges, id, layerNum, limitNum) {
+function getGraph(nodes, edges, id, layerNum, limitNum, nodeType) {
     var parm = {
         id: id,
         layerNum: layerNum,
-        limitNum: limitNum
+        limitNum: limitNum,
+        nodeType: nodeType
     };
     $.ajax("/ruclaw/graphPath", {
         type: "POST",
