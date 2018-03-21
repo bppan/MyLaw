@@ -41,48 +41,56 @@
                 </div>
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div class='panel panel-default'>
-                        <div class='panel-heading'>知识实体详情</div>
-                        <div class='panel-body' style='text-align: left;overflow :auto' id = "knowledgeDetail">
+                        <div class='panel-heading'><span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="color: black">知识实体详情</a>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                            <div class='panel-body' style='text-align: left;overflow :auto' id = "knowledgeDetail"></div>
                         </div>
                     </div>
-                    <div class='panel panel-default'>
-                        <div class='panel-heading'>图谱展示初始化配置</div>
-                        <div class='panel-body' style='text-align: left;overflow :auto' id = "knowledgeDetail2">
-                            <div class="col-lg-12" style="padding:0;">
-                                <span class='label label-info'>提示</span><span> 请输入数字，深度和和限制个数增大等待时间将延长。</span>
-                            </div>
-                            <div class="col-lg-5" style="padding: 15px 0 0 0">
-                                <div class="input-group pull-left">
-                                  <span class="input-group-addon">关系深度</span>
-                                    <input id = "depth" type="text" class="form-control" aria-label="..." value="4" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" style="color: black">图谱展示初始化配置</a>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class='panel-body' style='text-align: left;overflow :auto' id = "knowledgeDetail2">
+                                <div class="col-lg-12" style="padding:0;">
+                                    <span class='label label-info'>提示</span><span> 请输入数字，深度和和限制个数增大等待时间将延长。</span>
                                 </div>
-                            </div>
-                            <div class="col-lg-2" style="padding: 15px 0 0 0"></div>
-                            <div class="col-lg-5" style="padding: 15px 0 0 0">
-                                <div class="input-group pull-right">
-                                  <span class="input-group-addon">限制个数</span>
-                                    <input id = "limitNum" type="text" class="form-control" aria-label="..." value="25" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                                <div class="col-lg-5" style="padding: 15px 0 0 0">
+                                    <div class="input-group pull-left">
+                                        <span class="input-group-addon">关系深度</span>
+                                        <input id = "depth" type="text" class="form-control" aria-label="..." value="4" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-12" style="margin-top: 16px;padding: 0">
-                                <div class="form-group pull-left">
-                                    节点类别：
-                                    <label class="radio-inline">
-                                        <input type="radio" value="all" name="nodeType" checked>全部
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" value="law" name="nodeType">法律
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" value="article" name="nodeType">法条
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" value="paragraph" name="nodeType">法款
-                                    </label>
+                                <div class="col-lg-2" style="padding: 15px 0 0 0"></div>
+                                <div class="col-lg-5" style="padding: 15px 0 0 0">
+                                    <div class="input-group pull-right">
+                                        <span class="input-group-addon">限制个数</span>
+                                        <input id = "limitNum" type="text" class="form-control" aria-label="..." value="25" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-12" style="padding:0;">
-                                <span id = "initButton" type="button" class="btn btn-primary pull-right">确认</span>
+                                <div class="col-lg-12" style="margin-top: 16px;padding: 0">
+                                    <div class="form-group pull-left">
+                                        节点类别：
+                                        <label class="radio-inline">
+                                            <input type="radio" value="all" name="nodeType" checked>全部
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="law" name="nodeType">法律
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="article" name="nodeType">法条
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="paragraph" name="nodeType">法款
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12" style="padding:0;">
+                                    <span id = "initButton" type="button" class="btn btn-primary pull-right">确认</span>
+                                </div>
                             </div>
                         </div>
                     </div>
