@@ -125,12 +125,12 @@ public class HomeController {
     //返回图谱关系
     @RequestMapping(value = "/graphPath", method = RequestMethod.POST)
     @ResponseBody
-    public List<GraphPath> graphPath(String id, int layerNum, int limitNum) {
-        LOGGER.info("Request mapping ruclaw/graphPath is:" + id + " layerNum: " + layerNum + " limitNum: " + limitNum);
+    public List<GraphPath> graphPath(String id, int layerNum, int limitNum, String nodeType) {
+        LOGGER.info("Request mapping ruclaw/graphPath is:" + id + " layerNum: " + layerNum + " limitNum: " + limitNum + "nodeType: " + nodeType);
         List<GraphPath> graphPathList = new ArrayList<>();
         try {
             Neo4jService neo4jService = new Neo4jService();
-            graphPathList = neo4jService.getGraph(id, layerNum, limitNum);
+            graphPathList = neo4jService.getGraph(id, layerNum, limitNum, nodeType);
         } catch (Exception e) {
             LOGGER.error("Request mapping ruclaw/graphPath error:" + e);
         }

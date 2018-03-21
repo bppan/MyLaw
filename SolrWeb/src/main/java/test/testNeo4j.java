@@ -19,7 +19,7 @@ public class testNeo4j {
         List<GraphPath> graphPathList = new ArrayList<>();
         try {
             Neo4jService neo4jService = new Neo4jService();
-            graphPathList = neo4jService.getGraph("5a2e5745fd1c49151460fbfb", 3, 25);
+            graphPathList = neo4jService.getGraph("5a2e5745fd1c49151460fbfb", 3, 25, "all");
         }catch (Exception e){
             e.printStackTrace();
         }

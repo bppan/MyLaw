@@ -32,17 +32,27 @@ public class Neo4jService {
         this.driver = Neo4jDriver.getInstance().getDriver();
     }
 
-    public List<GraphPath> getGraph(String id, int layerNum, int limitNum) {
+    public List<GraphPath> getGraph(String id, int layerNum, int limitNum, String toNodeType) {
         String nodeType = getNodeType(id);
         List<GraphPath> graphPaths = new ArrayList<>();
         try {
             StringBuilder getGraphcyphe = new StringBuilder("MATCH p=");
-            getGraphcyphe.append("(n:").append(nodeType).append(")").append("-[*1..").append(layerNum).append("]->()");
+            getGraphcyphe.append("(n:").append(nodeType).append(")").append("-[*1..").append(layerNum).append("]->");
+            if(toNodeType.trim().equals("law") || toNodeType.trim().equals("article") || toNodeType.trim().equals("paragraph")){
+                getGraphcyphe.append("(m:").append(toNodeType).append(")");
+            }else {
+                getGraphcyphe.append("()");
+            }
             getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
             getpaths(graphPaths, getGraphcyphe.toString());
 
             getGraphcyphe = new StringBuilder("MATCH p=");
-            getGraphcyphe.append("()").append("-[*1..").append(layerNum).append("]->(n:").append(nodeType).append(")");
+            if(toNodeType.trim().equals("law") || toNodeType.trim().equals("article") || toNodeType.trim().equals("paragraph")){
+                getGraphcyphe.append("(m:").append(toNodeType).append(")");
+            }else {
+                getGraphcyphe.append("()");
+            }
+            getGraphcyphe.append("-[*1..").append(layerNum).append("]->(n:").append(nodeType).append(")");
             getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
             getpaths(graphPaths, getGraphcyphe.toString());
 

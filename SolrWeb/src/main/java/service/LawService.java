@@ -73,6 +73,7 @@ public class LawService {
 
     @SuppressWarnings("unchecked")
     public List<Article> getArtcileContent(String lawName, String lawTiaoName) {
+        LOGGER.info("lawName: " + lawName + " lawTiaoName: " + lawTiaoName);
         List<Document> lawList = mongoDB.getDocumentByName(lawName);
         List<Article> resultList = new ArrayList<>();
         for (Document law : lawList) {
