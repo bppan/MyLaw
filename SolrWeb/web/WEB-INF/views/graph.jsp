@@ -35,7 +35,7 @@
         </div>
         <!-- content -->
         <div class="container-fluid" >
-            <div class="row" style="padding-top: 30px; padding-bottom: 15px;">
+            <div class="row" style="padding-top: 30px; padding-bottom: 15px; font-size: 14px; line-height: 23px;">
                 <div class="col-md-8 col-sm-12 col-xs-12" style="min-height: 785px;">
                     <div id="graph" class="graphCanvas"></div>
                 </div>
