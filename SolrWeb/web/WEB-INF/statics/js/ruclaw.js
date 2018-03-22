@@ -21,15 +21,15 @@ $(function () {
     });
     document.onkeydown = function (event) {
         if (event.keyCode == 13) {
-            var isFocus=$("#user_input").is(":focus");
-            if(true==isFocus){
+            var isFocus = $("#user_input").is(":focus");
+            if (true == isFocus) {
                 $('.typeahead').typeahead('close');
                 $.cookie('queryStart', 0);
                 $.cookie('querySortFiled', "score");
                 Transcripts.sendQuest();
             }
-            var isQuestionFocus=$("#question").is(":focus");
-            if(isQuestionFocus){
+            var isQuestionFocus = $("#question").is(":focus");
+            if (isQuestionFocus) {
                 autoAnswer();
             }
             return false;
@@ -53,15 +53,15 @@ $(function () {
 
 function autoAnswer() {
     var question = $.trim($("#question").val())
-    if(question != ""){
+    if (question != "") {
         $("#question").val("");
-    }else {
+    } else {
         return;
     }
     $.ajax("/ruclaw/autoAnswer", {
         type: "POST",
         dataType: "text",
-        data: {question:question},
+        data: {question: question},
         success: function (answer) {
             addAnswer(question, answer);
         },
@@ -73,8 +73,8 @@ function autoAnswer() {
 
 function addAnswer(question, answer) {
     var content = $("#autoAnswer").val();
-    content+="Q: " + question + "\n";
-    content+="A: " + answer + "\n";
+    content += "Q: " + question + "\n";
+    content += "A: " + answer + "\n";
     $("#autoAnswer").val(content);
 }
 
@@ -90,9 +90,9 @@ Transcripts.sendQuest = function () {
         $('#title').html(search_content + " - Ruclaw 搜索");
         var queryStart = $.cookie('queryStart');
         var querySortFiled = $.cookie('querySortFiled');
-        if(querySortFiled == 'null'){
+        if (querySortFiled == 'null') {
             querySortFiled = getSelectSortField();
-        }else if(!querySortFiled){
+        } else if (!querySortFiled) {
             querySortFiled = getSelectSortField();
         }
         if (queryStart) {
@@ -116,7 +116,7 @@ Transcripts.getResultList = function (query, start, rows, sortField) {
         query_string: $.trim(query),
         start: start,
         rows: rows,
-        sortField:sortField
+        sortField: sortField
     };
     $.ajax("/ruclaw/query", {
         type: "POST",
@@ -169,17 +169,17 @@ Transcripts.addviewList = function (resultInfo, start, rows) {
     $(".lawTitle").click(function () {
         getRecommend($(this).attr("id"));
     });
-    if(resultInfo.resultList.length > 0){
+    if (resultInfo.resultList.length > 0) {
         var recommendId = resultInfo.resultList[0].id;
         getRecommend(recommendId);
-    }else {
+    } else {
         $("#recommend").hide();
     }
 };
 
 function bindSortFieldEvent() {
     $(".sortFiled").click(function () {
-        if($(this).hasClass("active")){
+        if ($(this).hasClass("active")) {
             return;
         }
         clearActiveSortFiled();
@@ -201,7 +201,7 @@ function activeSortFiled(sortField) {
     clearActiveSortFiled();
     var index = $(".sortFiled");
     for (var i = 0; i < index.length; i++) {
-        if($($(".sortFiled")[i]).attr("id") == sortField){
+        if ($($(".sortFiled")[i]).attr("id") == sortField) {
             $($(".sortFiled")[i]).addClass('active');
             break;
         }
@@ -211,7 +211,7 @@ function activeSortFiled(sortField) {
 function getSelectSortField() {
     var index = $(".sortFiled");
     for (var i = 0; i < index.length; i++) {
-        if($($(".sortFiled")[i]).hasClass('active')){
+        if ($($(".sortFiled")[i]).hasClass('active')) {
             return $($(".sortFiled")[i]).attr('id');
         }
     }
@@ -268,7 +268,7 @@ function getRecommend(lawId) {
             limitNum: 5
         },
         success: function (recommendList) {
-            if(recommendList.length > 0){
+            if (recommendList.length > 0) {
                 $("#recommend").show();
                 var recommentContentHtml = "";
                 for (var i = 0; i < recommendList.length; i++) {
@@ -281,11 +281,12 @@ function getRecommend(lawId) {
         }
     });
 }
+
 function getContent(resultList) {
     var html = "";
     for (var i = 0; i < resultList.length; i++) {
         html += "<div class='row' style='margin-bottom: 15px'><div class='col-md-12'>" +
-            "<h4 style='margin-bottom: 5px; font-family: arial;' class='lawTitle' id='"+resultList[i].id+"'>" +
+            "<h4 style='margin-bottom: 5px; font-family: arial;' class='lawTitle' id='" + resultList[i].id + "'>" +
             "<a href=" + resultList[i].contentUrl + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
             "<p style='font-size: 13px; font-family: arial;line-height: 1.4; word-wrap: break-word; word-break: break-word; margin-top: 0; margin-bottom: 3px;color: #545454;'>" + resultList[i].content + "</p>" +
             "<p class='pull-left' style='margin-top: 0;margin-bottom: 3px; font-family: arial;'>" +
@@ -308,7 +309,7 @@ function initBottomIndex(startIndex, rowSize) {
     if (rowSize == 0) {
         return;
     }
-    var totlePage = Math.ceil(rowSize/10);
+    var totlePage = Math.ceil(rowSize / 10);
     var html = "<nav><ul class='pagination'>";
     if (startIndex != 1) {
         html += "<li><a href='#' aria-label='Previous'>" +

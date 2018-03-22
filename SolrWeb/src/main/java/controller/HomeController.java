@@ -157,7 +157,7 @@ public class HomeController {
     //返回推荐数据
     @RequestMapping(value = "/recommend", method = RequestMethod.GET)
     @ResponseBody
-    public List<model.Document> getRecommend(String id, int limitNum){
+    public List<model.Document> getRecommend(String id, int limitNum) {
         LOGGER.info("Request mapping ruclaw/recommend law id is:" + id);
         List<model.Document> reusltRecommendList = new ArrayList<>();
         try {
@@ -173,7 +173,7 @@ public class HomeController {
     //返回推荐数据
     @RequestMapping(value = "/autoAnswer", method = RequestMethod.POST)
     @ResponseBody
-    public String getAutoAnswer(String question){
+    public String getAutoAnswer(String question) {
         LOGGER.info("Request mapping ruclaw/autoAnswer: " + question);
         try {
             return "The function is being developed...";

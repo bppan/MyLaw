@@ -39,18 +39,18 @@ public class Neo4jService {
         try {
             StringBuilder getGraphcyphe = new StringBuilder("MATCH p=");
             getGraphcyphe.append("(n:").append(nodeType).append(")").append("-[*1..").append(layerNum).append("]->");
-            if(toNodeType.trim().equals("law") || toNodeType.trim().equals("article") || toNodeType.trim().equals("paragraph")){
+            if (toNodeType.trim().equals("law") || toNodeType.trim().equals("article") || toNodeType.trim().equals("paragraph")) {
                 getGraphcyphe.append("(m:").append(toNodeType).append(")");
-            }else {
+            } else {
                 getGraphcyphe.append("()");
             }
             getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
             getpaths(graphPaths, getGraphcyphe.toString());
 
             getGraphcyphe = new StringBuilder("MATCH p=");
-            if(toNodeType.trim().equals("law") || toNodeType.trim().equals("article") || toNodeType.trim().equals("paragraph")){
+            if (toNodeType.trim().equals("law") || toNodeType.trim().equals("article") || toNodeType.trim().equals("paragraph")) {
                 getGraphcyphe.append("(m:").append(toNodeType).append(")");
-            }else {
+            } else {
                 getGraphcyphe.append("()");
             }
             getGraphcyphe.append("-[*1..").append(layerNum).append("]->(n:").append(nodeType).append(")");
@@ -204,7 +204,7 @@ public class Neo4jService {
         }
     }
 
-    public List<Document> getRelationshipLaw(String id, int limitNum){
+    public List<Document> getRelationshipLaw(String id, int limitNum) {
         Session session = driver.session();
         List<Document> resultLaw = new ArrayList<>();
         try {
@@ -213,7 +213,7 @@ public class Neo4jService {
             getGraphcyphe.append("(n:").append(nodeType).append(")").append("-[*1..60]->(m:law)");
             getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
             getRelationshipLawRunCypher(resultLaw, getGraphcyphe.toString(), id);
-            if(resultLaw.size() < limitNum){
+            if (resultLaw.size() < limitNum) {
                 getGraphcyphe = new StringBuilder("MATCH p=");
                 getGraphcyphe.append("(m:law)").append("-[*1..60]->");
                 getGraphcyphe.append("(n:").append(nodeType).append(")");
@@ -228,26 +228,27 @@ public class Neo4jService {
             session.close();
         }
     }
-    private void getRelationshipLawRunCypher( List<Document> resultLaw, String cypher, String id){
+
+    private void getRelationshipLawRunCypher(List<Document> resultLaw, String cypher, String id) {
         List<GraphPath> graphPaths = new ArrayList<>();
         getpaths(graphPaths, cypher);
-        for (GraphPath graphPath:graphPaths) {
+        for (GraphPath graphPath : graphPaths) {
             String startNodeId = graphPath.getStartNode().getId();
             String endNodeId = graphPath.getEndNode().getId();
-            if(!startNodeId.equals(id) && getNodeType(startNodeId).equals("law")){
+            if (!startNodeId.equals(id) && getNodeType(startNodeId).equals("law")) {
                 String name = graphPath.getStartNode().getName();
                 addRelationLaw(resultLaw, startNodeId, name);
             }
-            if(!endNodeId.equals(id) && getNodeType(endNodeId).equals("law")){
+            if (!endNodeId.equals(id) && getNodeType(endNodeId).equals("law")) {
                 String name = graphPath.getEndNode().getName();
                 addRelationLaw(resultLaw, endNodeId, name);
             }
         }
     }
 
-    private boolean addRelationLaw(List<Document> resultRelationship, String id, String name){
-        for (Document document:resultRelationship) {
-            if(document.getId().equals("id")){
+    private boolean addRelationLaw(List<Document> resultRelationship, String id, String name) {
+        for (Document document : resultRelationship) {
+            if (document.getId().equals("id")) {
                 return false;
             }
         }
