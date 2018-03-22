@@ -56,8 +56,13 @@ public class LawService {
         if (law.getString("timeless") != null && !law.getString("timeless").trim().isEmpty()) {
             titleHtml.append("<p>").append("【时效性】 ").append(law.getString("timeless").trim()).append("</p>");
         }
+        model.Document theDocument = new model.Document();
+        theDocument.setId(law.getObjectId("_id").toString());
+        titleHtml.append("<p>").append("【图谱关系】 ").append("<a href='").append(theDocument.getGraphUrl()).append("' target='_blank' style='color:#006621;word-break:break-all;'>")
+                .append(theDocument.getGraphUrl()).append("</a></p>");
         titleHtml.append("<p>").append("【文件来源】 ").append("<a href='").append(law.getString("url")).append("' target='_blank' style='color:#006621;word-break:break-all;'>")
                 .append(law.getString("url").trim()).append("</a></p>");
+
         return titleHtml.toString();
     }
 

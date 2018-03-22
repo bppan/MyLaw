@@ -67,7 +67,27 @@
                     <div id = "nav" style ="margin-bottom:42px"></div>
                 </div>
                 <!--/right-->
-                <div class="col-md-3 col-sm-12 col-xs-12" id = "adv"></div>
+                <div class="col-md-3 col-sm-12 col-xs-12">
+                    <div class='panel panel-default' id = "automaicQandA">
+                        <div class='panel-heading'>自动问答</div>
+                        <div class='panel-body' style='overflow :auto'>
+                            <form role="form" style="padding-bottom: 0; margin-bottom: 0">
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="6" id ="autoAnswer" style="font-size: 13px; font-family: arial;line-height: 1.4; color: #545454; border-color:#fff" ></textarea>
+                                </div>
+                            </form>
+                            <div class="input-group" style="margin-top: 0">
+                                <span class="input-group-addon btn btn-primary" type="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" aria-label="..." id = "question" style="color: #545454; font-size: 13px;">
+                                <span class="input-group-addon btn btn-primary" type="button" id="submitQuestionButton"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='panel panel-default' id = "recommend" style="display:none">
+                        <div class='panel-heading'>推荐阅读</div>
+                        <div class='panel-body' style='overflow :auto' id ="recommendContent" style="font-size: 13px;"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--/container-fluid-->

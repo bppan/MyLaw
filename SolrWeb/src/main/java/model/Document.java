@@ -39,8 +39,6 @@ public class Document {
         this.setCategory(doc.getFieldValue("category").toString());
         this.setLevel(doc.getFieldValue("level").toString());
         this.setTimeless(doc.getFieldValue("timeless").toString());
-        this.setContentUrl(doc.getFieldValue("id").toString());
-        this.setGraphUrl(doc.getFieldValue("id").toString());
         this.setContent(doc.getFieldValue("content").toString());
     }
 
@@ -61,6 +59,8 @@ public class Document {
 
     public void setId(String id) {
         this.id = id;
+        setGraphUrl();
+        setContentUrl();
     }
 
     public String getDepartment() {
@@ -123,18 +123,18 @@ public class Document {
         return contentUrl;
     }
 
-    public void setContentUrl(String contentUrl) {
+    public void setContentUrl() {
         String paperBaseUrl = prop.getProperty("paperBaseUrl");
-        this.contentUrl = paperBaseUrl + "?id=" + id;
+        this.contentUrl = paperBaseUrl + "?id=" + this.id;
     }
 
     public String getGraphUrl() {
         return graphUrl;
     }
 
-    public void setGraphUrl(String graphUrl) {
+    public void setGraphUrl() {
         String graphBaseUrl = prop.getProperty("graphBaseUrl");
-        this.graphUrl = graphBaseUrl + "?id=" + id;
+        this.graphUrl = graphBaseUrl + "?id=" + this.id;
     }
 
     public String getContent() {

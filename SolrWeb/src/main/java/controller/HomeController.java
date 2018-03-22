@@ -154,5 +154,34 @@ public class HomeController {
         return graphPathList;
     }
 
+    //返回推荐数据
+    @RequestMapping(value = "/recommend", method = RequestMethod.GET)
+    @ResponseBody
+    public List<model.Document> getRecommend(String id, int limitNum){
+        LOGGER.info("Request mapping ruclaw/recommend law id is:" + id);
+        List<model.Document> reusltRecommendList = new ArrayList<>();
+        try {
+            Neo4jService neo4jService = new Neo4jService();
+            reusltRecommendList = neo4jService.getRelationshipLaw(id, limitNum);
+            return reusltRecommendList;
+        } catch (Exception e) {
+            LOGGER.error("Request mapping ruclaw/graphPath error:" + e);
+            return reusltRecommendList;
+        }
+    }
+
+    //返回推荐数据
+    @RequestMapping(value = "/autoAnswer", method = RequestMethod.POST)
+    @ResponseBody
+    public String getAutoAnswer(String question){
+        LOGGER.info("Request mapping ruclaw/autoAnswer: " + question);
+        try {
+            return "The function is being developed...";
+        } catch (Exception e) {
+            LOGGER.error("Request mapping ruclaw/autoAnswer error:" + e);
+            return "The function is being developed...";
+        }
+    }
+
 
 }

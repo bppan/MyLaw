@@ -4,11 +4,6 @@ $(function () {
     content._seach_suggest = $('#seach_suggest');
     content._seach_message = $('#seach_message');
     content._seach_content = $('#seach_content');
-    content._nav = $('#nav');
-    content._adv = $('#adv');
-    content._ad1 = $('#ad1');
-    content._ad2 = $('#ad2');
-    content._ev1 = $('#ev1');
 
     var queryHistary = $.cookie('queryHistary');
     if (queryHistary) {
@@ -33,6 +28,10 @@ $(function () {
                 $.cookie('querySortFiled', "score");
                 Transcripts.sendQuest();
             }
+            var isQuestionFocus=$("#question").is(":focus");
+            if(isQuestionFocus){
+                autoAnswer();
+            }
             return false;
         }
     };
@@ -45,18 +44,44 @@ $(function () {
         }
     });
     bindSortFieldEvent();
+
+    $("#submitQuestionButton").click(function () {
+        autoAnswer();
+    });
+
 });
+
+function autoAnswer() {
+    var question = $.trim($("#question").val())
+    if(question != ""){
+        $("#question").val("");
+    }else {
+        return;
+    }
+    $.ajax("/ruclaw/autoAnswer", {
+        type: "POST",
+        dataType: "text",
+        data: {question:question},
+        success: function (answer) {
+            addAnswer(question, answer);
+        },
+        error: function (request, textStatus, errorThrown) {
+            addAnswer(question, "服务器出错！");
+        }
+    });
+}
+
+function addAnswer(question, answer) {
+    var content = $("#autoAnswer").val();
+    content+="Q: " + question + "\n";
+    content+="A: " + answer + "\n";
+    $("#autoAnswer").val(content);
+}
 
 Transcripts.cleanContent = function () {
     content._seach_content.empty();
     content._seach_message.empty();
     content._seach_suggest.empty();
-    content._nav.empty();
-    content._ev1.empty();
-    content._nav.empty();
-    content._adv.empty();
-    content._ad1.empty();
-    content._ad2.empty();
 };
 
 Transcripts.sendQuest = function () {
@@ -141,8 +166,15 @@ Transcripts.showContent = function (resultInfo, start, rows) {
 Transcripts.addviewList = function (resultInfo, start, rows) {
     var content_html = getContent(resultInfo.resultList);
     $('#seach_content').html(content_html);
-    var ads_evaluation_html = refreshAdsAndEvaluation(resultInfo, start, rows);
-    $('#adv').html(ads_evaluation_html);
+    $(".lawTitle").click(function () {
+        getRecommend($(this).attr("id"));
+    });
+    if(resultInfo.resultList.length > 0){
+        var recommendId = resultInfo.resultList[0].id;
+        getRecommend(recommendId);
+    }else {
+        $("#recommend").hide();
+    }
 };
 
 function bindSortFieldEvent() {
@@ -186,40 +218,75 @@ function getSelectSortField() {
     return "score";
 }
 
+// function refreshRecommendNewPage(queryResultList) {
+//     if(queryResultList.length > 0){
+//         var recommendId = queryResultList[0].id;
+//         getRecommend(recommendId);
+//     }else {
+//         $("#recommend").hide();
+//     }
+// }
 
-function refreshAdsAndEvaluation(resultInfo, start, rows) {
-    var rand_num_ads = parseInt(Math.random() * 3);
-    var fondNum = parseInt(resultInfo.numFound);
-    var indexNum = rows;
-    if ((start + 1) * rows > fondNum) {
-        indexNum = fondNum - start * rows;
-    }
-    var html_ads = "";
-    for (var i = 0; i < rand_num_ads; i++) {
-        var rand_index = parseInt(Math.random() * indexNum);
-        html_ads += "<div class='panel panel-default'>" +
-            "<div class='panel-heading'>自动问答</div>" +
-            "<div class='panel-body' style='text-align: left;overflow :auto'>" +
-            "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank' style='color: #666'><p>" + resultInfo.resultList[rand_index].content + "</p></a>" +
-            "</div></div>";
-    }
+// function refreshAdsAndEvaluation(resultInfo, start, rows) {
+//     var rand_num_ads = parseInt(Math.random() * 3);
+//     var fondNum = parseInt(resultInfo.numFound);
+//     var indexNum = rows;
+//     if ((start + 1) * rows > fondNum) {
+//         indexNum = fondNum - start * rows;
+//     }
+//     var html_ads = "";
+//     for (var i = 0; i < rand_num_ads; i++) {
+//         var rand_index = parseInt(Math.random() * indexNum);
+//         html_ads += "<div class='panel panel-default'>" +
+//             "<div class='panel-heading'>自动问答</div>" +
+//             "<div class='panel-body' style='text-align: left;overflow :auto'>" +
+//             "<a href=" + resultInfo.resultList[rand_index].contentUrl + " target='_blank' style='color: #666'><p>" + resultInfo.resultList[rand_index].content + "</p></a>" +
+//             "</div></div>";
+//     }
+//     if(resultInfo.resultList.length > 0){
+//         var recommendId = resultInfo.resultList[0].id;
+//         var resultRecommend = getRecommend(recommendId);
+//         html_ads += "<div class='panel panel-default'>" +
+//             "<div class='panel-heading'>推荐阅读</div>" +
+//             "<div class='panel-body' style='overflow :auto'>";
+//         for (var i = 0; i < resultRecommend.length; i++) {
+//             html_ads += "<a href=" + resultInfo.resultList[i].contentUrl + " target='_blank'><p>" + resultInfo.resultList[i].title + "</p></a>";
+//         }
+//         html_ads += "</div></div>";
+//     }
+//
+//     return html_ads;
+// }
 
-    html_ads += "<div class='panel panel-default'>" +
-        "<div class='panel-heading'>推荐阅读</div>" +
-        "<div class='panel-body' style='overflow :auto'>";
-    for (var i = 0; i < 3; i++) {
-        var rand_index = parseInt(Math.random() * indexNum);
-        html_ads += "<a href=" + resultInfo.resultList[rand_index].url + " target='_blank'><p>" + resultInfo.resultList[rand_index].title + "</p></a>";
-    }
-    html_ads += "</div></div>";
-    return html_ads;
+function getRecommend(lawId) {
+    $("#recommend").hide();
+    $.ajax("/ruclaw/recommend", {
+        type: "GET",
+        dataType: "json",
+        data: {
+            id: lawId,
+            limitNum: 5
+        },
+        success: function (recommendList) {
+            if(recommendList.length > 0){
+                $("#recommend").show();
+                var recommentContentHtml = "";
+                for (var i = 0; i < recommendList.length; i++) {
+                    recommentContentHtml += "<a href=" + recommendList[i].contentUrl + " target='_blank' style='color: #545454; font-size: 13px;'><p>" + recommendList[i].title + "</p></a>";
+                }
+                $("#recommendContent").html(recommentContentHtml);
+            }
+        }, error: function (request, textStatus, errorThrown) {
+            $("#recommendContent").html("<p>服务器出错！<p>");
+        }
+    });
 }
-
 function getContent(resultList) {
     var html = "";
     for (var i = 0; i < resultList.length; i++) {
         html += "<div class='row' style='margin-bottom: 15px'><div class='col-md-12'>" +
-            "<h4 style='margin-bottom: 5px; font-family: arial;'><a href=" + resultList[i].contentUrl + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
+            "<h4 style='margin-bottom: 5px; font-family: arial;' class='lawTitle' id='"+resultList[i].id+"'>" +
+            "<a href=" + resultList[i].contentUrl + " target='_blank' style='color:#1a0dab'>" + resultList[i].title + "</a></h4>" +
             "<p style='font-size: 13px; font-family: arial;line-height: 1.4; word-wrap: break-word; word-break: break-word; margin-top: 0; margin-bottom: 3px;color: #545454;'>" + resultList[i].content + "</p>" +
             "<p class='pull-left' style='margin-top: 0;margin-bottom: 3px; font-family: arial;'>" +
             "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[发布单位]" + resultList[i].department + "</span>" +
@@ -230,7 +297,7 @@ function getContent(resultList) {
             "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[法规级别]" + resultList[i].level + "</span>" +
             "<span class='label label-default' style='background-color: white;color:#545454; padding-left: 0;padding-right.9em; display:block;float:left;'>[时效性]" + resultList[i].timeless + "</span>" +
             "</p>" +
-            "<p class='pull-left' style='margin: 0;padding: 0;font-size: 14px;line-height: 1.4; '>" +
+            "<p class='pull-left' style='margin: 0;padding: 0;font-size: 14px;line-height: 1.4;'>" +
             "<a href=" + resultList[i].graphUrl + " target='_blank' style='color:#006621;word-break:break-all;'>" + resultList[i].graphUrl + "</a></p>" +
             "</div></div>";
     }

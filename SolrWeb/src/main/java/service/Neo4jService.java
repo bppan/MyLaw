@@ -2,6 +2,7 @@ package service;
 
 import dao.Neo4jDriver;
 import log.MyLogger;
+import model.Document;
 import model.GraphNode;
 import model.GraphPath;
 import org.apache.log4j.Logger;
@@ -183,13 +184,7 @@ public class Neo4jService {
         Session session = driver.session();
         GraphNode node = null;
         try {
-            String[] splitId = id.split("-");
-            String nodeType = "law";
-            if (splitId.length == 2) {
-                nodeType = "article";
-            } else if (splitId.length == 3) {
-                nodeType = "paragraph";
-            }
+            String nodeType = getNodeType(id);
             StringBuilder getGraphcyphe = new StringBuilder("MATCH ");
             getGraphcyphe.append("(n:").append(nodeType).append(")");
             getGraphcyphe.append(" where n.id='").append(id).append("'").append(" return n");
@@ -208,4 +203,59 @@ public class Neo4jService {
             session.close();
         }
     }
+
+    public List<Document> getRelationshipLaw(String id, int limitNum){
+        Session session = driver.session();
+        List<Document> resultLaw = new ArrayList<>();
+        try {
+            String nodeType = getNodeType(id);
+            StringBuilder getGraphcyphe = new StringBuilder("MATCH p=");
+            getGraphcyphe.append("(n:").append(nodeType).append(")").append("-[*1..60]->(m:law)");
+            getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
+            getRelationshipLawRunCypher(resultLaw, getGraphcyphe.toString(), id);
+            if(resultLaw.size() < limitNum){
+                getGraphcyphe = new StringBuilder("MATCH p=");
+                getGraphcyphe.append("(m:law)").append("-[*1..60]->");
+                getGraphcyphe.append("(n:").append(nodeType).append(")");
+                getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
+                getRelationshipLawRunCypher(resultLaw, getGraphcyphe.toString(), id);
+            }
+            return resultLaw;
+        } catch (Exception e) {
+            LOGGER.info("getRelationshipLaw from neo4j error: " + e);
+            return resultLaw;
+        } finally {
+            session.close();
+        }
+    }
+    private void getRelationshipLawRunCypher( List<Document> resultLaw, String cypher, String id){
+        List<GraphPath> graphPaths = new ArrayList<>();
+        getpaths(graphPaths, cypher);
+        for (GraphPath graphPath:graphPaths) {
+            String startNodeId = graphPath.getStartNode().getId();
+            String endNodeId = graphPath.getEndNode().getId();
+            if(!startNodeId.equals(id) && getNodeType(startNodeId).equals("law")){
+                String name = graphPath.getStartNode().getName();
+                addRelationLaw(resultLaw, startNodeId, name);
+            }
+            if(!endNodeId.equals(id) && getNodeType(endNodeId).equals("law")){
+                String name = graphPath.getEndNode().getName();
+                addRelationLaw(resultLaw, endNodeId, name);
+            }
+        }
+    }
+
+    private boolean addRelationLaw(List<Document> resultRelationship, String id, String name){
+        for (Document document:resultRelationship) {
+            if(document.getId().equals("id")){
+                return false;
+            }
+        }
+        Document document = new Document();
+        document.setId(id);
+        document.setTitle(name);
+        resultRelationship.add(document);
+        return true;
+    }
+
 }
