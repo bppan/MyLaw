@@ -35,7 +35,7 @@
         </div>
         <!-- content -->
         <div class="container-fluid" >
-            <div class="row" style="padding-top: 30px; padding-bottom: 15px; font-size: 14px; line-height: 23px;">
+            <div class="row" style="padding-top: 30px; padding-bottom: 15px;">
                 <div class="col-md-8 col-sm-12 col-xs-12" style="min-height: 785px;">
                     <div id="graph" class="graphCanvas"></div>
                 </div>
@@ -45,7 +45,7 @@
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="color: black">知识实体详情</a>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse">
-                            <div class='panel-body' style='text-align: left;overflow :auto' >
+                            <div class='panel-body' style='text-align: left;overflow :auto;font-size: 14px; line-height: 22px;' >
                                 <div id = "knowledgeDetail"></div>
                                 <div class="col-lg-12" style="padding: 0">
                                     <div class="input-group pull-right">
@@ -62,7 +62,7 @@
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" style="color: black">图谱展示初始化配置</a>
                         </div>
                         <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class='panel-body' style='text-align: left;overflow :auto' id = "knowledgeDetail2">
+                            <div class='panel-body' style='text-align: left;overflow :auto; font-size: 14px; line-height: 22px;' id = "knowledgeDetail2">
                                 <div class="col-lg-12" style="padding:0;">
                                     <span class='label label-info'>提示</span><span> 请输入数字，深度和和限制个数增大等待时间将延长。</span>
                                 </div>
