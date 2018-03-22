@@ -152,6 +152,7 @@ public class LawService {
         }
         resultArticle.setId(lawId);
         resultArticle.setName(lawName);
+        resultArticle.setArticleNum(law.getInteger("article_num"));
         String absContent = law.getString("content");
         if (absContent.length() > 250) {
             absContent = absContent.substring(0, 250) + "...";

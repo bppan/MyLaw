@@ -78,18 +78,18 @@ public class Neo4jService {
         return nodeType;
     }
 
-    public List<GraphPath> getNodeGraph(String id) {
+    public List<GraphPath> getNodeGraph(String id, int limitNum) {
         String nodeType = getNodeType(id);
         List<GraphPath> graphPaths = new ArrayList<>();
         try {
             StringBuilder getGraphcyphe = new StringBuilder("MATCH p=");
             getGraphcyphe.append("(n:").append(nodeType).append(")").append("-[]->()");
-            getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p");
+            getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
             getpaths(graphPaths, getGraphcyphe.toString());
 
             getGraphcyphe = new StringBuilder("MATCH p=");
             getGraphcyphe.append("()").append("-[]->(n:").append(nodeType).append(")");
-            getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p");
+            getGraphcyphe.append(" where n.id='").append(id).append("' RETURN p").append(" LIMIT ").append(limitNum);
             getpaths(graphPaths, getGraphcyphe.toString());
 
             if (graphPaths.size() == 0) {

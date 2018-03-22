@@ -21,6 +21,7 @@ public class Article {
     private String level;
     private String timeless;
     private String articleContent;
+    private int articleNum;
 
     public String getName() {
         return name;
@@ -94,6 +95,13 @@ public class Article {
         this.timeless = timeless;
     }
 
+    public int getArticleNum() {
+        return articleNum;
+    }
+
+    public void setArticleNum(int articleNum) {
+        this.articleNum = articleNum;
+    }
 
     public String getArticleContent() {
         return articleContent;
@@ -125,5 +133,6 @@ public class Article {
         if (lawDocument.getString("timeless") != null) {
             this.department = lawDocument.getString("timeless");
         }
+        this.articleNum = lawDocument.getInteger("article_num");
     }
 }
