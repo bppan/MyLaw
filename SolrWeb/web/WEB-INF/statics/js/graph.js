@@ -102,6 +102,9 @@ function refreshKnowledgeContent(id) {
                 if (data.timeless && data.timeless != "") {
                     contentHtml += "<p><span class='label label-primary'>有效性</span><span>  " + data.timeless + "</span></p>";
                 }
+                if(data.articleNum){
+                    contentHtml += "<p><span class='label label-primary'>法条数</span><span>  " + data.articleNum + "</span></p>";
+                }
                 contentHtml += "<p><span class='label label-primary'>内容摘要</span><p>" + data.articleContent.replace(re, "<br/>") + "</p></p>";
             } else {
                 contentHtml += "<p><span class='label label-primary'>知识内容</span><span>  " + data.articleContent.replace(re, "<br/>") + "</span></p>";
@@ -134,8 +137,10 @@ function getGraph(nodes, edges, id, layerNum, limitNum, nodeType) {
 }
 
 function getNodeGraph(nodes, edges, id) {
+    var limitNum = parseInt($("#limitNodeNum").val());
     var parm = {
-        id: id
+        id: id,
+        limitNum: limitNum
     };
     $.ajax("/ruclaw/nodeGraphPath", {
         type: "POST",

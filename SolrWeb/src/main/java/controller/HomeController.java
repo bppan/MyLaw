@@ -141,12 +141,12 @@ public class HomeController {
     //返回接节点图谱关系
     @RequestMapping(value = "/nodeGraphPath", method = RequestMethod.POST)
     @ResponseBody
-    public List<GraphPath> nodeGraphPath(String id) {
-        LOGGER.info("Request mapping ruclaw/nodeGraphPath is:" + id);
+    public List<GraphPath> nodeGraphPath(String id, int limitNum) {
+        LOGGER.info("Request mapping ruclaw/nodeGraphPath is:" + id + " limit num: " + limitNum);
         List<GraphPath> graphPathList = new ArrayList<>();
         try {
             Neo4jService neo4jService = new Neo4jService();
-            graphPathList = neo4jService.getNodeGraph(id);
+            graphPathList = neo4jService.getNodeGraph(id, limitNum);
         } catch (Exception e) {
             LOGGER.error("Request mapping ruclaw/graphPath error:" + e);
         }

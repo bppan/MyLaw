@@ -45,7 +45,15 @@
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="color: black">知识实体详情</a>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse">
-                            <div class='panel-body' style='text-align: left;overflow :auto' id = "knowledgeDetail"></div>
+                            <div class='panel-body' style='text-align: left;overflow :auto' >
+                                <div id = "knowledgeDetail"></div>
+                                <div class="col-lg-12" style="padding: 0">
+                                    <div class="input-group pull-right">
+                                        <span class="input-group-addon">单击展开限制节点数</span>
+                                        <input id = "limitNodeNum" type="text" class="form-control" aria-label="..." value="25" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -89,7 +97,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12" style="padding:0;">
-                                    <span id = "initButton" type="button" class="btn btn-primary pull-right">确认</span>
+                                    <span id = "initButton" type="button" class="btn btn-primary pull-right">重置</span>
                                 </div>
                             </div>
                         </div>
